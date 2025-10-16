@@ -1,0 +1,51 @@
+{
+  "version": "2.2.0",
+  "company": {
+    "name": "Fibramar",
+    "attendant": "[NOME_ATENDENTE]"
+  },
+  "scriptData": {
+    "✅ INÍCIO DE ATENDIMENTO": [
+      "Olá! Meu nome é [NOME_ATENDENTE], sou da equipe de atendimento da Fibramar. Como posso ajudá-lo hoje?",
+      "Bom dia! Aqui é [NOME_ATENDENTE] da Fibramar. Em que posso auxiliá-lo?",
+      "🆕 NOVA MENSAGEM: Olá! Seja bem-vindo ao atendimento Fibramar. Estou aqui para resolver sua solicitação da melhor forma possível!"
+    ],
+    "🧾 IDENTIFICAÇÃO DO CLIENTE": [
+      "Para dar continuidade ao atendimento, preciso de algumas informações. Poderia me informar seu CPF ou CNPJ?",
+      "Poderia me confirmar seu nome completo e endereço de instalação?",
+      "🆕 NOVA: Para sua segurança, vou precisar confirmar alguns dados. Qual o nome do titular da conta?"
+    ],
+    "🆕 PROMOÇÕES ESPECIAIS": [
+      "🎉 OFERTA ESPECIAL: Upgrade gratuito para 500MB por 3 meses!",
+      "💰 DESCONTO: 20% de desconto na mensalidade por 6 meses para novos clientes",
+      "🚀 VELOCIDADE DOBRADA: Contrate agora e ganhe o dobro da velocidade pelo mesmo preço!"
+    ],
+    "💰 FATURAS E BOLETOS": [
+      "Vou verificar sua situação financeira. Um momento, por favor...",
+      "Localizei sua fatura. O vencimento é dia [DATA] no valor de R$ [VALOR]",
+      "🆕 PIX DISPONÍVEL: Agora você pode pagar via PIX! Chave: fibramar@pix.com.br"
+    ]
+  },
+  "passwords": {
+    "title": "🔐 SENHAS PADRÃO",
+    "items": [
+      {
+        "title": "🆕 NOVA LOCALIZAÇÃO - Centro",
+        "data": [
+          ["Tipo", "Usuário", "Senha"],
+          ["WiFi Principal", "admin", "centro2024"],
+          ["Roteador", "admin", "fibramar123"],
+          ["Backup", "suporte", "backup456"]
+        ]
+      },
+      {
+        "title": "Zona Sul",
+        "data": [
+          ["Tipo", "Usuário", "Senha"],
+          ["WiFi", "admin", "zonasul2024"],
+          ["Técnico", "tec01", "senha789"]
+        ]
+      }
+    ]
+  }
+}

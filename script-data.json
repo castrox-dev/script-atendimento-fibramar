@@ -1,0 +1,152 @@
+{
+  "version": "2.1.0",
+  "lastUpdated": "2024-12-19",
+  "company": {
+    "name": "Fibramar Internet",
+    "phones": ["0800 100 3850", "(21) 3864-3850"],
+    "website": "https://crnetfibramar.com.br/",
+    "whatsapp": "https://api.whatsapp.com/send/?phone=5508001003850"
+  },
+  "scriptData": {
+    "✅ INÍCIO DE ATENDIMENTO": [
+      "Olá! Seja bem-vindo(a) ao atendimento da Fibramar Internet.\n\nNosso atendimento é 24 horas, todos os dias.\n\nCaso prefira atendimento por ligação, utilize um dos nossos números:\n\n📞 0800 100 3850\n📞 (21) 3864-3850\n\nMeu nome é [NOME_ATENDENTE], e vou lhe atender agora.\n\nEm que posso ajudar?"
+    ],
+    "🧾 IDENTIFICAÇÃO DO CLIENTE": [
+      "[PERIODO]! \nPoderia me informar o nome completo ou o cpf do titular, por gentileza?"
+    ],
+    "🔚 ENCERRAMENTOS": [
+      "Por falta de comunicação, o atendimento está sendo encerrado.\nPara atendimento, peço que retorne o contato com a nossa central nos telefones: FIBRAMAR: 0800 100 3850 \nOu envie uma mensagem por aqui novamente, nosso atendimento é 24 horas, todos os dias!\nAgradecemos o seu contato, tenha uma ótima semana!",
+      "Estávamos realizando uma manutenção na localidade porém já normalizou, poderia verificar?",
+      "Agradeço por escolher nossos serviços. A equipe da *FIBRAMAR* Está à disposição para qualquer necessidade futura!\n\nCANAIS DE ATENDIMENTO 📞👨🏻💻 0800 100 3850",
+      "Neste momento estou entrando em meu horário de almoço, então irei lhe transferir para que outro atendente possa dar continuidade ao seu atendimento. Tenha um ótimo dia!",
+      "Neste momento estou finalizando o meu expediente, então irei lhe transferir para que outro atendente possa dar continuidade ao seu atendimento. Tenha uma ótima semana!",
+      "🛠️ NOTIFICAÇÃO DE MANUTENÇÃO 🛠️\n\nPrezado(a) cliente,\n\nInformamos que nossas equipes técnicas estão realizando uma manutenção programada na sua localidade.\n\n⏰ Previsão para normalização: até às 18:00h de hoje.\n\nO serviço poderá ser restabelecido a qualquer momento antes desse horário.\n\nPedimos desculpas pelo transtorno temporário e agradecemos sua compreensão.\n\nEstamos trabalhando para melhorar cada vez mais nossos serviços.\n\nAtenciosamente,\n\nEquipe Fibramar Internet 🧡"
+    ],
+    "💰 FATURAS E BOLETOS": [
+      "✅ Seu boleto foi enviado com sucesso! Confira seu e-mail.\n\nOriento em algo mais?",
+      "Para acessar suas faturas, entre no link:\n\nhttps://crnetfibramar.com.br/\n\nLogin: Seu CPF (sem pontos ou traços)\nSenha: Seu CPF (sem pontos ou traços)"
+    ],
+    "⚠️ PROBLEMA EXTERNO": [
+      "Estamos com uma instabilidade em nossa rede.\n\nNossa equipe técnica já está em campo resolvendo o mais rápido possível.\n\nPrevisão de normalização: até as 22:00h, podendo voltar a qualquer momento.\n\nPedimos desculpas pelo transtorno e agradecemos sua compreensão.\n\nOriento em algo mais?",
+      "📢 Informativo Emergencial\n\nPrezados clientes,\n\nEstamos enfrentando uma indisponibilidade massiva em nossa operadora de link. Nossa equipe, junto à operadora, já está atuando com prioridade máxima para restabelecer os serviços o mais rápido possível.\n\nPedimos desculpas pelos transtornos e agradecemos pela compreensão.\n\nAssim que tivermos novidades, manteremos todos informados.\n\nA previsão de normalização é até às 18h, podendo ocorrer a qualquer momento antes disso."
+    ],
+    "📱 PLANOS DISPONÍVEIS": [
+      "📱 Plano Essencial – 240 MEGA\n\nR$ 59,99/mês (pagando até o vencimento)\nR$ 79,99/mês (após vencimento)\n\nInstalação Grátis\n\nEste plano não inclui roteador Wi-Fi (você pode usar o seu próprio ou alugar por R$ 10,00/mês)\n\nInstalação em até 48h\nPermanência mínima de 12 meses",
+      "🚀 Plano Rápido - 400 Mega\n\nR$ 79,99/mês* (pagando até o vencimento)\nR$ 99,99/mês* (após vencimento)\n\nSuporte Especializado\n100% Fibra Óptica\n🤩 Instalação Grátis\n😍 Super Wi-Fi 5Ghz incluso\n\n💨Velocidade na medida certa para toda a família navegar, assistir e conectar.\n\nPermanência mínima de 12 meses",
+      "⚡️ Plano Turbo - 500 Mega\n\nR$ 99,99/mês* (pagando até o vencimento)\nR$ 119,99/mês* (após vencimento)\n\nSuporte Especializado\n100% Fibra Óptica\n🤩 Instalação Grátis\n😍 Super Wi-Fi 5Ghz incluso\n\n🚀 Ideal para gamers, streamers e multitarefas que não podem ficar sem velocidade.\n\nPermanência mínima de 12 meses",
+      "🔥 Plano Ultra + Watch TV, Qualifica e Mediquo - 600 Mega\n\nR$ 119,99/mês* (pagando até o vencimento)\nR$ 139,99/mês* (após vencimento)\n\n🤩 Instalação Grátis\n😍 Super Wi-Fi 5Ghz incluso\n\n🎁 Benefícios Exclusivos:\n\n📺 Watch TV: filmes, séries e canais infantis\n📽️ Paramount\n🎓 Qualifica: +220 cursos on-line com certificado reconhecido pela ABED e Carteirinha do Estudante para meia-entrada\n🩺 Mediquo: consultas médicas ilimitadas 24 h\n🔰 McAfee antivírus\n\nPermanência mínima de 12 meses",
+      "Plano Novo – 1 GIGA Fibramar Internet ✨\n\n📡 Velocidade: 1 GIGA\n💰 Valor: R$ 169,99\n➡️ Promoção: pagando até o vencimento, sai por apenas R$ 149,99\n📶 Wi-Fi 6 incluso 🚀\n📄 Contrato de fidelidade: 12 meses\n🔗 Opcional: Repetidor Mesh por apenas R$ 29,99 mensais\n",
+      "Qual dessas opções encaixa melhor para você? Vamos realizar o cadastro agora? 🧡",
+      "📢 PLANOS DE INTERNET MÓVEL FIBRAMAR 📢\n\nEscolha o pacote ideal para o seu dia a dia 👇\n\n💠 1 GIGA – R$ 24,99\n💠 2 GIGA – R$ 29,99\n💠 5 GIGA – R$ 32,99\n💠 10 GIGA – R$ 39,99\n💠 15 GIGA – R$ 49,99\n💠 20 GIGA – R$ 52,99\n💠 24 GIGA – R$ 54,99\n💠 30 GIGA – R$ 64,99\n💠 35 GIGA – R$ 69,99\n💠 50 GIGA – R$ 84,99\n💠 80 GIGA – R$ 129,99\n\n✅ WhatsApp Ilimitado\n✅ Ligações Ilimitadas\n✅ Portabilidade disponível",
+      "*Você gostaria de incluir algum serviço adicional para deixar sua experiência ainda melhor*❓\n\nCada serviço adicional é R$: 14,99 adicional na mensalidade \n\n- *McAfee* – Proteção antivírus\n- *MediQuo* – Assistência médica 24h por teleconsulta\n- *Qualifica* – Cursos online com certificado\n- *Paramount+* – Filmes e séries premium\n- *Watch* – Conteúdo de streaming variado\n- *Nick Jr.* – Conteúdos educativos para crianças"
+    ],
+    "📋 CADASTRO DE NOVO CLIENTE": [
+      "Promoção: Instalação GRÁTIS por tempo limitado (com a fidelidade de 12 meses).\n\n### Para iniciar o cadastro, envie os dados:\n\nNome completo:\nCPF:\nRG:\nData de nascimento:\nE-mail:\nPlano desejado:\nData de vencimento (3, 7 ou 12):\nTelefone(s):\nEndereço completo:\nCEP:\nReferência visual (ponto de referência próximo):\nGostaria da fidelidade de 12 meses?\nData e período para a instalação:\nPor onde conheceu a empresa ?\n\nAgradecemos por escolher a *FIBRAMAR*! 🧡",
+      "✅ Cadastro concluído com sucesso.\n\n🔧 Instalação agendada para o dia [data].\n\nPosso ajudar em algo mais ou podemos finalizar seu atendimento?",
+      "Dados para cadastro do chip\n\n**DADOS PESSOAIS:**\nCPF/CNPJ:\nNome Completo:\nE-mail:\nData de nascimento:\nTelefone alternativo:\n\n**ENDEREÇO:**\nCEP:\nUF:\nCidade:\nEndereço:\nNúmero:\nBairro:\nComplemento:\nReferência (Opcional):\n\n**DADOS DO CHIP:**\nNúmero do Chip:\nDDD:\nPlano:\nPortabilidade: ( ) SIM ou ( ) NÃO\nForma de Pagamento:\n\nAgradecemos por escolher a *FIBRAMAR*! 🧡",
+      "✅ Cadastro do chip concluído com sucesso.\n\n📱 Ativação será processada apos o pagamento.\n\nPosso ajudar em algo mais ou podemos finalizar seu atendimento?",
+      "Sobre os boletos, o primeiro mês é proporcional aos dias utilizados, podendo vir um pouco mais ou um pouco menos, dependendo do vencimento.\nO sistema gera automaticamente esse proporcional, não temos como saber quanto será.\nPode ser que ele gere pro mesmo mês e chegue um valor pequeno, ou, pode gerar pro mês seguinte e juntar com a mensalidade. Porém, isso é apenas no primeiro mês, devido ao proporcional.\nDe segundo mês em diante as faturas chegam normais.\nOs boletos são enviados para o email do cadastro. Também ficam disponíveis na central do assinante ou em nosso aplicativo. (https://crnetfibramar.com.br/central_assinante_web/login)"
+    ],
+    "🖥️ CONFIGURAÇÃO DO ROTEADOR": [
+      "Conecte-se ao Wi-Fi\n\nDesligue os dados móveis\n\n**Me envie uma foto da etiqueta na parte de baixo do seu roteador.** (O IP, Login e Senha podem estar lá)\n",
+      "Acesse no navegador: **192.168.1.1**\n\nSe possível, envie print da tela."
+    ],
+    "🔧 SUPORTE / PROCEDIMENTOS": [
+      "Há alguma luz piscando ou com cor diferente no equipamento?",
+      "Desligue o aparelho por 5 minutos, religue e me informe.",
+      "Nosso atendimento não reconhece áudios, apenas mensagens de texto.",
+      "Para realizar a transferência do equipamento da FIBRAMAR para um novo endereço: ⚠️ Taxa: R$ 50,00. Confirme os dados abaixo: \n Nome completo \n CPF \n RG \nNovo endereço \n CEP \n Referência \nTelefone de contato \nApós a confirmação, agendaremos a transferência.",
+      "Verifiquei que há uma redução em sua rede, devido a um boleto em aberto do vencimento (//)  se recorda de ter efetuado o pagamento?",
+      "Foi aberto um suporte técnico para verificar, o prazo máximo do atendimento é de até 48 horas, porém a visita técnica pode acontecer a qualquer momento!\n\nOriento algo mais?",
+      "Poderia desligar e ligar o roteador e assim que se conectar novamente, realizar um teste de velocidade no link abaixo? https://fast.com/pt/ Assim que concluir, me envie um print.",
+      "Seu pedido já se encontra com o técnico e antes de ir, o mesmo pode entrar em contato com o senhor para saber se possui alguém na residência para recebê-lo. Oriento em algo mais?",
+      "Verifiquei que possui um pedido de visita técnica em aberto no sistema no dia (/), o técnico tem o prazo de até 48 horas para realizar o reparo, no caso até as 18h de (/). Oriento em algo mais?",
+      "Verifiquei este pedido de visita técnica aberto no dia (/), aonde o prazo de 48 horas se encerrou no dia (/). Portanto irei entrar em contato com o supervisor dos técnicos, solicitando que ele vá o quanto antes de forma prioritária  realizar o reparo, oriento em algo mais?",
+      "Infelizmente o setor responsável por esse assunto só está disponível para o atendimento dentro do horário comercial de segunda a sexta, das 8:00 ás 18:00 e aos sábados das 8:00 ás 17:00. Poderia entrar em contato dentro desse horário para verificarmos o seu boleto e atualizarmos para a senhor (a)?",
+      "Um roteador normal o máximo que passa via wi-fi é 50 Mb, porque o roteador é limitado, por isso o cliente tem que ter um roteador GIGA, configuração AC 1200, pois esse roteador ele passa acima de 50 Mb via wi-fi, mas também vai depender dos aparelhos que possui se rodam a velocidade acima de 50 Mb."
+    ],
+    "📑 PADRÃO DE ABERTURA DE O.S": [
+      "CLIENTE SEM CONEXÃO, FEITO OS PROCEDIMENTOS PADRÕES E NÃO RETORNOU\nPOTÊNCIA DA ONU: OFF\nÚLTIMA CONEXÃO: 1 HORA\nLOS VERMELHA: SIM\nTAG :\n[NOME_ATENDENTE] - [DATA] - [HORA]",
+      "CLIENTE RELATA LENTIDÃO, FEITO OS PROCEDIMENTOS PADRÕES SEM SUCESSO.\nTESTE DE VELOCIDADE:\nDOWNLOAD:  Mbps\nUPLOAD:  Mbps\nAPARELHO: \nPOTÊNCIA DA ONU: \nTAG :\n\n[NOME_ATENDENTE] - [DATA] - [HORA]",
+      "INSTALAÇÃO GRATUITA\n\nINSTALAÇÃO SERÁ GRATUITA NA PROMOÇÃO DO CARLOS\n\nPLANO DE / COM ROTEADOR EM COMODATO\n\nDATA DE VENCIMENTO: 12\n\nCONSULTORA(O): [NOME_ATENDENTE]\n\nCONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA\n\nCLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE",
+      "INSTALAÇÃO PAGA\n\nINSTALAÇÃO SERÁ PAGA NO VALOR DE R$\n\nPLANO DE / R$ COM ROTEADOR EM COMODATO\n\nDATA DE VENCIMENTO:\n\nCONSULTORA(O): [NOME_ATENDENTE]\n\nCONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA //\n\nCLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE",
+      "Atendente: [NOME_ATENDENTE] | Data: [DATA] | Hora: [HORA]"
+    ],
+    "📝 TERMO DE RESPONSABILIDADE": [
+      "Para quem usa equipamento próprio:\n\n🔗 https://app.zapsign.com.br/verificar/doc/2794e63d-905c-4cb0-8c5e-7b22226901c3"
+    ],
+    "❌ CANCELAMENTO": [
+      "Por favor, envie os dados abaixo:\n\n- Nome completo:\n- CPF:\n- RG:\n- Endereço completo:\n- Motivo do cancelamento:\n\nAssim que recebermos as informações, abriremos a solicitação no sistema.\n\nDentro de 72 horas úteis, o setor responsável entrará em contato para finalizar o equipamento e caso houver equipamento agendar a retirada dos equipamentos.",
+      "💸 PROPORCIONAL (Quebra de contrato)\n\nConforme fidelidade de 12 meses, o valor de R$ 360,00 da instalação é proporcional:\n\nR$ 30,00 x [meses restantes] = R$ [valor final]",
+      "Olá! Para que possamos ajudar da melhor forma, você poderia nos informar se deseja fazer alguma alteração no plano ou cancelar o serviço?",
+      "Podemos enviar um técnico hoje para verificar e resolver qualquer problema com o seu serviço.",
+      "Se preferir, podemos enviar o supervisor dos técnicos para acompanhar a visita e garantir que tudo seja resolvido.",
+      "Antes de qualquer decisão, podemos avaliar alternativas ou ajustes no serviço que possam melhorar sua experiência.",
+      "Outra alternativa é realizar a troca de titularidade do plano, caso deseje que outra pessoa assuma o serviço.",
+      "Também é possível transferir o serviço para outro endereço, mantendo seu plano ativo sem interrupções."
+    ],
+    "💲 PREÇOS E TAXAS": [
+      "- Instalação: R$ 360,00\n- Visita improdutiva: R$ 30,00\n- Conector: R$ 10,00\n- 1 metro de fibra: R$ 0,60"
+    ],
+    "📉 DESCONTO": [
+      "Para solicitar desconto, envie um e-mail com:\n\n- Nome completo:\n- CPF:\n- Telefone:\n- Motivo:\n- Endereço:\n- Dias afetados:\n\ndesconto@crnetfibramar.com.br"
+    ],
+    "📍 ENDEREÇOS DAS LOJAS": [
+      "CENTRO - MARICÁ\n\nAVENIDA VEREADOR FRANCISCO SABINO DA COSTA N° 78- NO SHOPPING CENTER 1 - TÉRREO\n\nEM FRENTE A CASA E VIDEO, DE ESQUINA COM O RESTAURANTE JOAO E JOAO",
+      "CORDEIRINHO - MARICÁ\n\nAVENIDA MAYSA 6391 LT 07 QD 120-CORDEIRINHO\n\nESQUINA A RUA 90 NA PRINCIPAL, DO LADO DO HORTIFRUTI DA 90",
+      "ITAIPUAÇU - MARICÁ\n\nRUA 01 LT 31 QD 04 LOJA 03- ITAIPUAÇU\nPERTO DA RUA 34 EM FRENTE A PADARIA",
+      "LOJA SÃO JOSÉ - MARICÁ\n\nAVENIDA ELOMIR GONÇALVES DA SILVA N° 15-SÃO JOSE DO IMBASSAI\n\nEM FRENTE A CASA DE RAÇÃO ARAKEN",
+      "Loja de Jacone\n\nEndereço: R. 13, 2020 - Loja 5 - Jaconé, Saquarema - RJ, 28998-872\n\nReferência: De esquina com a rua 96.",
+      "Loja de Muqui\n\nRua Coronel Luiz Carlos n333, Muqui, ES, 29480-000\n\nReferência: Em frente ao Banco Cresol",
+      "Loja de Mimoso do Sul\n\nRua Dr Jose Monteiro n11 , Centro. Mimoso do Sul, ES, 29400-000\n\nReferência: Ao lado do Fórum.",
+      "Loja Unamar\n\nRua das pacas ; Gravata 02 - Unamar, Cabo Frio, RJ,\n\nCEP: 28927503\n\nReferencia: Em frente ao Mercado Rende Pacas."
+    ],
+    "📲 WHATSAPP E LINKS ÚTEIS": [
+      "WhatsApp Atendimento:\n\n🔗 https://api.whatsapp.com/send/?phone=5508001003850",
+      "Central do Assinante (IXC):\n\n🔗 https://crnetfibramar.com.br/",
+      "LinkTree com acessos e apps:\n\n🔗 https://linktr.ee/fibramarinternet"
+    ],
+    "⚙️ HABILITANDO ONU": [
+      "HABILITAR > SALVAR > DEPOIS GRAVAR\n\nDESABILITAR > EXCLUIR > DELETAR",
+      "OLT  (MARICÁ)\n\nQUALQUER ONU - 7",
+      "OLT (ITAIPUAÇU)\n\nBRIDGE - 62\nROUTER - 53\nBRIDGE PRETA PEQUENA - 74",
+      "OLT  PARA ONU HUAWEI (JACONÉ)\n\nQUALQUER ONU - 7",
+      "OLT (VILA VELHA) (ES)\n\nONUs ZTE - Perfil 85\nONUs outras marcas - 86",
+      "OLT (UNAMAR/ARARUAMA)\n\n ONUs Pista- Perfil 9 \n ONUs Condominio - 81 "
+    ]
+  },
+  "passwords": {
+    "type": "passwords",
+    "items": [
+      {
+        "title": "ACESSO REMOTO",
+        "credentials": [
+          { "user": "user", "password": "RooT@fibramaR_" }
+        ]
+      },
+      {
+        "title": "CIANET\\VSOL",
+        "credentials": [
+          { "user": "", "password": "adminisp" }
+        ]
+      },
+      {
+        "title": "Multilaser ZTE",
+        "credentials": [
+          { "user": "", "password": "Multipro" },
+          { "user": "", "password": "multipro" }
+        ]
+      },
+      {
+        "title": "Configurações Padrão",
+        "credentials": [
+          { "user": "SSID", "password": "Contactar a Fibramar 08001003850" },
+          { "user": "Senha WiFi", "password": "fibramar@2025" },
+          { "user": "Login PPPoE", "password": "equipamento.resetado" },
+          { "user": "Vlan", "password": "4000" },
+          { "user": "IP de entrada", "password": "192.168.99.1" }
+        ]
+      }
+    ]
+  }
+}
