@@ -610,6 +610,9 @@ class LazyLoadManager {
     }
 
     preloadCriticalResources() {
+        // Preload critical CSS and fonts first
+        this.preloadStaticResources();
+        
         // Preload script data with intelligent fallback
         const preloadPromises = [
             this.loadResource(CONFIG.remote.scriptDataUrl, 'json').catch(() => 
@@ -622,7 +625,89 @@ class LazyLoadManager {
         // Don't block initialization on preloads
         Promise.allSettled(preloadPromises).then(results => {
             console.log('Critical resources preloaded:', results.filter(r => r.status === 'fulfilled').length);
+            this.preloadTopicsData();
         });
+    }
+
+    preloadStaticResources() {
+        const criticalResources = [
+            { url: './styles.css', as: 'style', priority: 'high' },
+            { url: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap', as: 'style', priority: 'medium' }
+        ];
+
+        criticalResources.forEach(resource => {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.href = resource.url;
+            link.as = resource.as;
+            if (resource.priority === 'high') {
+                link.fetchPriority = 'high';
+            }
+            document.head.appendChild(link);
+        });
+    }
+
+    preloadTopicsData() {
+        // Cache first topics for instant display
+        if (window.app && window.app.scriptData && window.app.scriptData.scriptData) {
+            const topicEntries = Object.entries(window.app.scriptData.scriptData);
+            const firstTopics = topicEntries.slice(0, 5);
+            
+            // Pre-process and cache topic elements
+            firstTopics.forEach(([topicName, messages]) => {
+                const cacheKey = `topic_${topicName}`;
+                if (!this.cache.has(cacheKey)) {
+                    this.cache.set(cacheKey, { topicName, messages });
+                    this.cacheExpiry.set(cacheKey, Date.now() + this.cacheTimeout);
+                }
+            });
+        }
+    }
+
+    optimizeResourceLoading() {
+        // Enable compression headers
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').catch(() => {
+                console.log('Service Worker not available, using fallback optimization');
+            });
+        }
+
+        // Optimize images with lazy loading
+        this.setupImageOptimization();
+        
+        // Defer non-critical scripts
+        this.deferNonCriticalScripts();
+    }
+
+    setupImageOptimization() {
+        const images = document.querySelectorAll('img');
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        imageObserver.unobserve(img);
+                    }
+                }
+            });
+        });
+
+        images.forEach(img => {
+            if (img.dataset.src) {
+                imageObserver.observe(img);
+            }
+        });
+    }
+
+    deferNonCriticalScripts() {
+        // Defer analytics and non-essential features
+        setTimeout(() => {
+            if (window.app && window.app.analyticsManager) {
+                window.app.analyticsManager.initSession();
+            }
+        }, 2000);
     }
 
     clearCache() {
@@ -2145,6 +2230,9 @@ class FibramarApp {
             // Preload critical resources
             this.lazyLoader.preloadCriticalResources();
             
+            // Otimizar carregamento de recursos
+            this.lazyLoader.optimizeResourceLoading();
+            
             // Carrega dados do script
             this.scriptData = await this.updateManager.loadScriptData();
             
@@ -2313,25 +2401,64 @@ class FibramarApp {
     renderTopicsContent(searchTerm, topicsContainer) {
         topicsContainer.innerHTML = '';
 
-        const topics = [];
+        // Lazy loading configuration
+        const INITIAL_LOAD = 10; // Carregar apenas 10 tópicos inicialmente
+        const LOAD_MORE_THRESHOLD = 5; // Carregar mais quando restam 5 tópicos visíveis
+        const VIRTUALIZATION_THRESHOLD = 100; // Usar virtualização para mais de 100 tópicos
+
+        const allTopics = [];
         Object.entries(this.scriptData.scriptData).forEach(([topicName, messages]) => {
             if (searchTerm && !topicName.toLowerCase().includes(searchTerm.toLowerCase()) && 
                 !messages.some(msg => msg.toLowerCase().includes(searchTerm.toLowerCase()))) {
                 return;
             }
-
-            const topicDiv = this.createTopicElement(topicName, messages, searchTerm);
-            topics.push(topicDiv);
+            allTopics.push({ topicName, messages });
         });
 
-        // Add topics with staggered animation
-        topics.forEach((topicDiv, index) => {
-            topicsContainer.appendChild(topicDiv);
-            // Add entrance animation with delay
+        // Use virtualização para listas muito longas
+        if (allTopics.length > VIRTUALIZATION_THRESHOLD) {
+            this.setupVirtualizedTopicsList(topicsContainer, allTopics, searchTerm);
+            return;
+        }
+
+        let loadedCount = 0;
+        let isLoading = false;
+
+        const loadMoreTopics = () => {
+            if (isLoading || loadedCount >= allTopics.length) return;
+            
+            isLoading = true;
+            const loadingIndicator = this.createLoadingIndicator();
+            topicsContainer.appendChild(loadingIndicator);
+
+            // Simular delay mínimo para UX suave
             setTimeout(() => {
-                this.animationManager.slideIn(topicDiv, 'right', 300);
-            }, index * 50);
-        });
+                const endIndex = Math.min(loadedCount + INITIAL_LOAD, allTopics.length);
+                const topicsToLoad = allTopics.slice(loadedCount, endIndex);
+
+                topicsToLoad.forEach((topic, index) => {
+                    const topicDiv = this.createTopicElement(topic.topicName, topic.messages, searchTerm);
+                    topicsContainer.insertBefore(topicDiv, loadingIndicator);
+                    
+                    // Animação escalonada
+                    setTimeout(() => {
+                        this.animationManager.slideIn(topicDiv, 'right', 300);
+                    }, index * 30);
+                });
+
+                loadedCount = endIndex;
+                topicsContainer.removeChild(loadingIndicator);
+                isLoading = false;
+
+                // Setup intersection observer para próximo carregamento
+                if (loadedCount < allTopics.length) {
+                    this.setupLazyLoadObserver(topicsContainer, loadMoreTopics, LOAD_MORE_THRESHOLD);
+                }
+            }, 100);
+        };
+
+        // Carregamento inicial
+        loadMoreTopics();
 
         // Fade in the container
         this.animationManager.fadeIn(topicsContainer, 300);
@@ -2339,6 +2466,115 @@ class FibramarApp {
         // Renderiza senhas se existirem
         if (this.scriptData.passwords) {
             this.renderPasswords();
+        }
+    }
+
+    setupVirtualizedTopicsList(container, topics, searchTerm) {
+        const itemHeight = 120; // Altura aproximada de cada tópico
+        const containerHeight = container.clientHeight || 600;
+        const visibleItems = Math.ceil(containerHeight / itemHeight) + 5; // Buffer items
+        
+        let scrollTop = 0;
+        let startIndex = 0;
+        
+        // Criar container virtual
+        const virtualContainer = document.createElement('div');
+        virtualContainer.className = 'virtual-topics-container';
+        virtualContainer.style.height = `${topics.length * itemHeight}px`;
+        virtualContainer.style.position = 'relative';
+        virtualContainer.style.overflow = 'hidden';
+        
+        const visibleContainer = document.createElement('div');
+        visibleContainer.className = 'visible-topics-container';
+        visibleContainer.style.position = 'absolute';
+        visibleContainer.style.top = '0';
+        visibleContainer.style.width = '100%';
+        visibleContainer.style.willChange = 'transform';
+        
+        virtualContainer.appendChild(visibleContainer);
+        container.appendChild(virtualContainer);
+        
+        const renderVisibleItems = () => {
+            const newStartIndex = Math.max(0, Math.floor(scrollTop / itemHeight) - 2);
+            const endIndex = Math.min(newStartIndex + visibleItems, topics.length);
+            
+            if (newStartIndex !== startIndex) {
+                startIndex = newStartIndex;
+                visibleContainer.innerHTML = '';
+                visibleContainer.style.transform = `translateY(${startIndex * itemHeight}px)`;
+                
+                // Renderizar apenas os itens visíveis
+                for (let i = startIndex; i < endIndex; i++) {
+                    const topic = topics[i];
+                    const topicElement = this.createTopicElement(topic.topicName, topic.messages, searchTerm);
+                    topicElement.style.position = 'relative';
+                    topicElement.style.height = `${itemHeight}px`;
+                    visibleContainer.appendChild(topicElement);
+                }
+                
+                // Animação suave para novos elementos
+                this.animationManager.fadeIn(visibleContainer, 200);
+            }
+        };
+        
+        // Renderização inicial
+        renderVisibleItems();
+        
+        // Otimizar scroll com throttling
+        let scrollTimeout;
+        const handleScroll = () => {
+            scrollTop = container.scrollTop;
+            
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+            
+            scrollTimeout = setTimeout(() => {
+                requestAnimationFrame(renderVisibleItems);
+            }, 16); // ~60fps
+        };
+        
+        container.addEventListener('scroll', handleScroll, { passive: true });
+        
+        // Cleanup function
+        container._virtualCleanup = () => {
+            container.removeEventListener('scroll', handleScroll);
+            if (scrollTimeout) clearTimeout(scrollTimeout);
+        };
+    }
+
+    createLoadingIndicator() {
+        const loadingDiv = document.createElement('div');
+        loadingDiv.className = 'loading-indicator';
+        loadingDiv.innerHTML = `
+            <div class="loading-spinner"></div>
+            <span>Carregando mais tópicos...</span>
+        `;
+        return loadingDiv;
+    }
+
+    setupLazyLoadObserver(container, loadMoreCallback, threshold) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const topics = container.querySelectorAll('.topic');
+                    const remainingTopics = topics.length - Array.from(topics).findIndex(topic => topic === entry.target);
+                    
+                    if (remainingTopics <= threshold) {
+                        loadMoreCallback();
+                        observer.unobserve(entry.target);
+                    }
+                }
+            });
+        }, {
+            rootMargin: '100px'
+        });
+
+        // Observar os últimos tópicos carregados
+        const topics = container.querySelectorAll('.topic');
+        if (topics.length > 0) {
+            const lastTopics = Array.from(topics).slice(-threshold);
+            lastTopics.forEach(topic => observer.observe(topic));
         }
     }
 

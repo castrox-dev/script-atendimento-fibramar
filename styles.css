@@ -2095,6 +2095,76 @@ body {
     }
 }
 
+/* Lazy Loading Indicator */
+.loading-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin: 10px 0;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-top: 2px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Virtualized Lists */
+.virtual-topics-container {
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--background-secondary);
+}
+
+.virtual-topics-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.virtual-topics-container::-webkit-scrollbar-track {
+    background: var(--background-secondary);
+    border-radius: 4px;
+}
+
+.virtual-topics-container::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.virtual-topics-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-hover);
+}
+
+.visible-topics-container {
+    transition: transform 0.1s ease-out;
+}
+
+/* Performance optimizations */
+.virtual-topics-container .topic {
+    contain: layout style paint;
+    will-change: transform;
+}
+
+.virtual-topics-container .topic-content {
+    backface-visibility: hidden;
+    transform: translateZ(0);
+}
+
 /* Sistema de Favoritos */
 .favorites-section {
     margin-bottom: 20px;
