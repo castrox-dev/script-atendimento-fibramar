@@ -67,7 +67,7 @@ class UpdateManager {
             }
             
             // Tenta carregar dados remotos
-            const response = await fetch(CONFIG.remoteUrls.scriptData + '?t=' + now);
+            const response = await fetch(CONFIG.remote.scriptDataUrl + '?t=' + now);
             if (response.ok) {
                 const remoteData = await response.json();
                 
@@ -134,7 +134,7 @@ class UpdateManager {
     async loadScriptData() {
         try {
             // Tenta carregar dados remotos primeiro
-            const response = await fetch(CONFIG.remoteUrls.scriptData + '?t=' + Date.now());
+            const response = await fetch(CONFIG.remote.scriptDataUrl + '?t=' + Date.now());
             if (response.ok) {
                 this.scriptData = await response.json();
                 localStorage.setItem('scriptData', JSON.stringify(this.scriptData));

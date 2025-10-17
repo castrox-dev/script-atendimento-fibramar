@@ -169,8 +169,8 @@
         }
 
         .topics {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 20px;
             flex: 1;
         }
@@ -202,7 +202,43 @@
             color: #2c3e50;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .topic-title-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .topic-arrow {
+            width: 12px;
+            height: 12px;
+            border-right: 2px solid #667eea;
+            border-bottom: 2px solid #667eea;
+            transform: rotate(45deg);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            margin-right: 12px;
+            margin-top: 4px;
+        }
+
+        .topic-arrow.collapsed {
+            transform: rotate(-45deg);
+        }
+
+        .topic-content {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .topic-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
         }
 
         .dark-theme .topic-title {
@@ -674,9 +710,7 @@
                 gap: 15px;
             }
 
-            .topics {
-                grid-template-columns: 1fr;
-            }
+
 
             .notepad {
                 width: 95%;
@@ -814,8 +848,149 @@
         </div>
     </div>
 
-    <!-- Scripts externos -->
-    <script src="config.js"></script>
+    <script>
+        // Configuração integrada
+        const CONFIG = {
+            version: '2.1.0',
+            remote: {
+                scriptDataUrl: 'https://castrox-dev.github.io/script-atendimento-fibramar/script-data.json',
+                configUrl: 'https://castrox-dev.github.io/script-atendimento-fibramar/config.js',
+                backupScriptDataUrl: 'https://raw.githubusercontent.com/castrox-dev/script-atendimento-fibramar/main/script-data.json',
+                backupConfigUrl: 'https://raw.githubusercontent.com/castrox-dev/script-atendimento-fibramar/main/config.js'
+            },
+            localUrls: {
+                scriptData: './script-data.json'
+            },
+            updateSettings: {
+                checkInterval: 30000,
+                autoUpdate: true,
+                showUpdateNotifications: true
+            },
+            ui: {
+                theme: 'light',
+                autoSaveNotepad: true,
+                backupInterval: 300000,
+                maxBackups: 5
+            },
+            company: {
+                name: 'Fibramar Internet',
+                supportHours: '24 horas, todos os dias',
+                phones: ['0800 100 3850', '(21) 3864-3850']
+            },
+            notifications: {
+                duration: 3000,
+                position: 'top-right'
+            }
+        };
+
+        // UpdateManager simplificado
+        class UpdateManager {
+            constructor() {
+                this.scriptData = null;
+                this.currentVersion = CONFIG.version;
+                this.lastCheck = localStorage.getItem('lastUpdateCheck') || 0;
+            }
+
+            async loadScriptData() {
+                try {
+                    const response = await fetch(CONFIG.remote.scriptDataUrl + '?t=' + Date.now());
+                    if (response.ok) {
+                        this.scriptData = await response.json();
+                        localStorage.setItem('scriptData', JSON.stringify(this.scriptData));
+                        return this.scriptData;
+                    }
+                } catch (error) {
+                    console.warn('Erro ao carregar dados remotos, usando dados locais:', error);
+                }
+                
+                try {
+                    const localData = localStorage.getItem('scriptData');
+                    if (localData) {
+                        this.scriptData = JSON.parse(localData);
+                        return this.scriptData;
+                    }
+                    
+                    const response = await fetch(CONFIG.localUrls.scriptData);
+                    if (response.ok) {
+                        this.scriptData = await response.json();
+                        return this.scriptData;
+                    }
+                } catch (error) {
+                    console.error('Erro ao carregar dados:', error);
+                }
+                
+                return null;
+            }
+
+            async checkForUpdates() {
+                try {
+                    const now = Date.now();
+                    const lastCheck = parseInt(this.lastCheck) || 0;
+                    
+                    if (now - lastCheck < CONFIG.updateSettings.checkInterval) {
+                        return false;
+                    }
+                    
+                    const response = await fetch(CONFIG.remote.scriptDataUrl + '?t=' + now);
+                    if (response.ok) {
+                        const remoteData = await response.json();
+                        
+                        if (this.isNewerVersion(remoteData.version, this.currentVersion)) {
+                            if (CONFIG.updateSettings.autoUpdate) {
+                                this.scriptData = remoteData;
+                                localStorage.setItem('scriptData', JSON.stringify(remoteData));
+                                return true;
+                            }
+                        }
+                    }
+                    
+                    localStorage.setItem('lastUpdateCheck', now.toString());
+                    return false;
+                } catch (error) {
+                    console.warn('Erro ao verificar atualizações:', error);
+                    return false;
+                }
+            }
+
+            isNewerVersion(remote, local) {
+                const remoteVersion = remote.split('.').map(Number);
+                const localVersion = local.split('.').map(Number);
+                
+                for (let i = 0; i < Math.max(remoteVersion.length, localVersion.length); i++) {
+                    const r = remoteVersion[i] || 0;
+                    const l = localVersion[i] || 0;
+                    if (r > l) return true;
+                    if (r < l) return false;
+                }
+                return false;
+            }
+        }
+
+        // BackupManager simplificado
+        class BackupManager {
+            constructor() {
+                this.maxBackups = CONFIG.ui.maxBackups;
+            }
+
+            restoreAutoBackup() {
+                try {
+                    const backup = localStorage.getItem('notepadAutoBackup');
+                    if (backup) {
+                        const notepad = document.getElementById('notepad');
+                        if (notepad && !notepad.value.trim()) {
+                            notepad.value = backup;
+                        }
+                    }
+                } catch (error) {
+                    console.error('Erro ao restaurar backup:', error);
+                }
+            }
+        }
+
+        window.CONFIG = CONFIG;
+        window.updateManager = new UpdateManager();
+        window.backupManager = new BackupManager();
+    </script>
     
     <script>
         // Variáveis globais
@@ -834,8 +1009,29 @@
                 scriptData = await window.updateManager.loadScriptData();
                 
                 if (!scriptData) {
-                    showNotification('Erro ao carregar dados do script', 'error');
-                    return;
+                    // Fallback com dados locais se não conseguir carregar
+                    console.warn('Usando dados de fallback local');
+                    scriptData = {
+                        version: "2.1.0",
+                        lastUpdated: "2024-12-19",
+                        company: {
+                            name: "Fibramar Internet",
+                            phones: ["0800 100 3850", "(21) 3864-3850"],
+                            website: "https://crnetfibramar.com.br/",
+                            whatsapp: "https://api.whatsapp.com/send/?phone=5508001003850"
+                        },
+                        scriptData: {
+                            "✅ INÍCIO DE ATENDIMENTO": [
+                                "Olá! Seja bem-vindo(a) ao atendimento da Fibramar Internet.\n\nNosso atendimento é 24 horas, todos os dias.\n\nCaso prefira atendimento por ligação, utilize um dos nossos números:\n\n📞 0800 100 3850\n📞 (21) 3864-3850\n\nMeu nome é [NOME_ATENDENTE], e vou lhe atender agora.\n\nEm que posso ajudar?"
+                            ],
+                            "🧾 IDENTIFICAÇÃO DO CLIENTE": [
+                                "[PERIODO]! \nPoderia me informar o nome completo ou o cpf do titular, por gentileza?"
+                            ],
+                            "🔚 ENCERRAMENTOS": [
+                                "Por falta de comunicação, o atendimento está sendo encerrado.\nPara atendimento, peço que retorne o contato com a nossa central nos telefones: FIBRAMAR: 0800 100 3850 \nOu envie uma mensagem por aqui novamente, nosso atendimento é 24 horas, todos os dias!\nAgradecemos o seu contato, tenha uma ótima semana!"
+                            ]
+                        }
+                    };
                 }
 
                 // Inicializa componentes
@@ -958,25 +1154,51 @@
 
                 const titleDiv = document.createElement('div');
                 titleDiv.className = 'topic-title';
-                titleDiv.textContent = topicName;
+                
+                const titleContent = document.createElement('div');
+                titleContent.className = 'topic-title-content';
+                titleContent.textContent = topicName;
+                
+                const arrow = document.createElement('div');
+                arrow.className = 'topic-arrow collapsed';
+                
+                titleDiv.appendChild(titleContent);
+                titleDiv.appendChild(arrow);
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'topic-content collapsed';
+                
                 topicDiv.appendChild(titleDiv);
+                topicDiv.appendChild(contentDiv);
+                
+                // Adiciona funcionalidade de toggle
+                titleDiv.addEventListener('click', () => {
+                    const isCollapsed = contentDiv.classList.contains('collapsed');
+                    if (isCollapsed) {
+                        contentDiv.classList.remove('collapsed');
+                        arrow.classList.remove('collapsed');
+                    } else {
+                        contentDiv.classList.add('collapsed');
+                        arrow.classList.add('collapsed');
+                    }
+                });
 
                 if (topicName.includes('SENHAS') || topicName.includes('PASSWORDS')) {
-                    renderPasswordTopic(topicDiv, messages);
+                    renderPasswordTopic(contentDiv, messages);
                 } else {
                     messages.forEach((message, index) => {
                         if (!searchTerm || message.toLowerCase().includes(searchTerm.toLowerCase())) {
                             const messageDiv = document.createElement('div');
                             messageDiv.className = 'message';
                             
-                            const contentDiv = document.createElement('div');
-                            contentDiv.className = 'message-content';
+                            const messageContentDiv = document.createElement('div');
+                            messageContentDiv.className = 'message-content';
                             
                             const isLong = message.length > 150;
                             
                             if (isLong) {
-                                contentDiv.classList.add('collapsed');
-                                contentDiv.textContent = message;
+                                messageContentDiv.classList.add('collapsed');
+                                messageContentDiv.textContent = message;
                                 
                                 const actionsDiv = document.createElement('div');
                                 actionsDiv.className = 'message-actions';
@@ -986,11 +1208,11 @@
                                 expandBtn.textContent = 'Ver mais';
                                 expandBtn.onclick = (e) => {
                                     e.stopPropagation();
-                                    if (contentDiv.classList.contains('collapsed')) {
-                                        contentDiv.classList.remove('collapsed');
+                                    if (messageContentDiv.classList.contains('collapsed')) {
+                                        messageContentDiv.classList.remove('collapsed');
                                         expandBtn.textContent = 'Ver menos';
                                     } else {
-                                        contentDiv.classList.add('collapsed');
+                                        messageContentDiv.classList.add('collapsed');
                                         expandBtn.textContent = 'Ver mais';
                                     }
                                 };
@@ -1006,15 +1228,15 @@
                                 actionsDiv.appendChild(expandBtn);
                                 actionsDiv.appendChild(copyBtn);
                                 
-                                messageDiv.appendChild(contentDiv);
+                                messageDiv.appendChild(messageContentDiv);
                                 messageDiv.appendChild(actionsDiv);
                             } else {
-                                contentDiv.textContent = message;
-                                messageDiv.appendChild(contentDiv);
+                                messageContentDiv.textContent = message;
+                                messageDiv.appendChild(messageContentDiv);
                                 messageDiv.addEventListener('click', () => copyToClipboard(message));
                             }
                             
-                            topicDiv.appendChild(messageDiv);
+                            contentDiv.appendChild(messageDiv);
                         }
                     });
                 }
@@ -1036,8 +1258,34 @@
             
             const titleDiv = document.createElement('div');
             titleDiv.className = 'topic-title';
-            titleDiv.textContent = '🔐 SENHAS PADRÃO';
+            
+            const titleContent = document.createElement('div');
+            titleContent.className = 'topic-title-content';
+            titleContent.textContent = '🔐 SENHAS PADRÃO';
+            
+            const arrow = document.createElement('div');
+            arrow.className = 'topic-arrow collapsed';
+            
+            titleDiv.appendChild(titleContent);
+            titleDiv.appendChild(arrow);
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'topic-content collapsed';
+            
             passwordDiv.appendChild(titleDiv);
+            passwordDiv.appendChild(contentDiv);
+            
+            // Adiciona funcionalidade de toggle
+            titleDiv.addEventListener('click', () => {
+                const isCollapsed = contentDiv.classList.contains('collapsed');
+                if (isCollapsed) {
+                    contentDiv.classList.remove('collapsed');
+                    arrow.classList.remove('collapsed');
+                } else {
+                    contentDiv.classList.add('collapsed');
+                    arrow.classList.add('collapsed');
+                }
+            });
             
             scriptData.passwords.items.forEach(item => {
                 const table = document.createElement('table');
@@ -1064,7 +1312,7 @@
                     table.appendChild(row);
                 });
                 
-                passwordDiv.appendChild(table);
+                contentDiv.appendChild(table);
             });
             
             topicsContainer.appendChild(passwordDiv);
