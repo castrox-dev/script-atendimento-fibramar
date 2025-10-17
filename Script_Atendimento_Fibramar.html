@@ -3,345 +3,2238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Script de Atendimento - Fibramar Internet</title>
-    
-    <!-- Preload critical resources -->
-    <link rel="preload" href="styles.css" as="style">
-    <link rel="preload" href="script.js" as="script">
-    <link rel="preload" href="script-data.json" as="fetch" crossorigin>
-    <link rel="preload" href="manifest.json" as="fetch" crossorigin>
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles.css">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    
-    <!-- DNS prefetch and preconnect for external resources -->
-    <link rel="preconnect" href="https://api.open-meteo.com">
-    <link rel="preconnect" href="https://castrox-dev.github.io">
-    <link rel="preconnect" href="https://raw.githubusercontent.com">
-    <link rel="dns-prefetch" href="https://api.open-meteo.com">
-    <link rel="dns-prefetch" href="https://castrox-dev.github.io">
-    <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
-    
-    <!-- Meta tags -->
-    <meta name="description" content="Script de atendimento otimizado para Fibramar Internet - PWA para GitHub Pages">
-    <meta name="keywords" content="atendimento, suporte, fibramar, internet, pwa, github pages">
-    <meta name="author" content="Fibramar Internet">
-    <meta name="theme-color" content="#667eea">
-    
-    <!-- PWA Meta Tags -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Fibramar Script">
-    <meta name="msapplication-TileColor" content="#667eea">
-    <meta name="msapplication-config" content="browserconfig.xml">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://castrox-dev.github.io/script-atendimento-fibramar/">
-    <meta property="og:title" content="Script de Atendimento - Fibramar Internet">
-    <meta property="og:description" content="Script de atendimento otimizado para Fibramar Internet">
-    <meta property="og:image" content="https://castrox-dev.github.io/script-atendimento-fibramar/manifest.json">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://castrox-dev.github.io/script-atendimento-fibramar/">
-    <meta property="twitter:title" content="Script de Atendimento - Fibramar Internet">
-    <meta property="twitter:description" content="Script de atendimento otimizado para Fibramar Internet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            transition: background 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-right: 390px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: visible;
+            transition: all 0.3s ease;
+            word-wrap: break-word;
+        }
+
+        body.notepad-hidden .container {
+            margin-right: auto;
+        }
+
+        body.dark-mode .container {
+            background: #1e1e1e;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            min-height: 200px;
+        }
+
+        body.dark-mode .header {
+            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
+        }
+
+        .header-info {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: flex-start;
+        }
+
+        .datetime-widget {
+            font-size: 0.9em;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .weather-widget {
+            font-size: 0.85em;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .name-config {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 10;
+        }
+
+        .name-config label {
+            font-size: 0.7em;
+            font-weight: 600;
+            opacity: 0.95;
+            white-space: nowrap;
+        }
+
+        .name-config input {
+            padding: 3px 6px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 0.75em;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            width: 100px;
+            max-width: 100px;
+        }
+
+        @media (max-width: 768px) {
+            .name-config {
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+            }
+            
+            .theme-toggle {
+                top: 20px;
+                right: 20px;
+                padding: 8px 16px;
+                font-size: 1em;
+            }
+            
+            .name-config input {
+                width: 80px;
+            }
+        }
+
+        .name-config input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .name-config input:focus {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        .content {
+            padding: 30px;
+            transition: background 0.3s ease;
+        }
+
+        body.dark-mode .content {
+            background: #1e1e1e;
+        }
+
+        .topic {
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: visible;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .topic {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .topic:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .topic:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        .topic-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .topic-header {
+            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
+        }
+
+        .topic-header:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        body.dark-mode .topic-header:hover {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+        }
+
+        .topic-header h2 {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .topic-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+
+        .topic.active .topic-icon {
+            transform: rotate(180deg);
+        }
+
+        .messages {
+            display: none;
+            background: #f8f9fa;
+            padding: 20px;
+            max-height: 0;
+            overflow: visible;
+            transition: max-height 0.3s ease;
+        }
+
+        body.dark-mode .messages {
+            background: #2a2a2a;
+        }
+
+        .topic.active .messages {
+            display: block;
+            max-height: none;
+            overflow: visible;
+        }
+
+        .message-item {
+            background: white;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            border-left: 4px solid #667eea;
+            transition: all 0.2s ease;
+            position: relative;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        body.dark-mode .message-item {
+            background: #333;
+            border-left-color: #5a67d8;
+        }
+
+        .message-item:hover {
+            background: #e8eaf6;
+            border-left-color: #764ba2;
+            transform: translateX(5px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body.dark-mode .message-item:hover {
+            background: #3a3a3a;
+            border-left-color: #7c3aed;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .message-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .message-item::after {
+            content: '📋 Clique para copiar';
+            position: absolute;
+            right: 10px;
+            bottom: 8px;
+            font-size: 0.75em;
+            color: #667eea;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 6px;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        body.dark-mode .message-item::after {
+            color: #a78bfa;
+            background: rgba(51, 51, 51, 0.9);
+        }
+
+        .message-item:hover::after {
+            opacity: 1;
+        }
+
+        .password-item::after {
+            content: none !important;
+        }
+
+        .message-text {
+            white-space: pre-wrap;
+            line-height: 1.6;
+            color: #333;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+            display: block;
+            overflow: visible;
+            text-overflow: unset;
+        }
+
+        body.dark-mode .message-text {
+            color: #e0e0e0;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4caf50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(-50px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            font-weight: 600;
+        }
+
+        body.dark-mode .notification {
+            background: #66bb6a;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .search-box {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+        }
+
+        body.dark-mode .search-box input {
+            background: #2a2a2a;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        .search-box input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        body.dark-mode .search-box input:focus {
+            border-color: #5a67d8;
+            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
+        }
+
+        body.dark-mode .search-box input::placeholder {
+            color: #888;
+        }
+
+                .notepad {
+            position: fixed;
+            bottom: 5px;
+            right: 5px;
+            width: 350px;
+            height: 400px;
+            min-width: 250px;
+            max-width: 800px;
+            min-height: 250px;
+            max-height: 90vh;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            z-index: 999;
+            transition: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark-mode .notepad {
+            background: #2a2a2a;
+        }
+
+        .notepad.minimized {
+            height: 60px;
+        }
+
+        .notepad-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            flex-shrink: 0;
+        }
+
+        body.dark-mode .notepad-header {
+            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
+        }
+
+        .notepad-header h3 {
+            font-size: 1.1em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .notepad-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            transition: all 0.2s ease;
+        }
+
+        .notepad-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .notepad-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            transition: all 0.2s ease;
+            margin-left: 5px;
+        }
+
+        .notepad-close:hover {
+            background: rgba(255, 100, 100, 0.5);
+            transform: scale(1.1);
+        }
+
+        .notepad.hidden {
+            display: none;
+        }
+
+        .notepad-reopen {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.dark-mode .notepad-reopen {
+            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
+        }
+
+        .notepad-reopen.show {
+            display: flex;
+        }
+
+        .notepad-reopen:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .calculator-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .calculator-backdrop.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .calculator {
+            width: 1200px;
+            max-width: 95%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        body.dark-mode .calculator {
+            background: #2a2a2a;
+        }
+
+        @media (max-width: 1200px) {
+            .calculator {
+                width: 90%;
+            }
+
+            .calculator-content {
+                flex-direction: column;
+            }
+
+            .calc-section {
+                flex: none;
+            }
+        }
+
+        .calculator-header {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        body.dark-mode .calculator-header {
+            background: linear-gradient(135deg, #2d5a2e 0%, #1e3a1f 100%);
+        }
+
+        .calculator-header h3 {
+            font-size: 1.05em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .calculator-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            transition: all 0.2s ease;
+        }
+
+        .calculator-close:hover {
+            background: rgba(255, 100, 100, 0.5);
+            transform: scale(1.1);
+        }
+
+        .calculator-content {
+            padding: 15px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .calc-section {
+            flex: 1;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+        }
+
+        body.dark-mode .calc-section {
+            background: #1e1e1e;
+            border-color: #444;
+        }
+
+        .calc-section h4 {
+            color: #4caf50;
+            margin-bottom: 12px;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        body.dark-mode .calc-section h4 {
+            color: #66bb6a;
+        }
+
+        .calc-input-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .calc-input-row .calc-input-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .calc-input-group {
+            margin-bottom: 10px;
+        }
+
+        .calc-input-group label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.85em;
+            font-weight: 500;
+            color: #666;
+        }
+
+        body.dark-mode .calc-input-group label {
+            color: #b0b0b0;
+        }
+
+        .calc-input-group input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.9em;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .calc-input-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .calc-input-row .calc-input-group {
+                margin-bottom: 12px;
+            }
+        }
+
+        body.dark-mode .calc-input-group input {
+            background: #1e1e1e;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        .calc-input-group input:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        body.dark-mode .calc-input-group input:focus {
+            border-color: #66bb6a;
+            box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.2);
+        }
+
+        .calc-button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .calc-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .calc-button:active {
+            transform: translateY(0);
+        }
+
+        .calc-result {
+            margin-top: 12px;
+            padding: 12px;
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            border-radius: 6px;
+            display: none;
+        }
+
+        body.dark-mode .calc-result {
+            background: #1e3a1f;
+            border-left-color: #66bb6a;
+        }
+
+        .calc-result.show {
+            display: block;
+        }
+
+        .calc-result-label {
+            font-size: 0.8em;
+            color: #666;
+            margin-bottom: 4px;
+        }
+
+        body.dark-mode .calc-result-label {
+            color: #b0b0b0;
+        }
+
+        .calc-result-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+
+        body.dark-mode .calc-result-value {
+            color: #81c784;
+        }
+
+        .floating-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 998;
+        }
+
+        .calculator-open-btn {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.8em;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.dark-mode .calculator-open-btn {
+            background: linear-gradient(135deg, #2d5a2e 0%, #1e3a1f 100%);
+        }
+
+        .calculator-open-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
+        }
+
+        .calculator-open-btn:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .floating-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        .notepad-content {
+            padding: 15px;
+            display: block;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .notepad.minimized .notepad-content {
+            display: none;
+        }
+
+        .notepad-textarea {
+            width: 100%;
+            height: 100%;
+            min-height: 100px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 0.95em;
+            resize: none;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+            position: relative;
+        }
+
+
+        body.dark-mode .notepad-textarea {
+            background: #1e1e1e;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        .notepad-textarea:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        body.dark-mode .notepad-textarea:focus {
+            border-color: #5a67d8;
+            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
+        }
+
+        .notepad-footer {
+            padding: 12px 15px;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #ddd;
+            flex-wrap: wrap;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        body.dark-mode .notepad-footer {
+            background: #1a1a1a;
+            border-top-color: #333;
+        }
+
+        .notepad-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .notepad-clear, .notepad-export, .notepad-import-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .notepad-export {
+            background: #2196F3;
+        }
+
+        .notepad-export:hover {
+            background: #1976D2;
+            transform: scale(1.05);
+        }
+
+        .notepad-import-btn {
+            background: #FF9800;
+        }
+
+        .notepad-import-btn:hover {
+            background: #F57C00;
+            transform: scale(1.05);
+        }
+
+        .notepad-clear:hover {
+            background: #d32f2f;
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .topic-header h2 {
+                font-size: 1.1em;
+            }
+
+            .message-item::after {
+                display: none;
+            }
+
+            .theme-toggle {
+                top: 20px;
+                right: 20px;
+                padding: 8px 15px;
+                font-size: 1em;
+            }
+
+            .container {
+                margin-right: auto;
+                max-width: 100%;
+            }
+
+            .notepad {
+                width: calc(100% - 40px);
+                left: 20px;
+                right: 20px;
+            }
+
+            .notepad-textarea {
+                min-height: 150px;
+            }
+
+            .notepad-reopen {
+                padding: 12px 18px;
+                font-size: 0.9em;
+            }
+        }
+
+        .notepad-resize-handle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 100%;
+            cursor: ew-resize;
+            z-index: 1000;
+        }
+        
+        .notepad-resize-handle::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 40px;
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 2px;
+            transition: all 0.2s ease;
+        }
+        
+        .notepad-resize-handle:hover::before {
+            background: rgba(102, 126, 234, 0.6);
+            height: 60px;
+        }
+        
+        body.dark-mode .notepad-resize-handle::before {
+            background: rgba(167, 139, 250, 0.3);
+        }
+        
+        body.dark-mode .notepad-resize-handle:hover::before {
+            background: rgba(167, 139, 250, 0.6);
+        }
+
+
+        .notepad-resize-handle-vertical {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 25px;
+            height: 25px;
+            cursor: nwse-resize;
+            z-index: 1001;
+        }
+        
+        .notepad-resize-handle-vertical::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            width: 0;
+            height: 0;
+            border-left: 12px solid rgba(102, 126, 234, 0.4);
+            border-bottom: 12px solid transparent;
+            transition: all 0.2s ease;
+        }
+        
+        .notepad-resize-handle-vertical:hover::before {
+            border-left-color: rgba(102, 126, 234, 0.7);
+        }
+        
+        body.dark-mode .notepad-resize-handle-vertical::before {
+            border-left-color: rgba(167, 139, 250, 0.4);
+        }
+        
+        body.dark-mode .notepad-resize-handle-vertical:hover::before {
+            border-left-color: rgba(167, 139, 250, 0.7);
+        }
+
+    </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <div class="datetime-weather">
-                <div class="datetime" id="datetime"></div>
-                <div class="weather" id="weather">
-                    <span>🌤️</span>
-                    <span id="temperature">Carregando...</span>
-                </div>
-                <div class="connectivity-indicator" id="connectivityIndicator">
-                    <span id="connectivityIcon">🟢</span>
-                    <span id="connectivityText">Online</span>
-                </div>
-            </div>
-            <div class="attendant-section">
-                <label for="attendantName">Nome do Atendente:</label>
-                <input type="text" id="attendantName" class="attendant-input" placeholder="Digite seu nome">
-            </div>
-            <button class="theme-toggle" id="themeToggle" title="Alternar tema">
-                <svg id="themeIcon" viewBox="0 0 24 24">
-                    <path id="sunIcon" d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" style="display: none;"/>
-                    <path id="moonIcon" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.701-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 01.818.162z"/>
-                </svg>
-            </button>
-        </div>
+    <div class="notification" id="notification">✓ Mensagem copiada!</div>
 
-        <div class="content">
-            <div class="search-container">
-                <input type="text" id="searchBox" class="search-box" placeholder="Pesquisar mensagens...">
-                <span class="search-icon">🔍</span>
-            </div>
-            
-            <!-- Seção de Favoritos -->
-            <div class="favorites-section" id="favoritesSection" style="display: none;">
-                <div class="favorites-header">
-                    <div class="favorites-title">
-                        ⭐ Mensagens Favoritas
-                    </div>
-                    <button class="favorites-toggle" id="favoritesToggle" title="Recolher/Expandir">
-                        ▼
-                    </button>
-                </div>
-                <div class="favorites-list" id="favoritesList">
-                    <div class="favorites-empty" id="favoritesEmpty">
-                        Nenhuma mensagem favoritada ainda. Clique na estrela ao lado das mensagens para adicioná-las aos favoritos.
-                    </div>
-                </div>
-                <div class="favorites-stats" id="favoritesStats" style="display: none;">
-                    <span class="favorites-count" id="favoritesCount">0 favoritos</span>
-                    <button class="clear-favorites" id="clearFavorites" title="Limpar todos os favoritos">
-                        Limpar todos
-                    </button>
-                </div>
-            </div>
-            
-            <div class="topics" id="topics"></div>
-        </div>
-    </div>
-
-    <!-- Notepad -->
+    <!-- Bloco de Notas -->
     <div class="notepad" id="notepad">
-        <div class="notepad-header" id="notepadHeader">
-            <div class="notepad-title">📝 Bloco de Notas</div>
-            <div class="notepad-controls">
-                <button class="notepad-btn" id="minimizeNotepad" title="Minimizar">−</button>
-                <button class="notepad-btn" id="closeNotepad" title="Fechar">×</button>
+        <div class="notepad-header">
+            <h3>📝 Bloco de Notas</h3>
+            <div style="display: flex; gap: 5px;">
+                <button class="notepad-toggle" id="notepadToggle">−</button>
+                <button class="notepad-close" id="notepadClose">✕</button>
             </div>
         </div>
         <div class="notepad-content">
-            <textarea id="notepadContent" class="notepad-textarea" placeholder="Digite suas anotações aqui..."></textarea>
+            <textarea class="notepad-textarea" id="notepadTextarea" placeholder="Digite suas anotações aqui..."></textarea>
         </div>
         <div class="notepad-footer">
             <div class="notepad-actions">
-                <button class="notepad-action-btn export" id="exportNotepad">
-                    <span>📤</span> Exportar
-                </button>
-                <button class="notepad-action-btn import" id="importNotepad">
-                    <span>📥</span> Importar
-                </button>
-                <button class="notepad-action-btn clear" id="clearNotepad">
-                    <span>🗑️</span> Limpar
-                </button>
+                <button class="notepad-export" id="notepadExport" title="Exportar notas">💾 Exportar</button>
+                <button class="notepad-import-btn" id="notepadImportBtn" title="Importar notas">📂 Importar</button>
+                <input type="file" id="notepadImport" accept=".txt" style="display: none;">
+                <button class="notepad-clear" id="notepadClear">🗑️ Limpar</button>
             </div>
-            <div class="char-count" id="charCount">0 caracteres</div>
         </div>
-        <input type="file" id="importFile" accept=".txt" style="display: none;">
     </div>
 
-    <!-- Floating Buttons -->
+    <!-- Botões Flutuantes -->
     <div class="floating-buttons">
-        <button class="floating-btn" id="openNotepad" title="Abrir Bloco de Notas">📝</button>
-        <button class="floating-btn" id="openCalculator" title="Abrir Calculadora">🧮</button>
+        <button class="notepad-reopen" id="notepadReopen">
+            📝 Abrir Notas
+        </button>
+        <button class="calculator-open-btn" id="calculatorOpenBtn" title="Calculadora Financeira">
+            💰
+        </button>
     </div>
 
-    <!-- Calculator Modal -->
-    <div class="calculator-modal" id="calculatorModal">
-        <div class="calculator">
-            <h2>💰 Calculadora Financeira</h2>
-            
-            <div class="calc-section">
-                <h3>📊 Cálculo Proporcional</h3>
-                <div class="calc-input-group">
-                    <label for="propValue">Valor da Mensalidade (R$):</label>
-                    <input type="number" id="propValue" class="calc-input" step="0.01">
-                </div>
-                <div class="calc-input-group">
-                    <label for="propDays">Dias Utilizados:</label>
-                    <input type="number" id="propDays" class="calc-input">
-                </div>
-                <button class="calc-btn" onclick="calculateProportional()">Calcular Proporcional</button>
-                <div id="propResult" class="calc-result" style="display: none;"></div>
+    <!-- Calculadora Financeira (Modal) -->
+    <div class="calculator-backdrop" id="calculatorBackdrop">
+        <div class="calculator" id="calculator">
+            <div class="calculator-header">
+                <h3>💰 Calculadora Financeira</h3>
+                <button class="calculator-close" id="calculatorClose">✕</button>
             </div>
-
-            <div class="calc-section">
-                <h3>📋 Cálculo de Acordo</h3>
-                <div class="calc-input-group">
-                    <label for="agreementValue">Valor Total (R$):</label>
-                    <input type="number" id="agreementValue" class="calc-input" step="0.01">
-                </div>
-                <div class="calc-input-group">
-                    <label for="agreementDiscount">Desconto (%):</label>
-                    <input type="number" id="agreementDiscount" class="calc-input" step="0.01">
-                </div>
-                <button class="calc-btn" onclick="calculateAgreement()">Calcular Acordo</button>
-                <div id="agreementResult" class="calc-result" style="display: none;"></div>
-            </div>
-
-            <div class="calc-section">
-                <h3>💰 Cálculo de Comissão</h3>
-                <div class="calc-input-group">
-                    <label for="commissionValue">Valor da Venda (R$):</label>
-                    <input type="number" id="commissionValue" class="calc-input" step="0.01">
-                </div>
-                <div class="calc-input-group">
-                    <label for="commissionRate">Taxa de Comissão (%):</label>
-                    <input type="number" id="commissionRate" class="calc-input" step="0.01">
-                </div>
-                <button class="calc-btn" onclick="calculateCommission()">Calcular Comissão</button>
-                <div id="commissionResult" class="calc-result" style="display: none;"></div>
-            </div>
-
-            <button class="calc-btn" onclick="closeCalculator()" style="background: #e74c3c;">Fechar</button>
-        </div>
-    </div>
-
-    <!-- Analytics Panel -->
-    <div id="analyticsPanel" class="analytics-panel" style="display: none;">
-        <div class="analytics-content">
-            <div class="analytics-header">
-                <h3>📊 Analytics do Sistema</h3>
-                <button class="close-btn" onclick="closeAnalytics()">×</button>
-            </div>
-            <div class="analytics-body">
-                <div class="analytics-stats">
-                    <div class="stat-card">
-                        <h4>Sessão Atual</h4>
-                        <p id="sessionDuration">--</p>
-                        <small>Duração da sessão</small>
+            <div class="calculator-content">
+                <!-- Cálculo Proporcional -->
+                <div class="calc-section">
+                    <h4>📊 Cálculo Proporcional de Uso</h4>
+                    <div class="calc-input-group">
+                        <label>Valor do Plano (R$)</label>
+                        <input type="number" id="valorPlano" placeholder="Ex: 99.99" step="0.01" min="0">
                     </div>
-                    <div class="stat-card">
-                        <h4>Mensagens Copiadas</h4>
-                        <p id="messagesCopied">--</p>
-                        <small>Nesta sessão</small>
+                    <div class="calc-input-group">
+                        <label>Dias do Mês</label>
+                        <input type="number" id="diasMes" placeholder="Ex: 30" min="1" max="31">
                     </div>
-                    <div class="stat-card">
-                        <h4>Calculadora</h4>
-                        <p id="calculatorUsage">--</p>
-                        <small>Usos da calculadora</small>
+                    <div class="calc-input-group">
+                        <label>Dias Utilizados</label>
+                        <input type="number" id="diasUtilizados" placeholder="Ex: 15" min="0">
                     </div>
-                    <div class="stat-card">
-                        <h4>Bloco de Notas</h4>
-                        <p id="notepadUsage">--</p>
-                        <small>Vezes aberto</small>
+                    <button class="calc-button" id="calcProporcional">Calcular Proporcional</button>
+                    <div class="calc-result" id="resultProporcional">
+                        <div class="calc-result-label">Valor Proporcional:</div>
+                        <div class="calc-result-value" id="valorProporcional">R$ 0,00</div>
                     </div>
                 </div>
-                <div class="analytics-actions">
-                    <button class="analytics-btn" onclick="exportAnalytics()">📥 Exportar Dados</button>
-                    <button class="analytics-btn" onclick="clearAnalytics()">🗑️ Limpar Dados</button>
+
+                <!-- Cálculo de Acordo -->
+                <div class="calc-section">
+                    <h4>🤝 Cálculo de Acordo (1 Fatura e Meia)</h4>
+                    <div class="calc-input-group">
+                        <label>Valor da Fatura (R$)</label>
+                        <input type="number" id="valorFatura" placeholder="Ex: 99.99" step="0.01" min="0">
+                    </div>
+                    <button class="calc-button" id="calcAcordo">Calcular Acordo</button>
+                    <div class="calc-result" id="resultAcordo">
+                        <div class="calc-result-label">Valor do Acordo (1,5x):</div>
+                        <div class="calc-result-value" id="valorAcordo">R$ 0,00</div>
+                    </div>
+                </div>
+
+                <!-- Calculadora de Comissão -->
+                <div class="calc-section">
+                    <h4>💰 Calculadora de Comissão</h4>
+                    <div class="calc-input-group">
+                        <label>Quantidade de Cadastros</label>
+                        <input type="number" id="qtdCadastros" placeholder="Ex: 5" min="0" value="0">
+                    </div>
+                    <div class="calc-input-group">
+                        <label>Valor Total de Acordos (R$)</label>
+                        <input type="number" id="valorAcordos" placeholder="Ex: 500.00" step="0.01" min="0" value="0">
+                    </div>
+                    <button class="calc-button" id="calcComissao">Calcular Comissão</button>
+                    <div class="calc-result" id="resultComissao">
+                        <div class="calc-result-label">Sua Comissão Total:</div>
+                        <div class="calc-result-value" id="valorComissao">R$ 0,00</div>
+                        <div style="font-size: 0.75em; margin-top: 8px; opacity: 0.8;">
+                            <div id="detalhesComissao"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Backup Panel -->
-    <div id="backupPanel" class="backup-panel" style="display: none;">
-        <div class="backup-content">
-            <div class="backup-header">
-                <h3>🔄 Sistema de Backup</h3>
-                <button class="close-btn" onclick="closeBackup()">✕</button>
+    <div class="container">
+        <div class="header">
+            <div class="header-info">
+                <div class="datetime-widget" id="datetimeWidget">🕐 Carregando...</div>
+                <div class="weather-widget" id="weatherWidget">🌡️ Carregando clima...</div>
             </div>
-            
-            <div class="backup-stats">
-                <div class="stat-card">
-                    <div class="stat-label">Total de Backups</div>
-                    <div class="stat-value" id="totalBackups">0</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Último Backup</div>
-                    <div class="stat-value" id="lastBackup">Nunca</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Tamanho Total</div>
-                    <div class="stat-value" id="backupSize">0 KB</div>
-                </div>
+            <div class="name-config">
+                <label for="attendantName">👤 Nome do Atendente:</label>
+                <input type="text" id="attendantName" placeholder="Digite seu nome aqui" value="">
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <span id="themeIcon">🌙</span>
+                <span id="themeText">Dark</span>
+            </button>
+            <h1>📞 Script de Atendimento</h1>
+            <p>Fibramar Internet - Guia Rápido</p>
+        </div>
+
+        <div class="content">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Buscar tópico ou mensagem...">
             </div>
 
-            <div class="backup-actions">
-                <div class="backup-section">
-                    <h4>Criar Backup</h4>
-                    <button class="backup-btn" onclick="createManualBackup()">💾 Backup Manual</button>
-                    <button class="backup-btn" onclick="exportBackup()">📤 Exportar Backup</button>
-                </div>
-
-                <div class="backup-section">
-                    <h4>Restaurar Backup</h4>
-                    <div class="backup-list" id="backupList">
-                        <!-- Lista de backups será preenchida dinamicamente -->
-                    </div>
-                    <input type="file" id="backupFileInput" accept=".json" style="display: none;" onchange="importBackup(event)">
-                    <button class="backup-btn" onclick="document.getElementById('backupFileInput').click()">📥 Importar Backup</button>
-                </div>
-
-                <div class="backup-section">
-                    <h4>Manutenção</h4>
-                    <button class="backup-btn danger" onclick="clearOldBackups()">🗑️ Limpar Backups Antigos</button>
-                    <button class="backup-btn danger" onclick="clearAllBackups()">⚠️ Limpar Todos os Backups</button>
-                </div>
-            </div>
+            <div id="topics"></div>
         </div>
     </div>
 
-    <!-- Painel de Atalhos de Teclado -->
-    <div id="shortcutsPanel" class="shortcuts-panel" style="display: none;">
-        <div class="shortcuts-content">
-            <div class="shortcuts-header">
-                <h3>⌨️ Atalhos de Teclado</h3>
-                <button class="close-btn" onclick="closeShortcutsPanel()">✕</button>
-            </div>
-
-            <div class="shortcuts-stats">
-                <div class="shortcuts-info">
-                    <p>Personalize os atalhos de teclado para agilizar seu trabalho</p>
-                </div>
-            </div>
-
-            <div class="shortcuts-actions">
-                <div class="shortcuts-section">
-                    <h4>Atalhos Disponíveis</h4>
-                    <div class="shortcuts-list" id="shortcutsList">
-                        <!-- Lista de atalhos será preenchida dinamicamente -->
-                    </div>
-                </div>
-
-                <div class="shortcuts-section">
-                    <h4>Gerenciar Atalhos</h4>
-                    <button class="shortcuts-btn" onclick="exportShortcuts()">📤 Exportar Atalhos</button>
-                    <input type="file" id="shortcutsFileInput" accept=".json" style="display: none;" onchange="importShortcuts(event)">
-                    <button class="shortcuts-btn" onclick="document.getElementById('shortcutsFileInput').click()">📥 Importar Atalhos</button>
-                    <button class="shortcuts-btn danger" onclick="resetAllShortcuts()">🔄 Resetar Todos</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Floating Buttons -->
-    <button class="floating-btn analytics-btn-float" id="openAnalytics" title="Ver Analytics" style="bottom: 20px; right: 140px;">📊</button>
-    <button class="floating-btn backup-btn-float" id="openBackup" title="Sistema de Backup" style="bottom: 20px; right: 80px;">🔄</button>
-
-
-
-    <script src="script.js" defer></script>
-    
-    <!-- Service Worker Registration -->
     <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(registration => {
-                        console.log('Service Worker registrado:', registration.scope);
-                        
-                        // Limpeza periódica de cache
-                        setInterval(() => {
-                            registration.active?.postMessage({ type: 'CLEAN_CACHE' });
-                        }, 60 * 60 * 1000); // 1 hora
-                    })
-                    .catch(error => {
-                        console.warn('Falha no registro do Service Worker:', error);
+        // Forçar atualização - timestamp: 2024-12-19
+        console.log('Script carregado em:', new Date().toLocaleString());
+        
+        // Forçar atualização do cache
+        const currentVersion = '2.0.0';
+        const storedVersion = localStorage.getItem('scriptVersion');
+        
+        if (storedVersion !== currentVersion) {
+            localStorage.setItem('scriptVersion', currentVersion);
+            console.log('Nova versão detectada:', currentVersion);
+            // Limpar cache se necessário
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => {
+                        caches.delete(name);
                     });
+                });
+            }
+        }
+        
+        const scriptData = {
+            "✅ INÍCIO DE ATENDIMENTO": [
+                "Olá! Seja bem-vindo(a) ao atendimento da Fibramar Internet.\n\nNosso atendimento é 24 horas, todos os dias.\n\nCaso prefira atendimento por ligação, utilize um dos nossos números:\n\n📞 0800 100 3850\n📞 (21) 3864-3850\n\nMeu nome é [NOME_ATENDENTE], e vou lhe atender agora.\n\nEm que posso ajudar?"
+            ],
+            "🧾 IDENTIFICAÇÃO DO CLIENTE": [
+                "[PERIODO]! \nPoderia me informar o nome completo ou o cpf do titular, por gentileza?"
+            ],
+            "🔚 ENCERRAMENTOS": [
+                "Por falta de comunicação, o atendimento está sendo encerrado.\nPara atendimento, peço que retorne o contato com a nossa central nos telefones: FIBRAMAR: 0800 100 3850 \nOu envie uma mensagem por aqui novamente, nosso atendimento é 24 horas, todos os dias!\nAgradecemos o seu contato, tenha uma ótima semana!",
+                "Estávamos realizando uma manutenção na localidade porém já normalizou, poderia verificar?",
+                "Agradeço por escolher nossos serviços. A equipe da *FIBRAMAR* Está à disposição para qualquer necessidade futura!\n\nCANAIS DE ATENDIMENTO 📞👨🏻💻 0800 100 3850",
+                "Neste momento estou entrando em meu horário de almoço, então irei lhe transferir para que outro atendente possa dar continuidade ao seu atendimento. Tenha um ótimo dia!",
+                "Neste momento estou finalizando o meu expediente, então irei lhe transferir para que outro atendente possa dar continuidade ao seu atendimento. Tenha uma ótima semana!",
+                "🛠️ NOTIFICAÇÃO DE MANUTENÇÃO 🛠️\n\nPrezado(a) cliente,\n\nInformamos que nossas equipes técnicas estão realizando uma manutenção programada na sua localidade.\n\n⏰ Previsão para normalização: até às 18:00h de hoje.\n\nO serviço poderá ser restabelecido a qualquer momento antes desse horário.\n\nPedimos desculpas pelo transtorno temporário e agradecemos sua compreensão.\n\nEstamos trabalhando para melhorar cada vez mais nossos serviços.\n\nAtenciosamente,\n\nEquipe Fibramar Internet 🧡"
+            ],
+            "💰 FATURAS E BOLETOS": [
+                "✅ Seu boleto foi enviado com sucesso! Confira seu e-mail.\n\nOriento em algo mais?",
+                "Para acessar suas faturas, entre no link:\n\nhttps://crnetfibramar.com.br/\n\nLogin: Seu CPF (sem pontos ou traços)\nSenha: Seu CPF (sem pontos ou traços)"
+            ],
+            "⚠️ PROBLEMA EXTERNO": [
+                "Estamos com uma instabilidade em nossa rede.\n\nNossa equipe técnica já está em campo resolvendo o mais rápido possível.\n\nPrevisão de normalização: até as 22:00h, podendo voltar a qualquer momento.\n\nPedimos desculpas pelo transtorno e agradecemos sua compreensão.\n\nOriento em algo mais?",
+                "📢 Informativo Emergencial\n\nPrezados clientes,\n\nEstamos enfrentando uma indisponibilidade massiva em nossa operadora de link. Nossa equipe, junto à operadora, já está atuando com prioridade máxima para restabelecer os serviços o mais rápido possível.\n\nPedimos desculpas pelos transtornos e agradecemos pela compreensão.\n\nAssim que tivermos novidades, manteremos todos informados.\n\nA previsão de normalização é até às 18h, podendo ocorrer a qualquer momento antes disso."
+            ],
+            "📱 PLANOS DISPONÍVEIS": [
+                "📱 Plano Essencial – 240 MEGA\n\nR$ 59,99/mês (pagando até o vencimento)\nR$ 79,99/mês (após vencimento)\n\nInstalação Grátis\n\nEste plano não inclui roteador Wi-Fi (você pode usar o seu próprio ou alugar por R$ 10,00/mês)\n\nInstalação em até 48h\nPermanência mínima de 12 meses",
+                "🚀 Plano Rápido - 400 Mega\n\nR$ 79,99/mês* (pagando até o vencimento)\nR$ 99,99/mês* (após vencimento)\n\nSuporte Especializado\n100% Fibra Óptica\n🤩 Instalação Grátis\n😍 Super Wi-Fi 5Ghz incluso\n\n💨Velocidade na medida certa para toda a família navegar, assistir e conectar.\n\nPermanência mínima de 12 meses",
+                "⚡️ Plano Turbo - 500 Mega\n\nR$ 99,99/mês* (pagando até o vencimento)\nR$ 119,99/mês* (após vencimento)\n\nSuporte Especializado\n100% Fibra Óptica\n🤩 Instalação Grátis\n😍 Super Wi-Fi 5Ghz incluso\n\n🚀 Ideal para gamers, streamers e multitarefas que não podem ficar sem velocidade.\n\nPermanência mínima de 12 meses",
+                "🔥 Plano Ultra + Watch TV, Qualifica e Mediquo - 600 Mega\n\nR$ 119,99/mês* (pagando até o vencimento)\nR$ 139,99/mês* (após vencimento)\n\n🤩 Instalação Grátis\n😍 Super Wi-Fi 5Ghz incluso\n\n🎁 Benefícios Exclusivos:\n\n📺 Watch TV: filmes, séries e canais infantis\n📽️ Paramount\n🎓 Qualifica: +220 cursos on-line com certificado reconhecido pela ABED e Carteirinha do Estudante para meia-entrada\n🩺 Mediquo: consultas médicas ilimitadas 24 h\n🔰 McAfee antivírus\n\nPermanência mínima de 12 meses",
+                "Plano Novo – 1 GIGA Fibramar Internet ✨\n\n📡 Velocidade: 1 GIGA\n💰 Valor: R$ 169,99\n➡️ Promoção: pagando até o vencimento, sai por apenas R$ 149,99\n📶 Wi-Fi 6 incluso 🚀\n📄 Contrato de fidelidade: 12 meses\n🔗 Opcional: Repetidor Mesh por apenas R$ 29,99 mensais\n",
+                "PLANOS MUQUI",
+                "📱 *Plano Essencial – 100 MEGA*\n*R$ 59,99/mês* (pagando até o vencimento)\n*R$ 79,99/mês* (após vencimento)\n- Instalação Grátis\n- *Este plano não inclui roteador Wi-Fi* (você pode usar o seu próprio ou alugar por R$ 10,00/mês)\n- Instalação em até 48h\n- Possui fidelidade de 12 meses",
+                "🚀 *Plano Rápido*\n*300 Mega • R$ 89,99/mês* (pagando até o vencimento)\n*R$ 109,99/mês* (após vencimento)\n- Suporte Especializado\n- 100% Fibra Óptica\n- 🤩 Instalação Grátis\n- 😍 Super Wi-Fi 5Ghz incluso\n💨 *Velocidade na medida certa para toda a família navegar, assistir e conectar.*\n\n- Possui fidelidade de 12 meses",
+                "⚡️ *Plano Turbo*\n*500 Mega • R$ 99,99/mês* (pagando até o vencimento)\n*R$ 119,99/mês* (após vencimento)\n- Suporte Especializado\n- 100% Fibra Óptica\n- 🤩 Instalação Grátis\n- 😍 Super Wi-Fi 5Ghz incluso\n🚀 *Ideal para gamers, streamers e multitarefas que não podem ficar sem velocidade.*\n\n- Possui fidelidade de 12 meses",
+                "🚀 *Plano 1 GIGA Fibramar*\n*1 GIGA • R$ 149,99/mês* (pagando até o vencimento)\n*R$ 169,99/mês* (após vencimento)\n\n- Wi-Fi 6 incluso\n- 100% Fibra Óptica\n- 🤩 Instalação Grátis\n\n⚡️* Ideal para gamers, streamers e multitarefas que não podem ficar sem velocidade.*\n\n🔗 Opcional: Repetidor Mesh por apenas R$ 29,99/mês\n\n- Possui fidelidade de 12 meses",
+                "Qual dessas opções encaixa melhor para você? Vamos realizar o cadastro agora? 🧡",
+                "📢 PLANOS DE INTERNET MÓVEL FIBRAMAR 📢\n\nEscolha o pacote ideal para o seu dia a dia 👇\n\n💠 1 GIGA – R$ 24,99\n💠 2 GIGA – R$ 29,99\n💠 5 GIGA – R$ 32,99\n💠 10 GIGA – R$ 39,99\n💠 15 GIGA – R$ 49,99\n💠 20 GIGA – R$ 52,99\n💠 24 GIGA – R$ 54,99\n💠 30 GIGA – R$ 64,99\n💠 35 GIGA – R$ 69,99\n💠 50 GIGA – R$ 84,99\n💠 80 GIGA – R$ 129,99\n\n✅ WhatsApp Ilimitado\n✅ Ligações Ilimitadas\n✅ Portabilidade disponível",
+                "*Você gostaria de incluir algum serviço adicional para deixar sua experiência ainda melhor*❓\n\nCada serviço adicional é R$: 14,99 adicional na mensalidade \n\n- *McAfee* – Proteção antivírus\n- *MediQuo* – Assistência médica 24h por teleconsulta\n- *Qualifica* – Cursos online com certificado\n- *Paramount+* – Filmes e séries premium\n- *Watch* – Conteúdo de streaming variado\n- *Nick Jr.* – Conteúdos educativos para crianças",
+            ],
+            "📋 CADASTRO DE NOVO CLIENTE": [
+                "Promoção: Instalação GRÁTIS por tempo limitado (com a fidelidade de 12 meses).\n\n### Para iniciar o cadastro, envie os dados:\n\nNome completo:\nCPF:\nRG:\nData de nascimento:\nE-mail:\nPlano desejado:\nData de vencimento (3, 7 ou 12):\nTelefone(s):\nEndereço completo:\nCEP:\nReferência visual (ponto de referência próximo):\nGostaria da fidelidade de 12 meses?\nData e período para a instalação:\nPor onde conheceu a empresa ?\n\nAgradecemos por escolher a *FIBRAMAR*! 🧡",
+                "✅ Cadastro concluído com sucesso.\n\n🔧 Instalação agendada para o dia [data].\n\nPosso ajudar em algo mais ou podemos finalizar seu atendimento?",
+                "Dados para cadastro do chip\n\n**DADOS PESSOAIS:**\nCPF/CNPJ:\nNome Completo:\nE-mail:\nData de nascimento:\nTelefone alternativo:\n\n**ENDEREÇO:**\nCEP:\nUF:\nCidade:\nEndereço:\nNúmero:\nBairro:\nComplemento:\nReferência (Opcional):\n\n**DADOS DO CHIP:**\nNúmero do Chip:\nDDD:\nPlano:\nPortabilidade: ( ) SIM ou ( ) NÃO\nForma de Pagamento:\n\nAgradecemos por escolher a *FIBRAMAR*! 🧡",
+                "✅ Cadastro do chip concluído com sucesso.\n\n📱 Ativação será processada apos o pagamento.\n\nPosso ajudar em algo mais ou podemos finalizar seu atendimento?",
+                "Sobre os boletos, o primeiro mês é proporcional aos dias utilizados, podendo vir um pouco mais ou um pouco menos, dependendo do vencimento.\nO sistema gera automaticamente esse proporcional, não temos como saber quanto será.\nPode ser que ele gere pro mesmo mês e chegue um valor pequeno, ou, pode gerar pro mês seguinte e juntar com a mensalidade. Porém, isso é apenas no primeiro mês, devido ao proporcional.\nDe segundo mês em diante as faturas chegam normais.\nOs boletos são enviados para o email do cadastro. Também ficam disponíveis na central do assinante ou em nosso aplicativo. (https://crnetfibramar.com.br/central_assinante_web/login)",
+
+            ],
+            "🖥️ CONFIGURAÇÃO DO ROTEADOR": [
+                "Conecte-se ao Wi-Fi\n\nDesligue os dados móveis\n\n**Me envie uma foto da etiqueta na parte de baixo do seu roteador.** (O IP, Login e Senha podem estar lá)\n",
+                "Acesse no navegador: **192.168.1.1**\n\nSe possível, envie print da tela."
+            ],
+            "🔧 SUPORTE / PROCEDIMENTOS": [
+                "Há alguma luz piscando ou com cor diferente no equipamento?",
+                "Desligue o aparelho por 5 minutos, religue e me informe.",
+                "Nosso atendimento não reconhece áudios, apenas mensagens de texto.",
+                "Para realizar a transferência do equipamento da FIBRAMAR para um novo endereço: ⚠️ Taxa: R$ 50,00. Confirme os dados abaixo: \n Nome completo \n CPF \n RG \nNovo endereço \n CEP \n Referência \nTelefone de contato \nApós a confirmação, agendaremos a transferência.",
+                "Verifiquei que há uma redução em sua rede, devido a um boleto em aberto do vencimento (//)  se recorda de ter efetuado o pagamento?",
+                "Foi aberto um suporte técnico para verificar, o prazo máximo do atendimento é de até 48 horas, porém a visita técnica pode acontecer a qualquer momento!\n\nOriento algo mais?",
+                "Poderia desligar e ligar o roteador e assim que se conectar novamente, realizar um teste de velocidade no link abaixo? https://fast.com/pt/ Assim que concluir, me envie um print.",
+                "Seu pedido já se encontra com o técnico e antes de ir, o mesmo pode entrar em contato com o senhor para saber se possui alguém na residência para recebê-lo. Oriento em algo mais?",
+                "Verifiquei que possui um pedido de visita técnica em aberto no sistema no dia (/), o técnico tem o prazo de até 48 horas para realizar o reparo, no caso até as 18h de (/). Oriento em algo mais?",
+                "Verifiquei este pedido de visita técnica aberto no dia (/), aonde o prazo de 48 horas se encerrou no dia (/). Portanto irei entrar em contato com o supervisor dos técnicos, solicitando que ele vá o quanto antes de forma prioritária  realizar o reparo, oriento em algo mais?",
+                "Infelizmente o setor responsável por esse assunto só está disponível para o atendimento dentro do horário comercial de segunda a sexta, das 8:00 ás 18:00 e aos sábados das 8:00 ás 17:00. Poderia entrar em contato dentro desse horário para verificarmos o seu boleto e atualizarmos para a senhor (a)?",
+                "Um roteador normal o máximo que passa via wi-fi é 50 Mb, porque o roteador é limitado, por isso o cliente tem que ter um roteador GIGA, configuração AC 1200, pois esse roteador ele passa acima de 50 Mb via wi-fi, mas também vai depender dos aparelhos que possui se rodam a velocidade acima de 50 Mb.",
+                
+            ],
+            "📑 PADRÃO DE ABERTURA DE O.S": [
+                "CLIENTE SEM CONEXÃO, FEITO OS PROCEDIMENTOS PADRÕES E NÃO RETORNOU\nPOTÊNCIA DA ONU: OFF\nÚLTIMA CONEXÃO: 1 HORA\nLOS VERMELHA: SIM\nTAG :\n[NOME_ATENDENTE] - [DATA] - [HORA]",
+                "CLIENTE RELATA LENTIDÃO, FEITO OS PROCEDIMENTOS PADRÕES SEM SUCESSO.\nTESTE DE VELOCIDADE:\nDOWNLOAD:  Mbps\nUPLOAD:  Mbps\nAPARELHO: \nPOTÊNCIA DA ONU: \nTAG :\n\n[NOME_ATENDENTE] - [DATA] - [HORA]",
+                "INSTALAÇÃO GRATUITA\n\nINSTALAÇÃO SERÁ GRATUITA NA PROMOÇÃO DO CARLOS\n\nPLANO DE / COM ROTEADOR EM COMODATO\n\nDATA DE VENCIMENTO: 12\n\nCONSULTORA(O): [NOME_ATENDENTE]\n\nCONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA\n\nCLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE",
+                "INSTALAÇÃO PAGA\n\nINSTALAÇÃO SERÁ PAGA NO VALOR DE R$\n\nPLANO DE / R$ COM ROTEADOR EM COMODATO\n\nDATA DE VENCIMENTO:\n\nCONSULTORA(O): [NOME_ATENDENTE]\n\nCONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA //\n\nCLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE",
+                "Atendente: [NOME_ATENDENTE] | Data: [DATA] | Hora: [HORA]"
+            ],
+            "📝 TERMO DE RESPONSABILIDADE": [
+                "Para quem usa equipamento próprio:\n\n🔗 https://app.zapsign.com.br/verificar/doc/2794e63d-905c-4cb0-8c5e-7b22226901c3"
+            ],
+            "❌ CANCELAMENTO": [
+                "Por favor, envie os dados abaixo:\n\n- Nome completo:\n- CPF:\n- RG:\n- Endereço completo:\n- Motivo do cancelamento:\n\nAssim que recebermos as informações, abriremos a solicitação no sistema.\n\nDentro de 72 horas úteis, o setor responsável entrará em contato para finalizar o equipamento e caso houver equipamento agendar a retirada dos equipamentos.",
+                "💸 PROPORCIONAL (Quebra de contrato)\n\nConforme fidelidade de 12 meses, o valor de R$ 360,00 da instalação é proporcional:\n\nR$ 30,00 x [meses restantes] = R$ [valor final]",
+                "Olá! Para que possamos ajudar da melhor forma, você poderia nos informar se deseja fazer alguma alteração no plano ou cancelar o serviço?",
+                "Podemos enviar um técnico hoje para verificar e resolver qualquer problema com o seu serviço.",
+                "Se preferir, podemos enviar o supervisor dos técnicos para acompanhar a visita e garantir que tudo seja resolvido.",
+                "Antes de qualquer decisão, podemos avaliar alternativas ou ajustes no serviço que possam melhorar sua experiência.",
+                "Outra alternativa é realizar a troca de titularidade do plano, caso deseje que outra pessoa assuma o serviço.",
+                "Também é possível transferir o serviço para outro endereço, mantendo seu plano ativo sem interrupções.",
+            ],
+            "💲 PREÇOS E TAXAS": [
+                "- Instalação: R$ 360,00\n- Visita improdutiva: R$ 30,00\n- Conector: R$ 10,00\n- 1 metro de fibra: R$ 0,60"
+            ],
+            "📉 DESCONTO": [
+                "Para solicitar desconto, envie um e-mail com:\n\n- Nome completo:\n- CPF:\n- Telefone:\n- Motivo:\n- Endereço:\n- Dias afetados:\n\ndesconto@crnetfibramar.com.br"
+            ],
+            "📍 ENDEREÇOS DAS LOJAS": [
+                "CENTRO - MARICÁ\n\nAVENIDA VEREADOR FRANCISCO SABINO DA COSTA N° 78- NO SHOPPING CENTER 1 - TÉRREO\n\nEM FRENTE A CASA E VIDEO, DE ESQUINA COM O RESTAURANTE JOAO E JOAO",
+                "CORDEIRINHO - MARICÁ\n\nAVENIDA MAYSA 6391 LT 07 QD 120-CORDEIRINHO\n\nESQUINA A RUA 90 NA PRINCIPAL, DO LADO DO HORTIFRUTI DA 90",
+                "ITAIPUAÇU - MARICÁ\n\nRUA 01 LT 31 QD 04 LOJA 03- ITAIPUAÇU\nPERTO DA RUA 34 EM FRENTE A PADARIA",
+                "LOJA SÃO JOSÉ - MARICÁ\n\nAVENIDA ELOMIR GONÇALVES DA SILVA N° 15-SÃO JOSE DO IMBASSAI\n\nEM FRENTE A CASA DE RAÇÃO ARAKEN",
+                "Loja de Jacone\n\nEndereço: R. 13, 2020 - Loja 5 - Jaconé, Saquarema - RJ, 28998-872\n\nReferência: De esquina com a rua 96.",
+                "Loja de Muqui\n\nRua Coronel Luiz Carlos n333, Muqui, ES, 29480-000\n\nReferência: Em frente ao Banco Cresol",
+                "Loja de Mimoso do Sul\n\nRua Dr Jose Monteiro n11 , Centro. Mimoso do Sul, ES, 29400-000\n\nReferência: Ao lado do Fórum.",
+                "Loja Unamar\n\nRua das pacas ; Gravata 02 - Unamar, Cabo Frio, RJ,\n\nCEP: 28927503\n\nReferencia: Em frente ao Mercado Rende Pacas."
+            ],
+            "📲 WHATSAPP E LINKS ÚTEIS": [
+                "WhatsApp Atendimento:\n\n🔗 https://api.whatsapp.com/send/?phone=5508001003850",
+                "Central do Assinante (IXC):\n\n🔗 https://crnetfibramar.com.br/",
+                "LinkTree com acessos e apps:\n\n🔗 https://linktr.ee/fibramarinternet"
+            ],
+            "🔑 SENHAS PADRÕES": {
+                "type": "passwords",
+                "items": [
+                    {
+                        "title": "ACESSO REMOTO",
+                        "credentials": [
+                            { "user": "user", "password": "RooT@fibramaR_" }
+                        ]
+                    },
+                    {
+                        "title": "CIANET\\VSOL",
+                        "credentials": [
+                            { "user": "", "password": "adminisp" },
+                        ]
+                    },
+                    {
+                        "title": "Multilaser ZTE",
+                        "credentials": [
+                            { "user": "", "password": "Multipro" },
+                            { "user": "", "password": "multipro" }
+                        ]
+                    },
+                    {
+                        "title": "Configurações Padrão",
+                        "credentials": [
+                            { "user": "SSID", "password": "Contactar a Fibramar 08001003850" },
+                            { "user": "Senha WiFi", "password": "fibramar@2025" },
+                            { "user": "Login PPPoE", "password": "equipamento.resetado" },
+                            { "user": "Vlan", "password": "4000" },
+                            { "user": "IP de entrada", "password": "192.168.99.1" }
+                        ]
+                    },
+                    {
+                        "title": "ONT TP-Link resetada",
+                        "credentials": []
+                    },
+                    {
+                        "title": "═══════════════════════════",
+                        "credentials": ["CastroX"]
+                    },
+                    {
+                        "title": "📍 SÃO PAULO",
+                        "credentials": []
+                    },
+                    {
+                        "title": "RAISECOM - 192.168.1.1",
+                        "credentials": [
+                            { "user": "Login", "password": "superadmin" },
+                            { "user": "Senha", "password": "q!w@e#" }
+                        ]
+                    },
+                    {
+                        "title": "ONT DATACOM - 192.168.1.1",
+                        "credentials": [
+                            { "user": "Login", "password": "support" },
+                            { "user": "Senha", "password": "support" }
+                        ]
+                    },
+                    {
+                        "title": "ONT FIBRACOM CHIMA - 192.168.86.1",
+                        "credentials": [
+                            { "user": "Login", "password": "telecomadmin" },
+                            { "user": "Senha", "password": "cHI*mA868#558" }
+                        ]
+                    },
+                    {
+                        "title": "ONT EASY 4 LINK - 192.168.1.1",
+                        "credentials": [
+                            { "user": "Login", "password": "admin" },
+                            { "user": "Senha", "password": "1234" }
+                        ]
+                    },
+                    {
+                        "title": "ROTEADOR MERCUSYS - mwlogin.net",
+                        "credentials": [
+                            { "user": "Login (padrão)", "password": "admin" },
+                            { "user": "Senha (padrão)", "password": "admin1" },
+                            { "user": "Alternativa 1: Login e Senha", "password": "admin1" },
+                            { "user": "Alternativa 2: Login e Senha", "password": "admin" }
+                        ]
+                    },
+                    {
+                        "title": "ROTEADOR DLINK - 192.168.0.1",
+                        "credentials": [
+                            { "user": "Login", "password": "admin" },
+                            { "user": "Senha", "password": "admin1" }
+                        ]
+                    },
+                    {
+                        "title": "═══════════════════════════",
+                        "credentials": []
+                    },
+                    {
+                        "title": "📍 MARICÁ",
+                        "credentials": []
+                    },
+                    {
+                        "title": "Wellington",
+                        "credentials": [
+                            { "user": "Senha", "password": "admin1" }
+                        ]
+                    },
+                    {
+                        "title": "Felipe Costa",
+                        "credentials": [
+                            { "user": "Senha", "password": "admin1" }
+                        ]
+                    },
+                    {
+                        "title": "Luiz Felipe",
+                        "credentials": [
+                            { "user": "Senha", "password": "admin1 / Admin1@@" }
+                        ]
+                    },
+                    {
+                        "title": "Guilherme",
+                        "credentials": [
+                            { "user": "Senha", "password": "password@" }
+                        ]
+                    },
+                    {
+                        "title": "Diogo",
+                        "credentials": [
+                            { "user": "Senha", "password": "admin1 / admin@ / password1 / password@ / RooT@fibramaR_" }
+                        ]
+                    },
+                    {
+                        "title": "Luiz Fernando",
+                        "credentials": [
+                            { "user": "Senha", "password": "password@ / Password@ / Admin1 / Admin@" }
+                        ]
+                    },
+                    {
+                        "title": "Sidney",
+                        "credentials": [
+                            { "user": "Senha", "password": "admin1" }
+                        ]
+                    },
+                    {
+                        "title": "Edvan",
+                        "credentials": [
+                            { "user": "Senha", "password": "admin@123" }
+                        ]
+                    },
+                    {
+                        "title": "═══════════════════════════",
+                        "credentials": []
+                    },
+                    {
+                        "title": "📍 SAQUAREMA",
+                        "credentials": []
+                    },
+                    {
+                        "title": "Lucas",
+                        "credentials": [
+                            { "user": "Senha", "password": "12345678a" }
+                        ]
+                    },
+                    {
+                        "title": "Ivan Carlos",
+                        "credentials": [
+                            { "user": "Senha", "password": "12345678a / Epadim / adminEp / telecomadmin / admintelecom" }
+                        ]
+                    },
+                    {
+                        "title": "═══════════════════════════",
+                        "credentials": []
+                    },
+                    {
+                        "title": "📍 VILA VELHA",
+                        "credentials": []
+                    },
+                    {
+                        "title": "Informação",
+                        "credentials": [
+                            { "user": "", "password": "(Entre em contato com o Bruno, que ele faz através do acesso remoto.)" },
+                            { "user": "", "password": "Fibr@mar2022" },
+                            { "user": "", "password": "admin" },
+                            { "user": "", "password": "user" }
+                        ]
+                    },
+                    {
+                        "title": "═══════════════════════════",
+                        "credentials": []
+                    },
+                    {
+                        "title": "📍 MUQUI / MIMOSO DO SUL",
+                        "credentials": []
+                    },
+                    {
+                        "title": "Uilas",
+                        "credentials": [
+                            { "user": "Senha", "password": "admin / Ab12345@" }
+                        ]
+                    },
+                    {
+                        "title": "Rabel",
+                        "credentials": [
+                            { "user": "Senha", "password": "admin" }
+                        ]
+                    },
+                    {
+                        "title": "Samuel - ONT",
+                        "credentials": [
+                            { "user": "Senha", "password": "Ab12345@" }
+                        ]
+                    },
+                    {
+                        "title": "Samuel - Huawei",
+                        "credentials": [
+                            { "user": "Senha", "password": "Coloca admin em cima embaixo colocar a senha que o cliente tinha escolhido" }
+                        ]
+                    },
+                    {
+                        "title": "═══════════════════════════",
+                        "credentials": []
+                    },
+                    {
+                        "title": "📍 SANTOS DUMONT",
+                        "credentials": []
+                    },
+                    {
+                        "title": "Senha padrão",
+                        "credentials": [
+                            { "user": "Senha", "password": "Fibramar.25" }
+                        ]
+                    }
+                ]
+            },
+            "⚙️ HABILITANDO ONU": [
+                "HABILITAR > SALVAR > DEPOIS GRAVAR\n\nDESABILITAR > EXCLUIR > DELETAR",
+                "OLT  (MARICÁ)\n\nQUALQUER ONU - 7",
+                "OLT (ITAIPUAÇU)\n\nBRIDGE - 62\nROUTER - 53\nBRIDGE PRETA PEQUENA - 74",
+                "OLT  PARA ONU HUAWEI (JACONÉ)\n\nQUALQUER ONU - 7",
+                "OLT (VILA VELHA) (ES)\n\nONUs ZTE - Perfil 85\nONUs outras marcas - 86",
+                "OLT (UNAMAR/ARARUAMA)\n\n ONUs Pista- Perfil 9 \n ONUs Condominio - 81 ",
+            ]
+        };
+
+        // Tema
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const body = document.body;
+
+        // Carregar tema salvo
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            themeIcon.textContent = '☀️';
+            themeText.textContent = 'Light';
+        }
+
+        // Alternar tema
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Renderizar tópicos
+        function renderTopics(data = scriptData, searchTerm = '') {
+            const topicsContainer = document.getElementById('topics');
+            topicsContainer.innerHTML = '';
+
+            for (const [topicName, content] of Object.entries(data)) {
+                // Verificar se é o tópico de senhas com estrutura especial
+                if (content.type === 'passwords') {
+                    renderPasswordTopic(topicName, content, searchTerm);
+                    continue;
+                }
+
+                const messages = content;
+                
+                // Filtrar mensagens se houver termo de busca
+                let filteredMessages = messages;
+                if (searchTerm) {
+                    filteredMessages = messages.filter(msg => 
+                        msg.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        topicName.toLowerCase().includes(searchTerm.toLowerCase())
+                    );
+                    
+                    // Pular tópico se não houver mensagens correspondentes
+                    if (filteredMessages.length === 0) continue;
+                }
+
+                const topicDiv = document.createElement('div');
+                topicDiv.className = 'topic';
+
+                const topicHeader = document.createElement('div');
+                topicHeader.className = 'topic-header';
+                topicHeader.innerHTML = `
+                    <h2>${topicName}</h2>
+                    <span class="topic-icon">▼</span>
+                `;
+
+                const messagesDiv = document.createElement('div');
+                messagesDiv.className = 'messages';
+
+                filteredMessages.forEach(message => {
+                    const messageItem = document.createElement('div');
+                    messageItem.className = 'message-item';
+                    
+                    const messageText = document.createElement('div');
+                    messageText.className = 'message-text';
+                    messageText.textContent = message;
+                    
+                    messageItem.appendChild(messageText);
+                    messageItem.addEventListener('click', () => copyToClipboard(message));
+                    
+                    messagesDiv.appendChild(messageItem);
+                });
+
+                topicHeader.addEventListener('click', () => {
+                    topicDiv.classList.toggle('active');
+                });
+
+                topicDiv.appendChild(topicHeader);
+                topicDiv.appendChild(messagesDiv);
+                topicsContainer.appendChild(topicDiv);
+            }
+        }
+
+        // Renderizar tópico de senhas com estrutura especial
+        function renderPasswordTopic(topicName, content, searchTerm) {
+            const topicsContainer = document.getElementById('topics');
+            
+            const topicDiv = document.createElement('div');
+            topicDiv.className = 'topic';
+
+            const topicHeader = document.createElement('div');
+            topicHeader.className = 'topic-header';
+            topicHeader.innerHTML = `
+                <h2>${topicName}</h2>
+                <span class="topic-icon">▼</span>
+            `;
+
+            const messagesDiv = document.createElement('div');
+            messagesDiv.className = 'messages';
+
+            content.items.forEach(item => {
+                if (searchTerm) {
+                    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        item.credentials.some(cred => 
+                            cred.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                            cred.password.toLowerCase().includes(searchTerm.toLowerCase())
+                        );
+                    if (!matchesSearch) return;
+                }
+
+                // Criar grupo de credenciais
+                const groupDiv = document.createElement('div');
+                groupDiv.style.marginBottom = '15px';
+
+                // Título do grupo
+                if (item.title) {
+                    const titleDiv = document.createElement('div');
+                    titleDiv.style.fontWeight = 'bold';
+                    titleDiv.style.marginBottom = '8px';
+                    titleDiv.style.color = body.classList.contains('dark-mode') ? '#a78bfa' : '#667eea';
+                    titleDiv.textContent = item.title;
+                    groupDiv.appendChild(titleDiv);
+                }
+
+                // Credenciais
+                item.credentials.forEach(cred => {
+                    const credDiv = document.createElement('div');
+                    credDiv.className = 'message-item password-item';
+                    credDiv.style.display = 'flex';
+                    credDiv.style.justifyContent = 'space-between';
+                    credDiv.style.alignItems = 'center';
+                    credDiv.style.padding = '10px 15px';
+
+                    const userSpan = document.createElement('span');
+                    userSpan.style.fontWeight = '500';
+                    userSpan.style.color = body.classList.contains('dark-mode') ? '#b0b0b0' : '#666';
+                    userSpan.textContent = cred.user || '—';
+
+                    const passwordSpan = document.createElement('span');
+                    passwordSpan.style.fontFamily = 'monospace';
+                    passwordSpan.style.fontWeight = 'bold';
+                    passwordSpan.style.color = body.classList.contains('dark-mode') ? '#e0e0e0' : '#333';
+                    passwordSpan.style.cursor = 'pointer';
+                    passwordSpan.textContent = cred.password;
+
+                    credDiv.appendChild(userSpan);
+                    credDiv.appendChild(passwordSpan);
+
+                    // Copiar apenas a senha ao clicar
+                    credDiv.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        copyToClipboard(cred.password);
+                    });
+
+                    groupDiv.appendChild(credDiv);
+                });
+
+                messagesDiv.appendChild(groupDiv);
+            });
+
+            topicHeader.addEventListener('click', () => {
+                topicDiv.classList.toggle('active');
+            });
+
+            topicDiv.appendChild(topicHeader);
+            topicDiv.appendChild(messagesDiv);
+            topicsContainer.appendChild(topicDiv);
+        }
+
+        // --- Substitui variáveis e adiciona saudação automática ---
+        function replaceVariables(text) {
+            const attendantName = document.getElementById('attendantName').value || '';
+            const now = new Date();
+            const dia = String(now.getDate()).padStart(2, '0');
+            const mes = String(now.getMonth() + 1).padStart(2, '0');
+            const ano = String(now.getFullYear()).slice(-2);
+            const hora = String(now.getHours()).padStart(2, '0');
+            const minuto = String(now.getMinutes()).padStart(2, '0');
+
+            const dataAtual = `${dia}/${mes}/${ano}`;
+            const horaAtual = `${hora}:${minuto}`;
+
+            // Saudação automática conforme o horário
+            let periodo = "";
+            const horaNum = now.getHours();
+            if (horaNum >= 5 && horaNum < 12) {
+                periodo = "Bom dia";
+            } else if (horaNum >= 12 && horaNum < 18) {
+                periodo = "Boa tarde";
+            } else {
+                periodo = "Boa noite";
+            }
+
+            return text
+                .replace(/\[PERIODO\]/g, periodo)
+                .replace(/\[NOME_ATENDENTE\]/g, attendantName)
+                .replace(/\[DATA\]/g, dataAtual)
+                .replace(/\[HORA\]/g, horaAtual);
+        }
+
+        // Copiar para área de transferência
+        function copyToClipboard(text) {
+            const textAtualizado = replaceVariables(text);
+            
+            navigator.clipboard.writeText(textAtualizado).then(() => {
+                showNotification();
+            }).catch(err => {
+                console.error('Erro ao copiar:', err);
             });
         }
+
+        // Mostrar notificação
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+
+        // Busca
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value;
+            renderTopics(scriptData, searchTerm);
+        });
+
+        // Renderizar inicialmente
+        renderTopics();
+
+        // Atualizar variáveis quando o nome do atendente for alterado
+        const attendantNameInput = document.getElementById('attendantName');
+        
+        // Carregar nome do atendente salvo
+        const savedAttendantName = localStorage.getItem('attendantName');
+        if (savedAttendantName) {
+            attendantNameInput.value = savedAttendantName;
+        }
+        
+        attendantNameInput.addEventListener('input', function() {
+            // Salvar nome do atendente no localStorage
+            localStorage.setItem('attendantName', attendantNameInput.value);
+            // Re-renderizar todos os tópicos com as variáveis atualizadas
+            renderTopics();
+        });
+
+        // Bloco de Notas
+        const notepad = document.getElementById('notepad');
+        const notepadToggle = document.getElementById('notepadToggle');
+        const notepadClose = document.getElementById('notepadClose');
+        const notepadReopen = document.getElementById('notepadReopen');
+        const notepadTextarea = document.getElementById('notepadTextarea');
+        const notepadClear = document.getElementById('notepadClear');
+        const charCount = document.getElementById('charCount');
+
+        // Carregar notas salvas
+        const savedNotes = localStorage.getItem('notepadContent');
+        if (savedNotes) {
+            notepadTextarea.value = savedNotes;
+            updateCharCount();
+        }
+
+        // Carregar estado do bloco de notas
+        const notepadHidden = localStorage.getItem('notepadHidden') === 'true';
+        if (notepadHidden) {
+            notepad.classList.add('hidden');
+            notepadReopen.classList.add('show');
+            body.classList.add('notepad-hidden');
+        }
+
+        // Minimizar/Maximizar
+        notepadToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notepad.classList.toggle('minimized');
+            notepadToggle.textContent = notepad.classList.contains('minimized') ? '+' : '−';
+        });
+
+        // Fechar bloco de notas
+        notepadClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notepad.classList.add('hidden');
+            notepadReopen.classList.add('show');
+            body.classList.add('notepad-hidden');
+            localStorage.setItem('notepadHidden', 'true');
+        });
+
+        // Reabrir bloco de notas
+        notepadReopen.addEventListener('click', () => {
+            notepad.classList.remove('hidden');
+            notepadReopen.classList.remove('show');
+            body.classList.remove('notepad-hidden');
+            localStorage.setItem('notepadHidden', 'false');
+        });
+
+        // Salvar automaticamente
+        notepadTextarea.addEventListener('input', () => {
+            localStorage.setItem('notepadContent', notepadTextarea.value);
+            updateCharCount();
+        });
+
+        // Limpar notas
+        notepadClear.addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja limpar todas as anotações?')) {
+                notepadTextarea.value = '';
+                localStorage.removeItem('notepadContent');
+                updateCharCount();
+            }
+        });
+
+        // Exportar notas
+        const notepadExport = document.getElementById('notepadExport');
+        notepadExport.addEventListener('click', () => {
+            const content = notepadTextarea.value;
+            if (!content.trim()) {
+                alert('Não há conteúdo para exportar!');
+                return;
+            }
+            
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            const now = new Date();
+            const filename = `notas-atendimento-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}.txt`;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('✓ Notas exportadas com sucesso!');
+        });
+
+        // Importar notas
+        const notepadImportBtn = document.getElementById('notepadImportBtn');
+        const notepadImport = document.getElementById('notepadImport');
+        
+        notepadImportBtn.addEventListener('click', () => {
+            notepadImport.click();
+        });
+
+        notepadImport.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const content = event.target.result;
+                if (notepadTextarea.value.trim() && !confirm('Deseja substituir o conteúdo atual?')) {
+                    notepadImport.value = '';
+                    return;
+                }
+                notepadTextarea.value = content;
+                localStorage.setItem('notepadContent', content);
+                updateCharCount();
+                showNotification('✓ Notas importadas com sucesso!');
+                notepadImport.value = '';
+            };
+            reader.readAsText(file);
+        });
+
+        // Atualizar contador de caracteres
+        function updateCharCount() {
+            const count = notepadTextarea.value.length;
+            charCount.textContent = `${count} caractere${count !== 1 ? 's' : ''}`;
+        }
+
+        // Sistema de correção ortográfica removido
+        // (Funcionalidade removida devido à complexidade de implementação adequada)
+
+        // Calculadora Financeira (Modal)
+        const calculatorBackdrop = document.getElementById('calculatorBackdrop');
+        const calculatorOpenBtn = document.getElementById('calculatorOpenBtn');
+        const calculatorClose = document.getElementById('calculatorClose');
+
+        console.log('Calculator elements:', {
+            backdrop: calculatorBackdrop,
+            openBtn: calculatorOpenBtn,
+            closeBtn: calculatorClose
+        });
+
+        // Abrir calculadora
+        if (calculatorOpenBtn) {
+            calculatorOpenBtn.addEventListener('click', () => {
+                console.log('Botão clicado!');
+                calculatorBackdrop.classList.add('show');
+            });
+        } else {
+            console.error('Botão da calculadora não encontrado!');
+        }
+
+        // Fechar calculadora
+        calculatorClose.addEventListener('click', () => {
+            calculatorBackdrop.classList.remove('show');
+        });
+
+        // Fechar ao clicar no backdrop
+        calculatorBackdrop.addEventListener('click', (e) => {
+            if (e.target === calculatorBackdrop) {
+                calculatorBackdrop.classList.remove('show');
+            }
+        });
+
+        // Fechar com tecla ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && calculatorBackdrop.classList.contains('show')) {
+                calculatorBackdrop.classList.remove('show');
+            }
+        });
+
+        // Cálculo Proporcional
+        const calcProporcionalBtn = document.getElementById('calcProporcional');
+        const valorPlanoInput = document.getElementById('valorPlano');
+        const diasMesInput = document.getElementById('diasMes');
+        const diasUtilizadosInput = document.getElementById('diasUtilizados');
+        const resultProporcional = document.getElementById('resultProporcional');
+        const valorProporcionalSpan = document.getElementById('valorProporcional');
+
+        calcProporcionalBtn.addEventListener('click', () => {
+            const valorPlano = parseFloat(valorPlanoInput.value);
+            const diasMes = parseInt(diasMesInput.value);
+            const diasUtilizados = parseInt(diasUtilizadosInput.value);
+
+            if (!valorPlano || !diasMes || diasUtilizados === undefined) {
+                alert('Por favor, preencha todos os campos do cálculo proporcional.');
+                return;
+            }
+
+            if (diasUtilizados > diasMes) {
+                alert('Dias utilizados não pode ser maior que dias do mês.');
+                return;
+            }
+
+            const valorProporcional = (valorPlano / diasMes) * diasUtilizados;
+            valorProporcionalSpan.textContent = `R$ ${valorProporcional.toFixed(2).replace('.', ',')}`;
+            resultProporcional.classList.add('show');
+        });
+
+        // Cálculo de Acordo (1 fatura e meia)
+        const calcAcordoBtn = document.getElementById('calcAcordo');
+        const valorFaturaInput = document.getElementById('valorFatura');
+        const resultAcordo = document.getElementById('resultAcordo');
+        const valorAcordoSpan = document.getElementById('valorAcordo');
+
+        calcAcordoBtn.addEventListener('click', () => {
+            const valorFatura = parseFloat(valorFaturaInput.value);
+
+            if (!valorFatura) {
+                alert('Por favor, informe o valor da fatura.');
+                return;
+            }
+
+            const valorAcordo = valorFatura * 1.5;
+            valorAcordoSpan.textContent = `R$ ${valorAcordo.toFixed(2).replace('.', ',')}`;
+            resultAcordo.classList.add('show');
+        });
+
+        // Cálculo de Comissão
+        const calcComissaoBtn = document.getElementById('calcComissao');
+        const qtdCadastrosInput = document.getElementById('qtdCadastros');
+        const valorAcordosInput = document.getElementById('valorAcordos');
+        const resultComissao = document.getElementById('resultComissao');
+        const valorComissaoSpan = document.getElementById('valorComissao');
+        const detalhesComissao = document.getElementById('detalhesComissao');
+
+        calcComissaoBtn.addEventListener('click', () => {
+            const qtdCadastros = parseInt(qtdCadastrosInput.value) || 0;
+            const valorAcordos = parseFloat(valorAcordosInput.value) || 0;
+
+            // R$ 3,00 por cadastro + metade do valor dos acordos
+            const comissaoCadastros = qtdCadastros * 3;
+            const comissaoAcordos = valorAcordos / 2;
+            const comissaoTotal = comissaoCadastros + comissaoAcordos;
+
+            valorComissaoSpan.textContent = `R$ ${comissaoTotal.toFixed(2).replace('.', ',')}`;
+            detalhesComissao.innerHTML = `
+                Cadastros: ${qtdCadastros} × R$ 3,00 = R$ ${comissaoCadastros.toFixed(2).replace('.', ',')}<br>
+                Acordos: R$ ${valorAcordos.toFixed(2).replace('.', ',')} ÷ 2 = R$ ${comissaoAcordos.toFixed(2).replace('.', ',')}
+            `;
+            resultComissao.classList.add('show');
+        });
+
+        // Formatar inputs para aceitar vírgula como decimal
+        [valorPlanoInput, valorFaturaInput, valorAcordosInput].forEach(input => {
+            input.addEventListener('input', (e) => {
+                let value = e.target.value.replace(',', '.');
+                e.target.value = value;
+            });
+        });
+
+        // Widget de Data/Hora
+        const datetimeWidget = document.getElementById('datetimeWidget');
+        const weatherWidget = document.getElementById('weatherWidget');
+        
+        // Verificar se os widgets existem
+        if (!datetimeWidget) {
+            console.error('Widget de data/hora não encontrado');
+        }
+        if (!weatherWidget) {
+            console.error('Widget de clima não encontrado');
+        }
+
+        function updateDateTime() {
+            try {
+                const now = new Date();
+                const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+                const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                
+                const diaSemana = dias[now.getDay()];
+                const dia = now.getDate();
+                const mes = meses[now.getMonth()];
+                const hora = String(now.getHours()).padStart(2, '0');
+                const minuto = String(now.getMinutes()).padStart(2, '0');
+                
+                if (datetimeWidget) {
+                    datetimeWidget.textContent = `🕐 ${diaSemana}, ${dia} ${mes} - ${hora}:${minuto}`;
+                }
+            } catch (error) {
+                console.log('Erro ao atualizar data/hora:', error);
+                if (datetimeWidget) {
+                    datetimeWidget.textContent = '🕐 Erro ao carregar';
+                }
+            }
+        }
+
+
+        // Buscar clima (usando API gratuita do Open-Meteo)
+        async function updateWeather() {
+            try {
+                // Coordenadas aproximadas do Rio de Janeiro (ajuste conforme sua localização)
+                const lat = -22.9068;
+                const lon = -43.1729;
+                
+                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+                
+                if (!response.ok) {
+                    throw new Error('Erro na API do clima');
+                }
+                
+                const data = await response.json();
+                
+                if (data.current_weather) {
+                    const temp = Math.round(data.current_weather.temperature);
+                    const weatherCode = data.current_weather.weathercode;
+                    
+                    // Mapear código do clima para emoji
+                    let weatherEmoji = '🌡️';
+                    if (weatherCode === 0) weatherEmoji = '☀️';
+                    else if (weatherCode <= 3) weatherEmoji = '⛅';
+                    else if (weatherCode <= 67) weatherEmoji = '🌧️';
+                    else if (weatherCode <= 77) weatherEmoji = '🌨️';
+                    else if (weatherCode <= 99) weatherEmoji = '⛈️';
+                    
+                    weatherWidget.textContent = `${weatherEmoji} ${temp}°C`;
+                } else {
+                    weatherWidget.textContent = '🌡️ --°C';
+                }
+            } catch (error) {
+                console.log('Erro ao buscar clima:', error);
+                weatherWidget.textContent = '🌡️ --°C';
+            }
+        }
+
+        // Inicializar widgets
+        if (datetimeWidget) {
+            updateDateTime();
+            setInterval(updateDateTime, 60000);
+        }
+        
+        if (weatherWidget) {
+            updateWeather();
+            // Atualizar clima a cada 30 minutos
+            setInterval(updateWeather, 1800000);
+        }
+    
+        // Funcionalidade de redimensionamento do bloco de notas
+        (function() {
+            const notepad = document.getElementById('notepad');
+            if (!notepad) return;
+            
+            let isResizingH = false;
+            let isResizingV = false;
+            let startX = 0;
+            let startY = 0;
+            let startWidth = 0;
+            let startHeight = 0;
+            let startBottom = 0;
+
+            // Criar handle de redimensionamento horizontal (lateral esquerda)
+            const resizeHandleH = document.createElement('div');
+            resizeHandleH.className = 'notepad-resize-handle';
+            notepad.insertBefore(resizeHandleH, notepad.firstChild);
+
+            // Criar handle de redimensionamento vertical (canto superior esquerdo)
+            const resizeHandleV = document.createElement('div');
+            resizeHandleV.className = 'notepad-resize-handle-vertical';
+            notepad.insertBefore(resizeHandleV, notepad.firstChild);
+
+            // Redimensionamento horizontal
+            resizeHandleH.addEventListener('mousedown', (e) => {
+                isResizingH = true;
+                startX = e.clientX;
+                startWidth = notepad.offsetWidth;
+                document.body.style.cursor = 'ew-resize';
+                document.body.style.userSelect = 'none';
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            // Redimensionamento vertical e horizontal (canto)
+            resizeHandleV.addEventListener('mousedown', (e) => {
+                isResizingV = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startWidth = notepad.offsetWidth;
+                startHeight = notepad.offsetHeight;
+                const rect = notepad.getBoundingClientRect();
+                startBottom = window.innerHeight - rect.bottom;
+                document.body.style.cursor = 'nwse-resize';
+                document.body.style.userSelect = 'none';
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isResizingH) {
+                    const deltaX = startX - e.clientX;
+                    const newWidth = startWidth + deltaX;
+                    
+                    if (newWidth >= 250 && newWidth <= 800) {
+                        notepad.style.width = newWidth + 'px';
+                    }
+                }
+                
+                if (isResizingV) {
+                    const deltaX = startX - e.clientX;
+                    const deltaY = startY - e.clientY;
+                    const newWidth = startWidth + deltaX;
+                    const newHeight = startHeight + deltaY;
+                    const maxHeight = window.innerHeight * 0.8;
+                    
+                    if (newWidth >= 250 && newWidth <= 800) {
+                        notepad.style.width = newWidth + 'px';
+                    }
+                    
+                    if (newHeight >= 200 && newHeight <= maxHeight) {
+                        notepad.style.height = newHeight + 'px';
+                        notepad.style.bottom = startBottom + 'px';
+                    }
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isResizingH || isResizingV) {
+                    isResizingH = false;
+                    isResizingV = false;
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+                }
+            });
+        })();
+
     </script>
 </body>
 </html>

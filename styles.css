@@ -33,22 +33,22 @@
     --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
     
-    /* Theme System Variables */
+    /* Theme System Variables - Melhorado para melhor contraste */
     --bg-primary: #ffffff;
-    --bg-secondary: #f8f9fa;
-    --bg-tertiary: rgba(255, 255, 255, 0.95);
-    --text-primary: #2c3e50;
-    --text-secondary: #6c757d;
-    --text-muted: #adb5bd;
-    --border-color: #dee2e6;
-    --card-bg: rgba(255, 255, 255, 0.95);
+    --bg-secondary: #f5f6fa;
+    --bg-tertiary: rgba(255, 255, 255, 0.98);
+    --text-primary: #1a1a1a;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
+    --border-color: #cbd5e0;
+    --card-bg: rgba(255, 255, 255, 0.98);
     --input-bg: #ffffff;
     --button-bg: var(--primary-color);
     --button-text: #ffffff;
-    --hover-bg: rgba(0, 0, 0, 0.05);
-    --active-bg: rgba(0, 0, 0, 0.1);
-    --scrollbar-track: #f1f1f1;
-    --scrollbar-thumb: #c1c1c1;
+    --hover-bg: rgba(102, 126, 234, 0.08);
+    --active-bg: rgba(102, 126, 234, 0.15);
+    --scrollbar-track: #e2e8f0;
+    --scrollbar-thumb: #a0aec0;
     --backdrop-filter: blur(20px);
     
     /* Performance variables */
@@ -75,6 +75,45 @@
     --scrollbar-track: #2d2d2d;
     --scrollbar-thumb: #555555;
     --backdrop-filter: blur(20px);
+}
+
+/* Light Theme Specific Improvements */
+[data-theme="light"] {
+    --success-color: #22c55e;
+    --error-color: #ef4444;
+    --warning-color: #f59e0b;
+    --info-color: #3b82f6;
+    --shadow-light: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-hover-light: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .topic {
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-light);
+}
+
+[data-theme="light"] .topic:hover {
+    box-shadow: var(--shadow-hover-light);
+    border-color: var(--primary-color);
+}
+
+[data-theme="light"] .message {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="light"] .copy-btn,
+[data-theme="light"] .favorite-btn {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+[data-theme="light"] .copy-btn:hover,
+[data-theme="light"] .favorite-btn:hover {
+    background: var(--hover-bg);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 /* Auto Dark Mode based on system preference */

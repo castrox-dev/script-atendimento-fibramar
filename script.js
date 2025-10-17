@@ -307,17 +307,27 @@ class ThemeManager {
     }
 
     updateThemeIcon(theme) {
-        const sunIcon = document.getElementById('sunIcon');
-        const moonIcon = document.getElementById('moonIcon');
-        
-        if (sunIcon && moonIcon) {
-            if (theme === 'dark') {
-                sunIcon.style.display = 'block';
-                moonIcon.style.display = 'none';
-            } else {
-                sunIcon.style.display = 'none';
-                moonIcon.style.display = 'block';
+        // Aguarda o DOM estar pronto antes de tentar acessar os elementos
+        const updateIcons = () => {
+            const sunIcon = document.getElementById('sunIcon');
+            const moonIcon = document.getElementById('moonIcon');
+            
+            if (sunIcon && moonIcon) {
+                if (theme === 'dark') {
+                    sunIcon.style.display = 'block';
+                    moonIcon.style.display = 'none';
+                } else {
+                    sunIcon.style.display = 'none';
+                    moonIcon.style.display = 'block';
+                }
             }
+        };
+
+        // Se o DOM já estiver carregado, atualiza imediatamente
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateIcons);
+        } else {
+            updateIcons();
         }
     }
 
@@ -811,6 +821,11 @@ class UpdateManager {
 
     async checkForUpdates() {
         try {
+            // Verifica se está em ambiente de desenvolvimento local
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return false;
+            }
+            
             const now = Date.now();
             const lastCheck = parseInt(this.lastCheck) || 0;
             
@@ -834,6 +849,10 @@ class UpdateManager {
             localStorage.setItem('lastUpdateCheck', now.toString());
             return false;
         } catch (error) {
+            // Log silencioso em desenvolvimento
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return false;
+            }
             console.warn('Erro ao verificar atualizações:', error);
             return false;
         }
@@ -944,11 +963,13 @@ class BackupManager {
 
             // Restaurar tema
             if (data.theme) {
-                const isDark = data.theme === 'dark';
-                document.body.classList.toggle('dark-theme', isDark);
-                localStorage.setItem('theme', data.theme);
-                if (window.app) {
-                    window.app.updateThemeToggle(isDark);
+                if (window.app && window.app.themeManager) {
+                    window.app.themeManager.setTheme(data.theme);
+                } else {
+                    // Fallback se o app ainda não estiver inicializado
+                    const isDark = data.theme === 'dark';
+                    document.body.classList.toggle('dark-theme', isDark);
+                    localStorage.setItem('theme', data.theme);
                 }
             }
 
@@ -1343,7 +1364,7 @@ class ConnectivityManager {
     async registerServiceWorker() {
         if ('serviceWorker' in navigator) {
             try {
-                const registration = await navigator.serviceWorker.register('/sw.js');
+                const registration = await navigator.serviceWorker.register('./sw.js');
                 console.log('Service Worker registrado:', registration.scope);
                 
                 // Escuta mensagens do service worker
@@ -1365,6 +1386,19 @@ class ConnectivityManager {
     
     async checkConnectivity() {
         try {
+            // Em ambiente local, usar navigator.onLine
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                const wasOffline = !this.isOnline;
+                this.isOnline = navigator.onLine;
+                
+                if (wasOffline && this.isOnline) {
+                    this.handleOnline();
+                } else if (!wasOffline && !this.isOnline) {
+                    this.handleOffline();
+                }
+                return;
+            }
+            
             // Tenta fazer uma requisição simples para verificar conectividade real
             const response = await fetch('/ping', { 
                 method: 'HEAD',
@@ -1608,6 +1642,11 @@ class VersionManager {
 
     async checkForUpdates() {
         try {
+            // Verifica se está em ambiente de desenvolvimento local
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return { updateAvailable: false, message: 'Verificação de atualizações desabilitada em desenvolvimento local' };
+            }
+            
             this.lastUpdateCheck = new Date().toISOString();
             
             const response = await fetch(`${CONFIG.remote.configUrl}?v=${Date.now()}`);
@@ -1637,6 +1676,10 @@ class VersionManager {
             
             return { updateAvailable: false };
         } catch (error) {
+            // Log silencioso em desenvolvimento, apenas retorna sem atualização
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                return { updateAvailable: false, error: 'Desenvolvimento local' };
+            }
             console.error('Erro ao verificar atualizações:', error);
             return { error: error.message };
         }
@@ -3447,6 +3490,14 @@ class FibramarApp {
         
         // Limpar o input
         event.target.value = '';
+    }
+
+    // Método de compatibilidade para updateThemeToggle
+    updateThemeToggle(isDark) {
+        if (this.themeManager) {
+            const theme = isDark ? 'dark' : 'light';
+            this.themeManager.setTheme(theme);
+        }
     }
 }
 
