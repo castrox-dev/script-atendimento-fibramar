@@ -1,6 +1,385 @@
 // Script de Atendimento - Fibramar Internet
 // Versão otimizada com melhor organização e performance para GitHub Pages
 
+// Theme Manager - Sistema de temas automático
+class AnimationManager {
+    constructor() {
+        this.animationQueue = [];
+        this.isAnimating = false;
+        this.observers = new Map();
+        this.init();
+    }
+
+    init() {
+        this.setupIntersectionObserver();
+        this.setupPageTransitions();
+        this.addGlobalAnimationClasses();
+    }
+
+    setupIntersectionObserver() {
+        const options = {
+            threshold: 0.1,
+            rootMargin: '50px'
+        };
+
+        this.intersectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.animateElement(entry.target, 'animate-fade-in');
+                }
+            });
+        }, options);
+    }
+
+    setupPageTransitions() {
+        document.body.classList.add('page-transition');
+        
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.body.classList.add('loaded');
+            }, 100);
+        });
+    }
+
+    addGlobalAnimationClasses() {
+        // Add animation classes to topics when they're rendered
+        const style = document.createElement('style');
+        style.textContent = `
+            .topic {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.5s ease-out;
+            }
+            
+            .topic.animate-in {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    animateElement(element, animationClass, duration = null) {
+        return new Promise((resolve) => {
+            element.classList.add(animationClass);
+            
+            const handleAnimationEnd = () => {
+                element.removeEventListener('animationend', handleAnimationEnd);
+                resolve();
+            };
+            
+            element.addEventListener('animationend', handleAnimationEnd);
+            
+            if (duration) {
+                setTimeout(() => {
+                    element.removeEventListener('animationend', handleAnimationEnd);
+                    resolve();
+                }, duration);
+            }
+        });
+    }
+
+    async animateSequence(elements, animationClass, delay = 100) {
+        for (let i = 0; i < elements.length; i++) {
+            this.animateElement(elements[i], animationClass);
+            if (i < elements.length - 1) {
+                await this.delay(delay);
+            }
+        }
+    }
+
+    animateTopics() {
+        const topics = document.querySelectorAll('.topic');
+        topics.forEach((topic, index) => {
+            setTimeout(() => {
+                topic.classList.add('animate-in');
+            }, index * 100);
+        });
+    }
+
+    animateMessages(container) {
+        const messages = container.querySelectorAll('.message');
+        messages.forEach((message, index) => {
+            setTimeout(() => {
+                this.animateElement(message, 'animate-fade-in');
+            }, index * 50);
+        });
+    }
+
+    showNotificationWithAnimation(element, type = 'success') {
+        element.classList.add('animate-scale-in');
+        
+        if (type === 'success') {
+            element.classList.add('success-feedback');
+        } else if (type === 'error') {
+            element.classList.add('error-feedback');
+        }
+        
+        setTimeout(() => {
+            element.classList.remove('success-feedback', 'error-feedback');
+        }, 600);
+    }
+
+    addButtonPressEffect(button) {
+        button.addEventListener('mousedown', () => {
+            button.classList.add('button-press');
+        });
+        
+        button.addEventListener('mouseup', () => {
+            button.classList.remove('button-press');
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            button.classList.remove('button-press');
+        });
+    }
+
+    addHoverEffects() {
+        // Add hover effects to all interactive elements
+        const interactiveElements = document.querySelectorAll('button, .topic, .message, .floating-btn');
+        
+        interactiveElements.forEach(element => {
+            this.addButtonPressEffect(element);
+        });
+    }
+
+    observeElement(element) {
+        this.intersectionObserver.observe(element);
+    }
+
+    unobserveElement(element) {
+        this.intersectionObserver.unobserve(element);
+    }
+
+    delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    fadeIn(element, duration = 300) {
+        element.style.opacity = '0';
+        element.style.display = 'block';
+        
+        let start = null;
+        const animate = (timestamp) => {
+            if (!start) start = timestamp;
+            const progress = timestamp - start;
+            const opacity = Math.min(progress / duration, 1);
+            
+            element.style.opacity = opacity;
+            
+            if (progress < duration) {
+                requestAnimationFrame(animate);
+            }
+        };
+        
+        requestAnimationFrame(animate);
+    }
+
+    fadeOut(element, duration = 300) {
+        let start = null;
+        const initialOpacity = parseFloat(getComputedStyle(element).opacity);
+        
+        const animate = (timestamp) => {
+            if (!start) start = timestamp;
+            const progress = timestamp - start;
+            const opacity = initialOpacity * (1 - Math.min(progress / duration, 1));
+            
+            element.style.opacity = opacity;
+            
+            if (progress < duration) {
+                requestAnimationFrame(animate);
+            } else {
+                element.style.display = 'none';
+            }
+        };
+        
+        requestAnimationFrame(animate);
+    }
+
+    slideIn(element, direction = 'right', duration = 300) {
+        const directions = {
+            right: 'animate-slide-in-right',
+            left: 'animate-slide-in-left',
+            top: 'animate-slide-in-top',
+            bottom: 'animate-slide-in-bottom'
+        };
+        
+        return this.animateElement(element, directions[direction], duration);
+    }
+
+    scaleIn(element, duration = 300) {
+        return this.animateElement(element, 'animate-scale-in', duration);
+    }
+
+    pulse(element) {
+        element.classList.add('animate-pulse');
+        setTimeout(() => {
+            element.classList.remove('animate-pulse');
+        }, 2000);
+    }
+
+    shake(element) {
+        element.classList.add('animate-shake');
+        setTimeout(() => {
+            element.classList.remove('animate-shake');
+        }, 500);
+    }
+
+    glow(element) {
+        element.classList.add('animate-glow');
+        setTimeout(() => {
+            element.classList.remove('animate-glow');
+        }, 2000);
+    }
+
+    addLoadingAnimation(element) {
+        element.classList.add('loading');
+    }
+
+    removeLoadingAnimation(element) {
+        element.classList.remove('loading');
+    }
+
+    destroy() {
+        if (this.intersectionObserver) {
+            this.intersectionObserver.disconnect();
+        }
+        this.observers.clear();
+    }
+}
+
+class ThemeManager {
+    constructor() {
+        this.storageKey = 'fibramar-theme-preference';
+        this.currentTheme = this.getStoredTheme() || this.getSystemTheme();
+        this.init();
+    }
+
+    init() {
+        this.applyTheme(this.currentTheme);
+        this.setupEventListeners();
+        this.watchSystemTheme();
+    }
+
+    getSystemTheme() {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    getStoredTheme() {
+        try {
+            return localStorage.getItem(this.storageKey);
+        } catch (error) {
+            console.warn('Erro ao carregar preferência de tema:', error);
+            return null;
+        }
+    }
+
+    setStoredTheme(theme) {
+        try {
+            if (theme === 'auto') {
+                localStorage.removeItem(this.storageKey);
+            } else {
+                localStorage.setItem(this.storageKey, theme);
+            }
+        } catch (error) {
+            console.warn('Erro ao salvar preferência de tema:', error);
+        }
+    }
+
+    applyTheme(theme) {
+        const root = document.documentElement;
+        const body = document.body;
+        
+        // Remove classes anteriores
+        root.removeAttribute('data-theme');
+        body.classList.remove('light-theme', 'dark-theme');
+        
+        if (theme === 'dark') {
+            root.setAttribute('data-theme', 'dark');
+            body.classList.add('dark-theme');
+        } else {
+            root.setAttribute('data-theme', 'light');
+            body.classList.add('light-theme');
+        }
+        
+        this.updateThemeIcon(theme);
+        this.currentTheme = theme;
+    }
+
+    updateThemeIcon(theme) {
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        
+        if (sunIcon && moonIcon) {
+            if (theme === 'dark') {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            } else {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            }
+        }
+    }
+
+    toggleTheme() {
+        const newTheme = this.currentTheme === 'dark' ? 'light' : 'dark';
+        this.applyTheme(newTheme);
+        this.setStoredTheme(newTheme);
+        
+        // Trigger analytics
+        if (window.app && window.app.analytics) {
+            window.app.analytics.trackEvent('theme_changed', { theme: newTheme });
+        }
+        
+        // Show notification
+        if (window.app) {
+            window.app.showNotification(
+                `Tema alterado para ${newTheme === 'dark' ? 'escuro' : 'claro'}`, 
+                'info'
+            );
+        }
+    }
+
+    setupEventListeners() {
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => this.toggleTheme());
+        }
+    }
+
+    watchSystemTheme() {
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+        mediaQuery.addEventListener('change', (e) => {
+            // Só aplica automaticamente se não há preferência salva
+            if (!this.getStoredTheme()) {
+                const systemTheme = e.matches ? 'dark' : 'light';
+                this.applyTheme(systemTheme);
+            }
+        });
+    }
+
+    getCurrentTheme() {
+        return this.currentTheme;
+    }
+
+    setTheme(theme) {
+        if (['light', 'dark', 'auto'].includes(theme)) {
+            if (theme === 'auto') {
+                this.setStoredTheme('auto');
+                this.applyTheme(this.getSystemTheme());
+            } else {
+                this.applyTheme(theme);
+                this.setStoredTheme(theme);
+            }
+        }
+    }
+
+    getThemePreference() {
+        const stored = this.getStoredTheme();
+        return stored || 'auto';
+    }
+}
+
 // Analytics Manager - Sistema simples para GitHub Pages
 class AnalyticsManager {
     constructor() {
@@ -1387,6 +1766,359 @@ class VersionManager {
     }
 }
 
+// Favorites Manager Class
+class FavoritesManager {
+    constructor() {
+        this.favorites = this.loadFavorites();
+        this.isCollapsed = this.loadCollapseState();
+        this.maxFavorites = 50;
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.updateDisplay();
+        this.updateVisibility();
+    }
+
+    setupEventListeners() {
+        // Toggle collapse/expand
+        const toggleBtn = document.getElementById('favoritesToggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => this.toggleCollapse());
+        }
+
+        // Clear all favorites
+        const clearBtn = document.getElementById('clearFavorites');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => this.clearAllFavorites());
+        }
+    }
+
+    addFavorite(text, topicName = '') {
+        if (this.favorites.length >= this.maxFavorites) {
+            this.showNotification('Limite máximo de favoritos atingido!', 'warning');
+            return false;
+        }
+
+        const favoriteId = this.generateId();
+        const favorite = {
+            id: favoriteId,
+            text: text.trim(),
+            topic: topicName,
+            timestamp: Date.now(),
+            usageCount: 0
+        };
+
+        // Check if already exists
+        if (this.favorites.some(fav => fav.text === favorite.text)) {
+            this.showNotification('Esta mensagem já está nos favoritos!', 'info');
+            return false;
+        }
+
+        this.favorites.unshift(favorite);
+        this.saveFavorites();
+        this.updateDisplay();
+        this.updateVisibility();
+        this.showNotification('Mensagem adicionada aos favoritos!', 'success');
+        return true;
+    }
+
+    removeFavorite(favoriteId) {
+        const index = this.favorites.findIndex(fav => fav.id === favoriteId);
+        if (index !== -1) {
+            this.favorites.splice(index, 1);
+            this.saveFavorites();
+            this.updateDisplay();
+            this.updateVisibility();
+            this.showNotification('Favorito removido!', 'success');
+        }
+    }
+
+    isFavorited(text) {
+        return this.favorites.some(fav => fav.text.trim() === text.trim());
+    }
+
+    getFavoriteByText(text) {
+        return this.favorites.find(fav => fav.text.trim() === text.trim());
+    }
+
+    incrementUsage(favoriteId) {
+        const favorite = this.favorites.find(fav => fav.id === favoriteId);
+        if (favorite) {
+            favorite.usageCount++;
+            favorite.lastUsed = Date.now();
+            this.saveFavorites();
+        }
+    }
+
+    copyFavorite(favoriteId) {
+        const favorite = this.favorites.find(fav => fav.id === favoriteId);
+        if (favorite) {
+            this.incrementUsage(favoriteId);
+            
+            // Use the app's copy function if available
+            if (window.app && window.app.copyToClipboard) {
+                window.app.copyToClipboard(favorite.text);
+            } else {
+                // Fallback copy method
+                navigator.clipboard.writeText(favorite.text).then(() => {
+                    this.showNotification('Favorito copiado!', 'success');
+                }).catch(() => {
+                    this.showNotification('Erro ao copiar favorito!', 'error');
+                });
+            }
+        }
+    }
+
+    toggleCollapse() {
+        this.isCollapsed = !this.isCollapsed;
+        this.saveCollapseState();
+        this.updateCollapseDisplay();
+    }
+
+    updateCollapseDisplay() {
+        const favoritesList = document.getElementById('favoritesList');
+        const favoritesStats = document.getElementById('favoritesStats');
+        const toggleBtn = document.getElementById('favoritesToggle');
+
+        if (favoritesList && favoritesStats && toggleBtn) {
+            if (this.isCollapsed) {
+                favoritesList.style.display = 'none';
+                favoritesStats.style.display = 'none';
+                toggleBtn.textContent = '▶';
+                toggleBtn.title = 'Expandir';
+            } else {
+                favoritesList.style.display = 'grid';
+                favoritesStats.style.display = this.favorites.length > 0 ? 'flex' : 'none';
+                toggleBtn.textContent = '▼';
+                toggleBtn.title = 'Recolher';
+            }
+        }
+    }
+
+    updateDisplay() {
+        const favoritesList = document.getElementById('favoritesList');
+        const favoritesEmpty = document.getElementById('favoritesEmpty');
+        const favoritesCount = document.getElementById('favoritesCount');
+        const favoritesStats = document.getElementById('favoritesStats');
+
+        if (!favoritesList) return;
+
+        if (this.favorites.length === 0) {
+            favoritesList.innerHTML = '<div class="favorites-empty">Nenhuma mensagem favoritada ainda. Clique na estrela ao lado das mensagens para adicioná-las aos favoritos.</div>';
+            if (favoritesStats) favoritesStats.style.display = 'none';
+        } else {
+            favoritesList.innerHTML = '';
+            
+            // Sort favorites by usage count and recency
+            const sortedFavorites = [...this.favorites].sort((a, b) => {
+                if (b.usageCount !== a.usageCount) {
+                    return b.usageCount - a.usageCount;
+                }
+                return b.timestamp - a.timestamp;
+            });
+
+            sortedFavorites.forEach(favorite => {
+                const favoriteElement = this.createFavoriteElement(favorite);
+                favoritesList.appendChild(favoriteElement);
+            });
+
+            if (favoritesCount) {
+                favoritesCount.textContent = `${this.favorites.length} favorito${this.favorites.length !== 1 ? 's' : ''}`;
+            }
+            if (favoritesStats) {
+                favoritesStats.style.display = this.isCollapsed ? 'none' : 'flex';
+            }
+        }
+
+        this.updateCollapseDisplay();
+    }
+
+    createFavoriteElement(favorite) {
+        const div = document.createElement('div');
+        div.className = 'favorite-item animate-add';
+        div.dataset.favoriteId = favorite.id;
+
+        const truncatedText = favorite.text.length > 100 
+            ? favorite.text.substring(0, 100) + '...' 
+            : favorite.text;
+
+        div.innerHTML = `
+            <div class="favorite-text" title="${this.escapeHtml(favorite.text)}">
+                ${this.escapeHtml(truncatedText)}
+                ${favorite.topic ? `<small style="color: var(--text-secondary); display: block; margin-top: 4px;">📁 ${this.escapeHtml(favorite.topic)}</small>` : ''}
+                ${favorite.usageCount > 0 ? `<small style="color: var(--text-secondary); display: block; margin-top: 2px;">📊 Usado ${favorite.usageCount}x</small>` : ''}
+            </div>
+            <div class="favorite-actions">
+                <button class="favorite-btn copy-favorite" title="Copiar" onclick="window.app.favoritesManager.copyFavorite('${favorite.id}')">
+                    📋
+                </button>
+                <button class="favorite-btn remove-favorite" title="Remover" onclick="window.app.favoritesManager.removeFavorite('${favorite.id}')">
+                    🗑️
+                </button>
+            </div>
+        `;
+
+        // Add click to copy functionality
+        div.addEventListener('click', (e) => {
+            if (!e.target.closest('.favorite-actions')) {
+                this.copyFavorite(favorite.id);
+            }
+        });
+
+        return div;
+    }
+
+    clearAllFavorites() {
+        if (this.favorites.length === 0) return;
+
+        if (confirm(`Tem certeza que deseja remover todos os ${this.favorites.length} favoritos?`)) {
+            this.favorites = [];
+            this.saveFavorites();
+            this.updateDisplay();
+            this.updateVisibility();
+            this.showNotification('Todos os favoritos foram removidos!', 'success');
+        }
+    }
+
+    updateVisibility() {
+        const favoritesSection = document.getElementById('favoritesSection');
+        if (favoritesSection) {
+            favoritesSection.style.display = this.favorites.length > 0 ? 'block' : 'none';
+        }
+    }
+
+    searchFavorites(searchTerm) {
+        if (!searchTerm) return this.favorites;
+        
+        const term = searchTerm.toLowerCase();
+        return this.favorites.filter(favorite => 
+            favorite.text.toLowerCase().includes(term) ||
+            favorite.topic.toLowerCase().includes(term)
+        );
+    }
+
+    exportFavorites() {
+        const data = {
+            favorites: this.favorites,
+            exportDate: new Date().toISOString(),
+            version: '1.0'
+        };
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `fibramar-favoritos-${new Date().toISOString().split('T')[0]}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+    }
+
+    async importFavorites(file) {
+        try {
+            const text = await file.text();
+            const data = JSON.parse(text);
+            
+            if (data.favorites && Array.isArray(data.favorites)) {
+                const importedCount = data.favorites.length;
+                
+                // Merge with existing favorites, avoiding duplicates
+                data.favorites.forEach(favorite => {
+                    if (!this.favorites.some(existing => existing.text === favorite.text)) {
+                        this.favorites.push({
+                            ...favorite,
+                            id: this.generateId(),
+                            timestamp: favorite.timestamp || Date.now()
+                        });
+                    }
+                });
+
+                this.saveFavorites();
+                this.updateDisplay();
+                this.updateVisibility();
+                this.showNotification(`${importedCount} favoritos importados com sucesso!`, 'success');
+            } else {
+                throw new Error('Formato de arquivo inválido');
+            }
+        } catch (error) {
+            this.showNotification('Erro ao importar favoritos: ' + error.message, 'error');
+        }
+    }
+
+    getStats() {
+        const totalUsage = this.favorites.reduce((sum, fav) => sum + fav.usageCount, 0);
+        const mostUsed = this.favorites.reduce((max, fav) => 
+            fav.usageCount > (max?.usageCount || 0) ? fav : max, null);
+
+        return {
+            totalFavorites: this.favorites.length,
+            totalUsage,
+            mostUsed: mostUsed ? {
+                text: mostUsed.text.substring(0, 50) + '...',
+                usageCount: mostUsed.usageCount
+            } : null,
+            averageUsage: this.favorites.length > 0 ? (totalUsage / this.favorites.length).toFixed(1) : 0
+        };
+    }
+
+    // Utility methods
+    generateId() {
+        return 'fav_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    loadFavorites() {
+        try {
+            const stored = localStorage.getItem('fibramar_favorites');
+            return stored ? JSON.parse(stored) : [];
+        } catch (error) {
+            console.error('Error loading favorites:', error);
+            return [];
+        }
+    }
+
+    saveFavorites() {
+        try {
+            localStorage.setItem('fibramar_favorites', JSON.stringify(this.favorites));
+        } catch (error) {
+            console.error('Error saving favorites:', error);
+            this.showNotification('Erro ao salvar favoritos!', 'error');
+        }
+    }
+
+    loadCollapseState() {
+        try {
+            const stored = localStorage.getItem('fibramar_favorites_collapsed');
+            return stored === 'true';
+        } catch (error) {
+            return false;
+        }
+    }
+
+    saveCollapseState() {
+        try {
+            localStorage.setItem('fibramar_favorites_collapsed', this.isCollapsed.toString());
+        } catch (error) {
+            console.error('Error saving collapse state:', error);
+        }
+    }
+
+    showNotification(message, type = 'info') {
+        // Use the app's notification system if available
+        if (window.app && window.app.showNotification) {
+            window.app.showNotification(message, type);
+        } else {
+            // Fallback notification
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+    }
+}
+
 // Classe principal da aplicação
 class FibramarApp {
     constructor() {
@@ -1401,6 +2133,9 @@ class FibramarApp {
         this.keyboardManager = new KeyboardShortcutManager();
         this.connectivityManager = new ConnectivityManager();
         this.versionManager = new VersionManager();
+        this.themeManager = new ThemeManager();
+        this.animationManager = new AnimationManager();
+        this.favoritesManager = new FavoritesManager();
     }
 
     async init() {
@@ -1418,7 +2153,8 @@ class FibramarApp {
             }
 
             // Inicializa componentes
-            this.initializeTheme();
+            this.themeManager.init();
+            this.favoritesManager.init();
             this.initializeNotepad();
             this.initializeEventListeners();
             this.renderTopics();
@@ -1478,23 +2214,27 @@ class FibramarApp {
         };
     }
 
-    initializeTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.body.classList.add('dark-theme');
-            this.updateThemeToggle(true);
-        }
-    }
-
     initializeEventListeners() {
-        // Theme toggle
-        document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
+        // Theme toggle is now handled by ThemeManager
         
         // Search
         document.getElementById('searchBox').addEventListener('input', () => this.handleSearch());
         
+        // Adicionar animações aos botões flutuantes
+        const floatingButtons = document.querySelectorAll('.floating-btn');
+        floatingButtons.forEach(btn => {
+            this.animationManager.addButtonPressEffect(btn);
+            
+            // Animação de entrada escalonada
+            this.animationManager.observeElement(btn);
+            btn.classList.add('animate-on-scroll');
+        });
+        
         // Notepad
-        document.getElementById('openNotepad').addEventListener('click', () => this.openNotepad());
+        document.getElementById('openNotepad').addEventListener('click', () => {
+            this.animationManager.pulse(document.getElementById('openNotepad'));
+            this.openNotepad();
+        });
         document.getElementById('closeNotepad').addEventListener('click', () => this.closeNotepad());
         document.getElementById('minimizeNotepad').addEventListener('click', () => this.minimizeNotepad());
         document.getElementById('exportNotepad').addEventListener('click', () => this.exportNotepad());
@@ -1504,13 +2244,28 @@ class FibramarApp {
         document.getElementById('notepadContent').addEventListener('input', () => this.updateCharCount());
         
         // Calculator
-        document.getElementById('openCalculator').addEventListener('click', () => this.openCalculator());
+        document.getElementById('openCalculator').addEventListener('click', () => {
+            this.animationManager.pulse(document.getElementById('openCalculator'));
+            this.openCalculator();
+        });
         document.getElementById('calculatorModal').addEventListener('click', (e) => {
             if (e.target === e.currentTarget) this.closeCalculator();
         });
         
         // Analytics
-        document.getElementById('openAnalytics').addEventListener('click', () => this.openAnalytics());
+        document.getElementById('openAnalytics').addEventListener('click', () => {
+            this.animationManager.pulse(document.getElementById('openAnalytics'));
+            this.openAnalytics();
+        });
+        
+        // Backup
+        const backupBtn = document.getElementById('openBackup');
+        if (backupBtn) {
+            backupBtn.addEventListener('click', () => {
+                this.animationManager.pulse(backupBtn);
+                this.openBackup();
+            });
+        }
         
         // Notepad dragging
         const notepadHeader = document.getElementById('notepadHeader');
@@ -1540,31 +2295,25 @@ class FibramarApp {
         }
     }
 
-    toggleTheme() {
-        const isDark = document.body.classList.toggle('dark-theme');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-        this.updateThemeToggle(isDark);
-    }
-
-    updateThemeToggle(isDark) {
-        const icon = document.getElementById('themeIcon');
-        const text = document.getElementById('themeText');
-        
-        if (isDark) {
-            icon.textContent = '☀️';
-            text.textContent = 'Modo Claro';
-        } else {
-            icon.textContent = '🌙';
-            text.textContent = 'Modo Escuro';
-        }
-    }
-
     renderTopics(searchTerm = '') {
         if (!this.scriptData || !this.scriptData.scriptData) return;
         
         const topicsContainer = document.getElementById('topics');
+        
+        // Fade out existing topics before clearing
+        if (topicsContainer.children.length > 0) {
+            this.animationManager.fadeOut(topicsContainer, 200).then(() => {
+                this.renderTopicsContent(searchTerm, topicsContainer);
+            });
+        } else {
+            this.renderTopicsContent(searchTerm, topicsContainer);
+        }
+    }
+
+    renderTopicsContent(searchTerm, topicsContainer) {
         topicsContainer.innerHTML = '';
 
+        const topics = [];
         Object.entries(this.scriptData.scriptData).forEach(([topicName, messages]) => {
             if (searchTerm && !topicName.toLowerCase().includes(searchTerm.toLowerCase()) && 
                 !messages.some(msg => msg.toLowerCase().includes(searchTerm.toLowerCase()))) {
@@ -1572,8 +2321,20 @@ class FibramarApp {
             }
 
             const topicDiv = this.createTopicElement(topicName, messages, searchTerm);
-            topicsContainer.appendChild(topicDiv);
+            topics.push(topicDiv);
         });
+
+        // Add topics with staggered animation
+        topics.forEach((topicDiv, index) => {
+            topicsContainer.appendChild(topicDiv);
+            // Add entrance animation with delay
+            setTimeout(() => {
+                this.animationManager.slideIn(topicDiv, 'right', 300);
+            }, index * 50);
+        });
+
+        // Fade in the container
+        this.animationManager.fadeIn(topicsContainer, 300);
 
         // Renderiza senhas se existirem
         if (this.scriptData.passwords) {
@@ -1619,22 +2380,22 @@ class FibramarApp {
         if (topicName.includes('SENHAS') || topicName.includes('PASSWORDS')) {
             this.renderPasswordTopic(contentDiv, messages);
         } else {
-            this.renderMessages(contentDiv, messages, searchTerm);
+            this.renderMessages(contentDiv, messages, searchTerm, topicName);
         }
 
         return topicDiv;
     }
 
-    renderMessages(contentDiv, messages, searchTerm) {
+    renderMessages(contentDiv, messages, searchTerm, topicName = '') {
         messages.forEach((message) => {
             if (!searchTerm || message.toLowerCase().includes(searchTerm.toLowerCase())) {
-                const messageDiv = this.createMessageElement(message);
+                const messageDiv = this.createMessageElement(message, topicName);
                 contentDiv.appendChild(messageDiv);
             }
         });
     }
 
-    createMessageElement(message) {
+    createMessageElement(message, topicName = '') {
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message';
         
@@ -1645,12 +2406,15 @@ class FibramarApp {
         const formattedMessage = message.replace(/\n/g, '<br>');
         messageContentDiv.innerHTML = formattedMessage;
         
-        // Adiciona apenas o botão de copiar
+        // Adiciona botões de ação
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'message-actions';
         
         const copyBtn = this.createCopyButton(message);
+        const favoriteBtn = this.createFavoriteButton(message, topicName);
+        
         actionsDiv.appendChild(copyBtn);
+        actionsDiv.appendChild(favoriteBtn);
         
         messageDiv.appendChild(messageContentDiv);
         messageDiv.appendChild(actionsDiv);
@@ -1658,12 +2422,64 @@ class FibramarApp {
         return messageDiv;
     }
 
+    createFavoriteButton(message, topicName = '') {
+        const favoriteBtn = document.createElement('button');
+        favoriteBtn.className = 'favorite-btn';
+        
+        // Verifica se já está favoritado
+        const isFavorited = this.favoritesManager.isFavorited(message);
+        favoriteBtn.innerHTML = isFavorited ? '★' : '☆';
+        favoriteBtn.title = isFavorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos';
+        
+        if (isFavorited) {
+            favoriteBtn.classList.add('favorited');
+        }
+        
+        // Adicionar efeito de pressão do botão
+        this.animationManager.addButtonPressEffect(favoriteBtn);
+        
+        favoriteBtn.onclick = (e) => {
+            e.stopPropagation();
+            
+            if (this.favoritesManager.isFavorited(message)) {
+                // Remove dos favoritos
+                const favorite = this.favoritesManager.getFavoriteByText(message);
+                if (favorite) {
+                    this.favoritesManager.removeFavorite(favorite.id);
+                    favoriteBtn.innerHTML = '☆';
+                    favoriteBtn.title = 'Adicionar aos favoritos';
+                    favoriteBtn.classList.remove('favorited');
+                    this.animationManager.shake(favoriteBtn);
+                    this.showNotification('Removido dos favoritos', 'info');
+                }
+            } else {
+                // Adiciona aos favoritos
+                this.favoritesManager.addFavorite(message, topicName);
+                favoriteBtn.innerHTML = '★';
+                favoriteBtn.title = 'Remover dos favoritos';
+                favoriteBtn.classList.add('favorited');
+                this.animationManager.glow(favoriteBtn);
+                this.showNotification('Adicionado aos favoritos', 'success');
+            }
+        };
+        
+        return favoriteBtn;
+    }
+
     createCopyButton(message) {
         const copyBtn = document.createElement('button');
         copyBtn.className = 'copy-btn';
         copyBtn.textContent = 'Copiar';
+        
+        // Adicionar efeito de pressão do botão
+        this.animationManager.addButtonPressEffect(copyBtn);
+        
         copyBtn.onclick = (e) => {
             e.stopPropagation();
+            
+            // Animação de feedback visual
+            this.animationManager.pulse(copyBtn);
+            
             this.copyToClipboard(message);
         };
         return copyBtn;
@@ -1780,15 +2596,43 @@ class FibramarApp {
     }
 
     handleSearch() {
-        const searchTerm = document.getElementById('searchBox').value;
-        this.renderTopics(searchTerm);
+        // Clear previous timeout
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
+        }
+
+        const searchBox = document.getElementById('searchBox');
+        const searchTerm = searchBox.value;
+
+        // Add loading animation to search box
+        this.animationManager.addLoadingAnimation(searchBox);
+
+        // Debounce search to avoid excessive re-renders
+        this.searchTimeout = setTimeout(() => {
+            this.animationManager.removeLoadingAnimation(searchBox);
+            
+            // Add pulse effect to search box when searching
+            if (searchTerm.trim()) {
+                this.animationManager.pulse(searchBox);
+            }
+            
+            this.renderTopics(searchTerm);
+        }, 300);
     }
 
     copyToClipboard(text) {
         const processedText = this.replaceVariables(text);
         
         navigator.clipboard.writeText(processedText).then(() => {
-            this.showNotification('Texto copiado para a área de transferência!');
+            // Animação de sucesso
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            copyButtons.forEach(btn => {
+                if (btn.onclick && btn.onclick.toString().includes(text.substring(0, 20))) {
+                    this.animationManager.glow(btn);
+                }
+            });
+            
+            this.showNotification('Texto copiado para a área de transferência!', 'success');
             
             // Track analytics
             this.analytics.trackEvent('message_copied', {
@@ -1798,6 +2642,15 @@ class FibramarApp {
             });
         }).catch(err => {
             console.error('Erro ao copiar texto:', err);
+            
+            // Animação de erro
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            copyButtons.forEach(btn => {
+                if (btn.onclick && btn.onclick.toString().includes(text.substring(0, 20))) {
+                    this.animationManager.shake(btn);
+                }
+            });
+            
             this.showNotification('Erro ao copiar texto', 'error');
         });
     }
@@ -1821,13 +2674,25 @@ class FibramarApp {
         notification.className = `notification notification-${type}`;
         notification.textContent = message;
         
+        // Set initial state for animation
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100%)';
+        
         document.body.appendChild(notification);
         
+        // Use AnimationManager for smooth entrance
+        this.animationManager.showNotificationWithAnimation(notification, type);
+        
+        // Animate out and remove
         setTimeout(() => {
             if (notification.parentElement) {
-                notification.remove();
+                this.animationManager.fadeOut(notification, 300).then(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                });
             }
-        }, CONFIG.notifications.duration);
+        }, CONFIG.notifications.duration - 300);
     }
 
     // Notepad functions
