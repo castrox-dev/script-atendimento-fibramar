@@ -9,20 +9,48 @@
     <link rel="preload" href="styles.css" as="style">
     <link rel="preload" href="script.js" as="script">
     <link rel="preload" href="script-data.json" as="fetch" crossorigin>
+    <link rel="preload" href="manifest.json" as="fetch" crossorigin>
     
     <!-- Stylesheets -->
     <link rel="stylesheet" href="styles.css">
     
-    <!-- DNS prefetch for external resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="dns-prefetch" href="https://api.openweathermap.org">
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- DNS prefetch and preconnect for external resources -->
+    <link rel="preconnect" href="https://api.open-meteo.com">
+    <link rel="preconnect" href="https://castrox-dev.github.io">
+    <link rel="preconnect" href="https://raw.githubusercontent.com">
+    <link rel="dns-prefetch" href="https://api.open-meteo.com">
+    <link rel="dns-prefetch" href="https://castrox-dev.github.io">
+    <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
     
     <!-- Meta tags -->
-    <meta name="description" content="Script de atendimento otimizado para Fibramar Internet">
-    <meta name="keywords" content="atendimento, suporte, fibramar, internet">
+    <meta name="description" content="Script de atendimento otimizado para Fibramar Internet - PWA para GitHub Pages">
+    <meta name="keywords" content="atendimento, suporte, fibramar, internet, pwa, github pages">
     <meta name="author" content="Fibramar Internet">
     <meta name="theme-color" content="#667eea">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Fibramar Script">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="msapplication-config" content="browserconfig.xml">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://castrox-dev.github.io/script-atendimento-fibramar/">
+    <meta property="og:title" content="Script de Atendimento - Fibramar Internet">
+    <meta property="og:description" content="Script de atendimento otimizado para Fibramar Internet">
+    <meta property="og:image" content="https://castrox-dev.github.io/script-atendimento-fibramar/manifest.json">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://castrox-dev.github.io/script-atendimento-fibramar/">
+    <meta property="twitter:title" content="Script de Atendimento - Fibramar Internet">
+    <meta property="twitter:description" content="Script de atendimento otimizado para Fibramar Internet">
 </head>
 <body>
     <div class="container">
@@ -32,6 +60,10 @@
                 <div class="weather" id="weather">
                     <span>🌤️</span>
                     <span id="temperature">Carregando...</span>
+                </div>
+                <div class="connectivity-indicator" id="connectivityIndicator">
+                    <span id="connectivityIcon">🟢</span>
+                    <span id="connectivityText">Online</span>
                 </div>
             </div>
             <div class="attendant-section">
@@ -139,7 +171,132 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Analytics Panel -->
+    <div id="analyticsPanel" class="analytics-panel" style="display: none;">
+        <div class="analytics-content">
+            <div class="analytics-header">
+                <h3>📊 Analytics do Sistema</h3>
+                <button class="close-btn" onclick="closeAnalytics()">×</button>
+            </div>
+            <div class="analytics-body">
+                <div class="analytics-stats">
+                    <div class="stat-card">
+                        <h4>Sessão Atual</h4>
+                        <p id="sessionDuration">--</p>
+                        <small>Duração da sessão</small>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Mensagens Copiadas</h4>
+                        <p id="messagesCopied">--</p>
+                        <small>Nesta sessão</small>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Calculadora</h4>
+                        <p id="calculatorUsage">--</p>
+                        <small>Usos da calculadora</small>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Bloco de Notas</h4>
+                        <p id="notepadUsage">--</p>
+                        <small>Vezes aberto</small>
+                    </div>
+                </div>
+                <div class="analytics-actions">
+                    <button class="analytics-btn" onclick="exportAnalytics()">📥 Exportar Dados</button>
+                    <button class="analytics-btn" onclick="clearAnalytics()">🗑️ Limpar Dados</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backup Panel -->
+    <div id="backupPanel" class="backup-panel" style="display: none;">
+        <div class="backup-content">
+            <div class="backup-header">
+                <h3>🔄 Sistema de Backup</h3>
+                <button class="close-btn" onclick="closeBackup()">✕</button>
+            </div>
+            
+            <div class="backup-stats">
+                <div class="stat-card">
+                    <div class="stat-label">Total de Backups</div>
+                    <div class="stat-value" id="totalBackups">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Último Backup</div>
+                    <div class="stat-value" id="lastBackup">Nunca</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Tamanho Total</div>
+                    <div class="stat-value" id="backupSize">0 KB</div>
+                </div>
+            </div>
+
+            <div class="backup-actions">
+                <div class="backup-section">
+                    <h4>Criar Backup</h4>
+                    <button class="backup-btn" onclick="createManualBackup()">💾 Backup Manual</button>
+                    <button class="backup-btn" onclick="exportBackup()">📤 Exportar Backup</button>
+                </div>
+
+                <div class="backup-section">
+                    <h4>Restaurar Backup</h4>
+                    <div class="backup-list" id="backupList">
+                        <!-- Lista de backups será preenchida dinamicamente -->
+                    </div>
+                    <input type="file" id="backupFileInput" accept=".json" style="display: none;" onchange="importBackup(event)">
+                    <button class="backup-btn" onclick="document.getElementById('backupFileInput').click()">📥 Importar Backup</button>
+                </div>
+
+                <div class="backup-section">
+                    <h4>Manutenção</h4>
+                    <button class="backup-btn danger" onclick="clearOldBackups()">🗑️ Limpar Backups Antigos</button>
+                    <button class="backup-btn danger" onclick="clearAllBackups()">⚠️ Limpar Todos os Backups</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Painel de Atalhos de Teclado -->
+    <div id="shortcutsPanel" class="shortcuts-panel" style="display: none;">
+        <div class="shortcuts-content">
+            <div class="shortcuts-header">
+                <h3>⌨️ Atalhos de Teclado</h3>
+                <button class="close-btn" onclick="closeShortcutsPanel()">✕</button>
+            </div>
+
+            <div class="shortcuts-stats">
+                <div class="shortcuts-info">
+                    <p>Personalize os atalhos de teclado para agilizar seu trabalho</p>
+                </div>
+            </div>
+
+            <div class="shortcuts-actions">
+                <div class="shortcuts-section">
+                    <h4>Atalhos Disponíveis</h4>
+                    <div class="shortcuts-list" id="shortcutsList">
+                        <!-- Lista de atalhos será preenchida dinamicamente -->
+                    </div>
+                </div>
+
+                <div class="shortcuts-section">
+                    <h4>Gerenciar Atalhos</h4>
+                    <button class="shortcuts-btn" onclick="exportShortcuts()">📤 Exportar Atalhos</button>
+                    <input type="file" id="shortcutsFileInput" accept=".json" style="display: none;" onchange="importShortcuts(event)">
+                    <button class="shortcuts-btn" onclick="document.getElementById('shortcutsFileInput').click()">📥 Importar Atalhos</button>
+                    <button class="shortcuts-btn danger" onclick="resetAllShortcuts()">🔄 Resetar Todos</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Buttons -->
+    <button class="floating-btn analytics-btn-float" id="openAnalytics" title="Ver Analytics" style="bottom: 20px; right: 140px;">📊</button>
+    <button class="floating-btn backup-btn-float" id="openBackup" title="Sistema de Backup" style="bottom: 20px; right: 80px;">🔄</button>
+
+
+
+    <script src="script.js" defer></script>
     
     <!-- Service Worker Registration -->
     <script>
