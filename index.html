@@ -1831,116 +1831,136 @@
         const notepadClear = document.getElementById('notepadClear');
         const charCount = document.getElementById('charCount');
 
-        // Carregar notas salvas
-        const savedNotes = localStorage.getItem('notepadContent');
-        if (savedNotes) {
-            notepadTextarea.value = savedNotes;
-            updateCharCount();
-        }
-
-        // Carregar estado do bloco de notas
-        const notepadHidden = localStorage.getItem('notepadHidden') === 'true';
-        if (notepadHidden) {
-            notepad.classList.add('hidden');
-            notepadReopen.classList.add('show');
-            body.classList.add('notepad-hidden');
-        }
-
-        // Minimizar/Maximizar
-        notepadToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            notepad.classList.toggle('minimized');
-            notepadToggle.textContent = notepad.classList.contains('minimized') ? '+' : '−';
-        });
-
-        // Fechar bloco de notas
-        notepadClose.addEventListener('click', (e) => {
-            e.stopPropagation();
-            notepad.classList.add('hidden');
-            notepadReopen.classList.add('show');
-            body.classList.add('notepad-hidden');
-            localStorage.setItem('notepadHidden', 'true');
-        });
-
-        // Reabrir bloco de notas
-        notepadReopen.addEventListener('click', () => {
-            notepad.classList.remove('hidden');
-            notepadReopen.classList.remove('show');
-            body.classList.remove('notepad-hidden');
-            localStorage.setItem('notepadHidden', 'false');
-        });
-
-        // Salvar automaticamente
-        notepadTextarea.addEventListener('input', () => {
-            localStorage.setItem('notepadContent', notepadTextarea.value);
-            updateCharCount();
-        });
-
-        // Limpar notas
-        notepadClear.addEventListener('click', () => {
-            if (confirm('Tem certeza que deseja limpar todas as anotações?')) {
-                notepadTextarea.value = '';
-                localStorage.removeItem('notepadContent');
-                updateCharCount();
+        // Verificar se os elementos existem antes de usar
+        if (!notepad || !notepadTextarea) {
+            console.error('Elementos do bloco de notas não encontrados!');
+        } else {
+            // Carregar notas salvas
+            const savedNotes = localStorage.getItem('notepadContent');
+            if (savedNotes) {
+                notepadTextarea.value = savedNotes;
+                if (charCount) updateCharCount();
             }
-        });
 
-        // Exportar notas
-        const notepadExport = document.getElementById('notepadExport');
-        notepadExport.addEventListener('click', () => {
-            const content = notepadTextarea.value;
-            if (!content.trim()) {
-                alert('Não há conteúdo para exportar!');
-                return;
+            // Carregar estado do bloco de notas
+            const notepadHidden = localStorage.getItem('notepadHidden') === 'true';
+            if (notepadHidden && notepad && notepadReopen) {
+                notepad.classList.add('hidden');
+                notepadReopen.classList.add('show');
+                body.classList.add('notepad-hidden');
             }
-            
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            const now = new Date();
-            const filename = `notas-atendimento-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}.txt`;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            showNotification('✓ Notas exportadas com sucesso!');
-        });
 
-        // Importar notas
-        const notepadImportBtn = document.getElementById('notepadImportBtn');
-        const notepadImport = document.getElementById('notepadImport');
-        
-        notepadImportBtn.addEventListener('click', () => {
-            notepadImport.click();
-        });
+            // Minimizar/Maximizar
+            if (notepadToggle) {
+                notepadToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    notepad.classList.toggle('minimized');
+                    notepadToggle.textContent = notepad.classList.contains('minimized') ? '+' : '−';
+                });
+            }
 
-        notepadImport.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
+            // Fechar bloco de notas
+            if (notepadClose) {
+                notepadClose.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    notepad.classList.add('hidden');
+                    if (notepadReopen) {
+                        notepadReopen.classList.add('show');
+                    }
+                    body.classList.add('notepad-hidden');
+                    localStorage.setItem('notepadHidden', 'true');
+                });
+            }
+
+            // Reabrir bloco de notas
+            if (notepadReopen) {
+                notepadReopen.addEventListener('click', () => {
+                    notepad.classList.remove('hidden');
+                    notepadReopen.classList.remove('show');
+                    body.classList.remove('notepad-hidden');
+                    localStorage.setItem('notepadHidden', 'false');
+                });
+            }
+
+            // Salvar automaticamente
+            notepadTextarea.addEventListener('input', () => {
+                localStorage.setItem('notepadContent', notepadTextarea.value);
+                if (charCount) updateCharCount();
+            });
+
+            // Limpar notas
+            if (notepadClear) {
+                notepadClear.addEventListener('click', () => {
+                    if (confirm('Tem certeza que deseja limpar todas as anotações?')) {
+                        notepadTextarea.value = '';
+                        localStorage.removeItem('notepadContent');
+                        if (charCount) updateCharCount();
+                    }
+                });
+            }
+
+            // Exportar notas
+            const notepadExport = document.getElementById('notepadExport');
+            if (notepadExport) {
+                notepadExport.addEventListener('click', () => {
+                    const content = notepadTextarea.value;
+                    if (!content.trim()) {
+                        alert('Não há conteúdo para exportar!');
+                        return;
+                    }
+                    
+                    const blob = new Blob([content], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    const now = new Date();
+                    const filename = `notas-atendimento-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}.txt`;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                    
+                    showNotification('✓ Notas exportadas com sucesso!');
+                });
+            }
+
+            // Importar notas
+            const notepadImportBtn = document.getElementById('notepadImportBtn');
+            const notepadImport = document.getElementById('notepadImport');
             
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const content = event.target.result;
-                if (notepadTextarea.value.trim() && !confirm('Deseja substituir o conteúdo atual?')) {
-                    notepadImport.value = '';
-                    return;
-                }
-                notepadTextarea.value = content;
-                localStorage.setItem('notepadContent', content);
-                updateCharCount();
-                showNotification('✓ Notas importadas com sucesso!');
-                notepadImport.value = '';
-            };
-            reader.readAsText(file);
-        });
+            if (notepadImportBtn && notepadImport) {
+                notepadImportBtn.addEventListener('click', () => {
+                    notepadImport.click();
+                });
 
-        // Atualizar contador de caracteres
-        function updateCharCount() {
-            const count = notepadTextarea.value.length;
-            charCount.textContent = `${count} caractere${count !== 1 ? 's' : ''}`;
+                notepadImport.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const content = event.target.result;
+                        if (notepadTextarea.value.trim() && !confirm('Deseja substituir o conteúdo atual?')) {
+                            notepadImport.value = '';
+                            return;
+                        }
+                        notepadTextarea.value = content;
+                        localStorage.setItem('notepadContent', content);
+                        if (charCount) updateCharCount();
+                        showNotification('✓ Notas importadas com sucesso!');
+                        notepadImport.value = '';
+                    };
+                    reader.readAsText(file);
+                });
+            }
+
+            // Atualizar contador de caracteres
+            function updateCharCount() {
+                if (!charCount || !notepadTextarea) return;
+                const count = notepadTextarea.value.length;
+                charCount.textContent = `${count} caractere${count !== 1 ? 's' : ''}`;
+            }
         }
 
         // Sistema de correção ortográfica removido
