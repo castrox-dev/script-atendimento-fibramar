@@ -1198,6 +1198,8 @@
     </div>
 
     <script>
+        // Garantir que o DOM esteja carregado
+        document.addEventListener('DOMContentLoaded', function() {
         // Forçar atualização - timestamp: 2024-12-19
         console.log('Script carregado em:', new Date().toLocaleString());
         
@@ -1966,16 +1968,20 @@
         }
 
         // Fechar calculadora
-        calculatorClose.addEventListener('click', () => {
-            calculatorBackdrop.classList.remove('show');
-        });
+        if (calculatorClose) {
+            calculatorClose.addEventListener('click', () => {
+                calculatorBackdrop.classList.remove('show');
+            });
+        }
 
         // Fechar ao clicar no backdrop
-        calculatorBackdrop.addEventListener('click', (e) => {
-            if (e.target === calculatorBackdrop) {
-                calculatorBackdrop.classList.remove('show');
-            }
-        });
+        if (calculatorBackdrop) {
+            calculatorBackdrop.addEventListener('click', (e) => {
+                if (e.target === calculatorBackdrop) {
+                    calculatorBackdrop.classList.remove('show');
+                }
+            });
+        }
 
         // Fechar com tecla ESC
         document.addEventListener('keydown', (e) => {
@@ -2236,6 +2242,7 @@
             });
         })();
 
+        }); // Fim do DOMContentLoaded
     </script>
 </body>
 </html>
