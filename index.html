@@ -340,231 +340,6 @@
             position: relative;
         }
 
-        .favorite-btn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            font-size: 1.2em;
-            cursor: pointer;
-            padding: 5px;
-            opacity: 0;
-            transition: all 0.2s ease;
-            z-index: 10;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        body.dark-mode .favorite-btn {
-            background: rgba(51, 51, 51, 0.9);
-        }
-
-        .message-item:hover .favorite-btn {
-            opacity: 1;
-        }
-
-        .message-item.favorite .favorite-btn {
-            opacity: 1;
-        }
-
-        .favorite-btn:hover {
-            transform: scale(1.2);
-            background: rgba(255, 215, 0, 0.9);
-        }
-
-        .favorite-btn.active {
-            opacity: 1;
-        }
-
-        .favorites-panel {
-            position: fixed;
-            top: 140px;
-            right: 30px;
-            width: 350px;
-            max-width: 90vw;
-            max-height: calc(80vh - 120px);
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        @media (max-width: 768px) {
-            .favorites-panel {
-                top: 120px;
-                right: 10px;
-                left: 10px;
-                width: auto;
-                max-height: calc(80vh - 100px);
-            }
-        }
-
-        body.dark-mode .favorites-panel {
-            background: #2a2a2a;
-        }
-
-        .favorites-panel.show {
-            display: flex;
-        }
-
-        .favorites-header {
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            color: #333;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-        }
-
-        body.dark-mode .favorites-header {
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            color: #000;
-        }
-
-        .favorites-close {
-            background: none;
-            border: none;
-            font-size: 1.5em;
-            cursor: pointer;
-            color: #333;
-            padding: 0;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: all 0.2s ease;
-        }
-
-        .favorites-close:hover {
-            background: rgba(0, 0, 0, 0.1);
-            transform: scale(1.1);
-        }
-
-        .favorites-content {
-            padding: 15px;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .favorite-item {
-            background: #f8f9fa;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            border-left: 4px solid #ffd700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        body.dark-mode .favorite-item {
-            background: #333;
-            border-left-color: #ffd700;
-        }
-
-        .favorite-item:hover {
-            background: #e8eaf6;
-            transform: translateX(5px);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        body.dark-mode .favorite-item:hover {
-            background: #3a3a3a;
-        }
-
-        .favorite-item-text {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            font-size: 0.9em;
-            line-height: 1.5;
-            color: #333;
-            margin-bottom: 8px;
-        }
-
-        body.dark-mode .favorite-item-text {
-            color: #e0e0e0;
-        }
-
-        .favorite-item-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        .favorite-item-remove {
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 0.8em;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .favorite-item-remove:hover {
-            background: #d32f2f;
-            transform: scale(1.05);
-        }
-
-        .favorites-empty {
-            text-align: center;
-            padding: 40px 20px;
-            color: #999;
-        }
-
-        .favorites-toggle-btn {
-            position: fixed;
-            top: 80px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            border: none;
-            border-radius: 50%;
-            font-size: 1.5em;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
-            transition: all 0.3s ease;
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        @media (max-width: 768px) {
-            .favorites-toggle-btn {
-                top: 70px;
-                right: 20px;
-                width: 45px;
-                height: 45px;
-                font-size: 1.2em;
-            }
-        }
-
-        .favorites-toggle-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
-        }
-
-        .favorites-toggle-btn.active {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-        }
-
         .message-text {
             white-space: pre-wrap;
             line-height: 1.6;
@@ -1262,6 +1037,406 @@
             transform: scale(0.95);
         }
 
+        .cadastro-open-btn {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.8em;
+            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.dark-mode .cadastro-open-btn {
+            background: linear-gradient(135deg, #8b3a3a 0%, #6b2a2a 100%);
+        }
+
+        .cadastro-open-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+        }
+
+        .cadastro-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .cadastro-backdrop.show {
+            display: flex;
+        }
+
+        .cadastro-modal {
+            width: 800px;
+            max-width: 95%;
+            max-height: 90vh;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark-mode .cadastro-modal {
+            background: #2a2a2a;
+        }
+
+        .cadastro-header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        body.dark-mode .cadastro-header {
+            background: linear-gradient(135deg, #8b3a3a 0%, #6b2a2a 100%);
+        }
+
+        .cadastro-header h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cadastro-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            transition: all 0.2s ease;
+        }
+
+        .cadastro-close:hover {
+            background: rgba(255, 100, 100, 0.5);
+            transform: scale(1.1);
+        }
+
+        .cadastro-content {
+            padding: 25px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .cadastro-form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .cadastro-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cadastro-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .cadastro-form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .cadastro-form-group label {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        body.dark-mode .cadastro-form-group label {
+            color: #b0b0b0;
+        }
+
+        .cadastro-form-group input,
+        .cadastro-form-group select,
+        .cadastro-form-group textarea {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95em;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+            font-family: inherit;
+        }
+
+        body.dark-mode .cadastro-form-group input,
+        body.dark-mode .cadastro-form-group select,
+        body.dark-mode .cadastro-form-group textarea {
+            background: #1e1e1e;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        .cadastro-form-group input:focus,
+        .cadastro-form-group select:focus,
+        .cadastro-form-group textarea:focus {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+
+        body.dark-mode .cadastro-form-group input:focus,
+        body.dark-mode .cadastro-form-group select:focus,
+        body.dark-mode .cadastro-form-group textarea:focus {
+            border-color: #ee5a6f;
+            box-shadow: 0 0 0 3px rgba(238, 90, 111, 0.2);
+        }
+
+        .cadastro-form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .cadastro-actions {
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        body.dark-mode .cadastro-actions {
+            background: #1a1a1a;
+            border-top-color: #333;
+        }
+
+        .cadastro-btn-generate {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cadastro-btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .cadastro-btn-cancel {
+            padding: 12px 30px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cadastro-btn-cancel:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+        }
+
+        .os-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 1001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .os-backdrop.show {
+            display: flex;
+        }
+
+        .os-modal {
+            width: 800px;
+            max-width: 95%;
+            max-height: 90vh;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark-mode .os-modal {
+            background: #2a2a2a;
+        }
+
+        .os-header {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        body.dark-mode .os-header {
+            background: linear-gradient(135deg, #2d7a2f 0%, #1e5a20 100%);
+        }
+
+        .os-header h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .os-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            transition: all 0.2s ease;
+        }
+
+        .os-close:hover {
+            background: rgba(255, 100, 100, 0.5);
+            transform: scale(1.1);
+        }
+
+        .os-content {
+            padding: 25px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .os-textarea {
+            width: 100%;
+            min-height: 500px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-family: 'Courier New', monospace;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        body.dark-mode .os-textarea {
+            background: #1e1e1e;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        .os-textarea:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        body.dark-mode .os-textarea:focus {
+            border-color: #45a049;
+            box-shadow: 0 0 0 3px rgba(69, 160, 73, 0.2);
+        }
+
+        .os-actions {
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        body.dark-mode .os-actions {
+            background: #1a1a1a;
+            border-top-color: #333;
+        }
+
+        .os-btn-copy {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .os-btn-copy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .os-btn-close {
+            padding: 12px 30px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .os-btn-close:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 768px) {
             .floating-buttons {
                 flex-direction: column;
@@ -1518,6 +1693,9 @@
         <button class="calculator-open-btn" id="calculatorOpenBtn" title="Calculadora Financeira">
             💰
         </button>
+        <button class="cadastro-open-btn" id="cadastroOpenBtn" title="Formulário de Cadastro">
+            📋
+        </button>
     </div>
 
     <!-- Calculadora Financeira (Modal) -->
@@ -1588,6 +1766,137 @@
         </div>
     </div>
 
+    <!-- Modal de Cadastro -->
+    <div class="cadastro-backdrop" id="cadastroBackdrop">
+        <div class="cadastro-modal" id="cadastroModal">
+            <div class="cadastro-header">
+                <h3>📋 Formulário de Cadastro</h3>
+                <button class="cadastro-close" id="cadastroClose">✕</button>
+            </div>
+            <div class="cadastro-content">
+                <form class="cadastro-form" id="cadastroForm">
+                    <div class="cadastro-form-group">
+                        <label for="cadastroNome">Nome completo *</label>
+                        <input type="text" id="cadastroNome" required>
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroCPF">CPF *</label>
+                        <input type="text" id="cadastroCPF" required placeholder="000.000.000-00">
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroRG">RG</label>
+                        <input type="text" id="cadastroRG">
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroDataNasc">Data de nascimento *</label>
+                        <input type="date" id="cadastroDataNasc" required>
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroEmail">E-mail *</label>
+                        <input type="email" id="cadastroEmail" required>
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroPlano">Plano desejado *</label>
+                        <select id="cadastroPlano" required>
+                            <option value="">Selecione o plano</option>
+                            <option value="240 MEGA">240 MEGA - R$ 59,99</option>
+                            <option value="400 MEGA">400 MEGA - R$ 79,99</option>
+                            <option value="500 MEGA">500 MEGA - R$ 99,99</option>
+                            <option value="600 MEGA">600 MEGA - R$ 119,99</option>
+                            <option value="1 GIGA">1 GIGA - R$ 149,99</option>
+                        </select>
+                    </div>
+                    <div class="cadastro-form-group" id="cadastroRoteadorGroup" style="display: none;">
+                        <label for="cadastroRoteador">Roteador *</label>
+                        <select id="cadastroRoteador">
+                            <option value="">Selecione</option>
+                            <option value="Em aluguel">Em aluguel (R$ 10,00/mês)</option>
+                            <option value="Do cliente">Do cliente</option>
+                        </select>
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroVencimento">Data de vencimento *</label>
+                        <select id="cadastroVencimento" required>
+                            <option value="">Selecione</option>
+                            <option value="1">1</option>
+                            <option value="3">3</option>
+                            <option value="6">6</option>
+                            <option value="9">9</option>
+                            <option value="13">13</option>
+                            <option value="18">18</option>
+                        </select>
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroTelefone">Telefone(s) *</label>
+                        <input type="text" id="cadastroTelefone" required placeholder="(00) 00000-0000">
+                    </div>
+                    <div class="cadastro-form-group full-width">
+                        <label for="cadastroEndereco">Endereço completo *</label>
+                        <textarea id="cadastroEndereco" required></textarea>
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroCEP">CEP *</label>
+                        <input type="text" id="cadastroCEP" required placeholder="00000-000">
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroReferencia">Referência visual *</label>
+                        <input type="text" id="cadastroReferencia" required placeholder="Ponto de referência próximo">
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroFidelidade">Fidelidade de 12 meses? *</label>
+                        <select id="cadastroFidelidade" required>
+                            <option value="">Selecione</option>
+                            <option value="Sim">Sim</option>
+                            <option value="Não">Não</option>
+                        </select>
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroDataInstalacao">Data da instalação *</label>
+                        <input type="date" id="cadastroDataInstalacao" required>
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroPeriodoInstalacao">Período da instalação *</label>
+                        <select id="cadastroPeriodoInstalacao" required>
+                            <option value="">Selecione</option>
+                            <option value="Manhã">Manhã</option>
+                            <option value="Tarde">Tarde</option>
+                            <option value="Integral">Integral</option>
+                        </select>
+                    </div>
+                    <div class="cadastro-form-group full-width">
+                        <label for="cadastroConheceu">Por onde conheceu a empresa? *</label>
+                        <input type="text" id="cadastroConheceu" required>
+                    </div>
+                </form>
+            </div>
+            <div class="cadastro-actions">
+                <button type="button" class="cadastro-btn-cancel" id="cadastroCancelBtn">Cancelar</button>
+                <button type="button" class="cadastro-btn-generate" id="cadastroGenerateBtn">
+                    📄 Gerar OS de Instalação
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de OS Gerada -->
+    <div class="os-backdrop" id="osBackdrop">
+        <div class="os-modal" id="osModal">
+            <div class="os-header">
+                <h3>📄 OS de Instalação Gerada</h3>
+                <button class="os-close" id="osClose">✕</button>
+            </div>
+            <div class="os-content">
+                <textarea class="os-textarea" id="osTextarea" placeholder="OS de instalação será exibida aqui..."></textarea>
+            </div>
+            <div class="os-actions">
+                <button type="button" class="os-btn-copy" id="osCopyBtn">
+                    📋 Copiar OS
+                </button>
+                <button type="button" class="os-btn-close" id="osCloseBtn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="header">
             <div class="header-info">
@@ -1647,22 +1956,6 @@
         </div>
     </div>
 
-    <!-- Botão de Favoritos -->
-    <button class="favorites-toggle-btn" id="favoritesToggleBtn" title="Favoritos (F3)">
-        ⭐
-    </button>
-
-    <!-- Painel de Favoritos -->
-    <div class="favorites-panel" id="favoritesPanel">
-        <div class="favorites-header">
-            <span>⭐ Mensagens Favoritas</span>
-            <button class="favorites-close" id="favoritesClose">✕</button>
-        </div>
-        <div class="favorites-content" id="favoritesContent">
-            <div class="favorites-empty">Nenhuma mensagem favoritada ainda</div>
-        </div>
-    </div>
-
     <script>
         // Garantir que o DOM esteja carregado
         document.addEventListener('DOMContentLoaded', function() {
@@ -1687,6 +1980,10 @@
         }
         
         const scriptData = {
+            "📋 FORMULÁRIO DE CADASTRO": {
+                "type": "cadastro",
+                "action": "openCadastroForm"
+            },
             "✅ INÍCIO DE ATENDIMENTO": [
                 "Olá! Seja bem-vindo(a) ao atendimento da Fibramar Internet.\n\nNosso atendimento é 24 horas, todos os dias.\n\nCaso prefira atendimento por ligação, utilize um dos nossos números:\n\n📞 0800 100 3850\n📞 (21) 3864-3850\n\nMeu nome é [NOME_ATENDENTE], e vou lhe atender agora.\n\nEm que posso ajudar?"
             ],
@@ -2074,6 +2371,12 @@
             topicsContainer.innerHTML = '';
 
             for (const [topicName, content] of Object.entries(data)) {
+                // Verificar se é o tópico de cadastro
+                if (content.type === 'cadastro') {
+                    renderCadastroTopic(topicName, content);
+                    continue;
+                }
+                
                 // Verificar se é o tópico de senhas com estrutura especial
                 if (content.type === 'passwords') {
                     renderPasswordTopic(topicName, content, searchTerm);
@@ -2109,29 +2412,12 @@
 
                 filteredMessages.forEach(message => {
                     const messageItem = document.createElement('div');
-                    const isFav = isFavorite(message);
-                    messageItem.className = isFav ? 'message-item favorite' : 'message-item';
-                    
-                    // Botão de favorito
-                    const favoriteBtn = document.createElement('button');
-                    favoriteBtn.className = isFav ? 'favorite-btn active' : 'favorite-btn';
-                    favoriteBtn.innerHTML = isFav ? '⭐' : '☆';
-                    favoriteBtn.title = isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos';
-                    favoriteBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const isNowFavorite = toggleFavorite(message);
-                        favoriteBtn.innerHTML = isNowFavorite ? '⭐' : '☆';
-                        favoriteBtn.className = isNowFavorite ? 'favorite-btn active' : 'favorite-btn';
-                        favoriteBtn.title = isNowFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos';
-                        messageItem.classList.toggle('favorite', isNowFavorite);
-                        updateFavoritesPanel();
-                    });
+                    messageItem.className = 'message-item';
                     
                     const messageText = document.createElement('div');
                     messageText.className = 'message-text';
                     messageText.textContent = message;
                     
-                    messageItem.appendChild(favoriteBtn);
                     messageItem.appendChild(messageText);
                     messageItem.addEventListener('click', () => copyToClipboard(message));
                     
@@ -2146,6 +2432,61 @@
                 topicDiv.appendChild(messagesDiv);
                 topicsContainer.appendChild(topicDiv);
             }
+        }
+
+        // Renderizar tópico de cadastro
+        function renderCadastroTopic(topicName, content) {
+            const topicsContainer = document.getElementById('topics');
+            
+            const topicDiv = document.createElement('div');
+            topicDiv.className = 'topic';
+            topicDiv.style.cursor = 'pointer';
+
+            const topicHeader = document.createElement('div');
+            topicHeader.className = 'topic-header';
+            topicHeader.innerHTML = `
+                <h2>${topicName}</h2>
+                <span class="topic-icon">📋</span>
+            `;
+
+            const messagesDiv = document.createElement('div');
+            messagesDiv.className = 'messages';
+            
+            const cadastroButton = document.createElement('div');
+            cadastroButton.className = 'message-item';
+            cadastroButton.style.textAlign = 'center';
+            cadastroButton.style.padding = '30px';
+            cadastroButton.style.cursor = 'pointer';
+            cadastroButton.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)';
+            cadastroButton.style.color = 'white';
+            cadastroButton.style.fontSize = '1.2em';
+            cadastroButton.style.fontWeight = '600';
+            cadastroButton.innerHTML = '📋 Abrir Formulário de Cadastro';
+            
+            cadastroButton.addEventListener('click', () => {
+                const backdrop = document.getElementById('cadastroBackdrop');
+                if (backdrop) {
+                    backdrop.classList.add('show');
+                }
+            });
+            
+            cadastroButton.addEventListener('mouseenter', () => {
+                cadastroButton.style.transform = 'scale(1.02)';
+            });
+            
+            cadastroButton.addEventListener('mouseleave', () => {
+                cadastroButton.style.transform = 'scale(1)';
+            });
+
+            messagesDiv.appendChild(cadastroButton);
+
+            topicHeader.addEventListener('click', () => {
+                topicDiv.classList.toggle('active');
+            });
+
+            topicDiv.appendChild(topicHeader);
+            topicDiv.appendChild(messagesDiv);
+            topicsContainer.appendChild(topicDiv);
         }
 
         // Renderizar tópico de senhas com estrutura especial
@@ -2232,122 +2573,6 @@
             topicDiv.appendChild(topicHeader);
             topicDiv.appendChild(messagesDiv);
             topicsContainer.appendChild(topicDiv);
-        }
-
-        // Funções de Favoritos (disponibilizadas antes de renderTopics)
-        function isFavorite(messageText) {
-            try {
-                const favorites = JSON.parse(localStorage.getItem('messageFavorites') || '[]');
-                const messageHash = btoa(encodeURIComponent(messageText)).substring(0, 30);
-                return favorites.some(fav => fav.hash === messageHash);
-            } catch (err) {
-                return false;
-            }
-        }
-
-        function toggleFavorite(messageText) {
-            try {
-                let favorites = JSON.parse(localStorage.getItem('messageFavorites') || '[]');
-                const messageHash = btoa(encodeURIComponent(messageText)).substring(0, 30);
-                
-                const index = favorites.findIndex(fav => fav.hash === messageHash);
-                let isNowFavorite;
-                
-                if (index > -1) {
-                    favorites.splice(index, 1);
-                    isNowFavorite = false;
-                } else {
-                    favorites.push({
-                        hash: messageHash,
-                        text: messageText,
-                        timestamp: new Date().toISOString()
-                    });
-                    isNowFavorite = true;
-                }
-                
-                localStorage.setItem('messageFavorites', JSON.stringify(favorites));
-                
-                // Atualizar painel se estiver aberto
-                if (typeof updateFavoritesPanel === 'function') {
-                    updateFavoritesPanel();
-                }
-                
-                return isNowFavorite;
-            } catch (err) {
-                console.error('Erro ao salvar favoritos:', err);
-                return false;
-            }
-        }
-
-        // Atualizar painel de favoritos
-        function updateFavoritesPanel() {
-            const favoritesContent = document.getElementById('favoritesContent');
-            if (!favoritesContent) return;
-
-            try {
-                const favorites = JSON.parse(localStorage.getItem('messageFavorites') || '[]');
-                
-                if (favorites.length === 0) {
-                    favoritesContent.innerHTML = '<div class="favorites-empty">Nenhuma mensagem favoritada ainda<br><small>Clique na estrela ⭐ nas mensagens para favoritar</small></div>';
-                    return;
-                }
-
-                favoritesContent.innerHTML = '';
-                
-                // Ordenar por mais recente primeiro
-                const sortedFavorites = favorites.sort((a, b) => 
-                    new Date(b.timestamp || 0) - new Date(a.timestamp || 0)
-                );
-
-                sortedFavorites.forEach((fav, index) => {
-                    const favoriteItem = document.createElement('div');
-                    favoriteItem.className = 'favorite-item';
-                    
-                    const text = document.createElement('div');
-                    text.className = 'favorite-item-text';
-                    text.textContent = fav.text || 'Mensagem sem texto';
-                    
-                    const actions = document.createElement('div');
-                    actions.className = 'favorite-item-actions';
-                    
-                    const copyBtn = document.createElement('button');
-                    copyBtn.className = 'favorite-item-remove';
-                    copyBtn.style.background = '#4caf50';
-                    copyBtn.textContent = '📋 Copiar';
-                    copyBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        copyToClipboard(fav.text);
-                        showNotification('✓ Mensagem copiada!');
-                    };
-                    
-                    const removeBtn = document.createElement('button');
-                    removeBtn.className = 'favorite-item-remove';
-                    removeBtn.textContent = '🗑️ Remover';
-                    removeBtn.onclick = (e) => {
-                        e.stopPropagation();
-                        toggleFavorite(fav.text);
-                        updateFavoritesPanel();
-                        // Re-renderizar tópicos para atualizar estrelas
-                        const searchTerm = document.getElementById('searchInput').value;
-                        renderTopics(scriptData, searchTerm);
-                    };
-                    
-                    favoriteItem.onclick = () => {
-                        copyToClipboard(fav.text);
-                    };
-                    
-                    actions.appendChild(copyBtn);
-                    actions.appendChild(removeBtn);
-                    
-                    favoriteItem.appendChild(text);
-                    favoriteItem.appendChild(actions);
-                    
-                    favoritesContent.appendChild(favoriteItem);
-                });
-            } catch (err) {
-                console.error('Erro ao carregar favoritos:', err);
-                favoritesContent.innerHTML = '<div class="favorites-empty">Erro ao carregar favoritos</div>';
-            }
         }
 
         // --- Substitui variáveis e adiciona saudação automática ---
@@ -2457,7 +2682,7 @@
             }
             
             const categories = Object.keys(scriptData).filter(key => 
-                scriptData[key].type !== 'passwords'
+                scriptData[key].type !== 'passwords' && scriptData[key].type !== 'cadastro'
             );
             
             categories.forEach(category => {
@@ -2551,7 +2776,7 @@
             if (activeTags.length > 0) {
                 const tagFiltered = {};
                 for (const [topicName, content] of Object.entries(filteredData)) {
-                    if (content.type === 'passwords') {
+                    if (content.type === 'passwords' || content.type === 'cadastro') {
                         tagFiltered[topicName] = content;
                         continue;
                     }
@@ -2604,7 +2829,7 @@
                     // Filtrar apenas mensagens usadas recentemente
                     const dateFiltered = {};
                     for (const [topicName, content] of Object.entries(filteredData)) {
-                        if (content.type === 'passwords') {
+                        if (content.type === 'passwords' || content.type === 'cadastro') {
                             dateFiltered[topicName] = content;
                             continue;
                         }
@@ -2629,7 +2854,7 @@
                 const searchLower = searchTerm.toLowerCase();
                 
                 for (const [topicName, content] of Object.entries(filteredData)) {
-                    if (content.type === 'passwords') continue;
+                    if (content.type === 'passwords' || content.type === 'cadastro') continue;
                     
                     const filteredMessages = content.filter(msg => 
                         msg.toLowerCase().includes(searchLower) ||
@@ -3139,56 +3364,287 @@
             });
         })();
 
-        // Controle do painel de favoritos
-        const favoritesToggleBtn = document.getElementById('favoritesToggleBtn');
-        const favoritesPanel = document.getElementById('favoritesPanel');
-        const favoritesClose = document.getElementById('favoritesClose');
+        // ========== FORMULÁRIO DE CADASTRO ==========
+        const cadastroBackdrop = document.getElementById('cadastroBackdrop');
+        const cadastroOpenBtn = document.getElementById('cadastroOpenBtn');
+        const cadastroClose = document.getElementById('cadastroClose');
+        const cadastroCancelBtn = document.getElementById('cadastroCancelBtn');
+        const cadastroGenerateBtn = document.getElementById('cadastroGenerateBtn');
+        const cadastroForm = document.getElementById('cadastroForm');
 
-        if (favoritesToggleBtn) {
-            favoritesToggleBtn.addEventListener('click', () => {
-                const isShowing = favoritesPanel.classList.contains('show');
-                if (isShowing) {
-                    favoritesPanel.classList.remove('show');
-                    favoritesToggleBtn.classList.remove('active');
-                } else {
-                    updateFavoritesPanel();
-                    favoritesPanel.classList.add('show');
-                    favoritesToggleBtn.classList.add('active');
+        // Abrir modal de cadastro
+        if (cadastroOpenBtn) {
+            cadastroOpenBtn.addEventListener('click', () => {
+                if (cadastroBackdrop) {
+                    cadastroBackdrop.classList.add('show');
                 }
             });
         }
 
-        if (favoritesClose) {
-            favoritesClose.addEventListener('click', () => {
-                favoritesPanel.classList.remove('show');
-                if (favoritesToggleBtn) {
-                    favoritesToggleBtn.classList.remove('active');
+        // Fechar modal
+        function closeCadastroModal() {
+            if (cadastroBackdrop) {
+                cadastroBackdrop.classList.remove('show');
+            }
+        }
+
+        if (cadastroClose) {
+            cadastroClose.addEventListener('click', closeCadastroModal);
+        }
+
+        if (cadastroCancelBtn) {
+            cadastroCancelBtn.addEventListener('click', closeCadastroModal);
+        }
+
+        // Fechar ao clicar no backdrop
+        if (cadastroBackdrop) {
+            cadastroBackdrop.addEventListener('click', (e) => {
+                if (e.target === cadastroBackdrop) {
+                    closeCadastroModal();
                 }
             });
         }
 
-        // Fechar painel ao clicar fora
-        document.addEventListener('click', (e) => {
-            if (favoritesPanel && favoritesPanel.classList.contains('show')) {
-                if (!favoritesPanel.contains(e.target) && 
-                    favoritesToggleBtn && !favoritesToggleBtn.contains(e.target)) {
-                    favoritesPanel.classList.remove('show');
-                    favoritesToggleBtn.classList.remove('active');
-                }
+        // Fechar com ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && cadastroBackdrop && cadastroBackdrop.classList.contains('show')) {
+                closeCadastroModal();
             }
         });
 
-        // Atalho F3 ou Ctrl+Shift+F para favoritos
-        document.addEventListener('keydown', (e) => {
-            if ((e.key === 'F3') || (e.ctrlKey && e.shiftKey && e.key === 'F')) {
-                if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-                    e.preventDefault();
-                    if (favoritesToggleBtn) {
-                        favoritesToggleBtn.click();
+        // Mostrar/ocultar campo de roteador baseado no plano
+        const cadastroPlano = document.getElementById('cadastroPlano');
+        const cadastroRoteadorGroup = document.getElementById('cadastroRoteadorGroup');
+        const cadastroRoteador = document.getElementById('cadastroRoteador');
+
+        if (cadastroPlano && cadastroRoteadorGroup && cadastroRoteador) {
+            cadastroPlano.addEventListener('change', (e) => {
+                const planoSelecionado = e.target.value;
+                if (planoSelecionado === '240 MEGA') {
+                    cadastroRoteadorGroup.style.display = 'flex';
+                    cadastroRoteador.required = true;
+                } else {
+                    cadastroRoteadorGroup.style.display = 'none';
+                    cadastroRoteador.required = false;
+                    cadastroRoteador.value = '';
+                }
+            });
+        }
+
+        // Gerar OS de Instalação
+        if (cadastroGenerateBtn) {
+            cadastroGenerateBtn.addEventListener('click', () => {
+                // Validar campo de roteador se plano for 240 MEGA
+                const planoSelecionado = document.getElementById('cadastroPlano').value;
+                if (planoSelecionado === '240 MEGA') {
+                    const roteador = document.getElementById('cadastroRoteador').value;
+                    if (!roteador) {
+                        showNotification('⚠️ Por favor, selecione se o roteador é em aluguel ou do cliente para o plano de 240 MEGA.');
+                        if (cadastroRoteador) {
+                            cadastroRoteador.focus();
+                        }
+                        return;
                     }
                 }
+                
+                // Validar formulário
+                if (!cadastroForm.checkValidity()) {
+                    cadastroForm.reportValidity();
+                    return;
+                }
+
+                // Coletar dados do formulário
+                const nome = document.getElementById('cadastroNome').value;
+                const cpf = document.getElementById('cadastroCPF').value;
+                const rg = document.getElementById('cadastroRG').value;
+                const dataNasc = document.getElementById('cadastroDataNasc').value;
+                const email = document.getElementById('cadastroEmail').value;
+                const plano = document.getElementById('cadastroPlano').value;
+                const roteador = document.getElementById('cadastroRoteador').value;
+                const vencimento = document.getElementById('cadastroVencimento').value;
+                const telefone = document.getElementById('cadastroTelefone').value;
+                const endereco = document.getElementById('cadastroEndereco').value;
+                const cep = document.getElementById('cadastroCEP').value;
+                const referencia = document.getElementById('cadastroReferencia').value;
+                const fidelidade = document.getElementById('cadastroFidelidade').value;
+                const dataInstalacao = document.getElementById('cadastroDataInstalacao').value;
+                const periodoInstalacao = document.getElementById('cadastroPeriodoInstalacao').value;
+                const conheceu = document.getElementById('cadastroConheceu').value;
+
+                // Obter nome do atendente
+                const atendente = document.getElementById('attendantName').value || '[NOME_ATENDENTE]';
+
+                // Formatar data de instalação
+                const dataInstalacaoFormatada = dataInstalacao ? 
+                    new Date(dataInstalacao).toLocaleDateString('pt-BR') : '';
+
+                // Determinar texto do roteador na OS
+                let roteadorTexto = 'COM ROTEADOR EM COMODATO';
+                if (plano === '240 MEGA') {
+                    if (roteador === 'Em aluguel') {
+                        roteadorTexto = 'COM ROTEADOR EM ALUGUEL (R$ 10,00/mês)';
+                    } else if (roteador === 'Do cliente') {
+                        roteadorTexto = 'COM ROTEADOR DO CLIENTE';
+                    }
+                }
+
+                // Gerar OS
+                const osText = `INSTALAÇÃO SERÁ GRATUITA NA PROMOÇÃO DO CARLOS
+
+PLANO DE ${plano} / ${roteadorTexto}
+
+DATA DE VENCIMENTO: ${vencimento}
+
+CONSULTORA(O): ${atendente}
+
+CONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA ${dataInstalacaoFormatada} - ${periodoInstalacao}
+
+CLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE
+
+═══════════════════════════════════════════════════════════
+
+📋 FICHA DE CADASTRO:
+
+Nome completo: ${nome}
+CPF: ${cpf}
+${rg ? `RG: ${rg}` : ''}
+Data de nascimento: ${dataNasc ? new Date(dataNasc).toLocaleDateString('pt-BR') : ''}
+E-mail: ${email}
+Plano desejado: ${plano}
+${plano === '240 MEGA' && roteador ? `Roteador: ${roteador}` : ''}
+Data de vencimento: ${vencimento}
+Telefone(s): ${telefone}
+Endereço completo: ${endereco}
+CEP: ${cep}
+Referência visual: ${referencia}
+Fidelidade de 12 meses: ${fidelidade}
+Data e período para instalação: ${dataInstalacaoFormatada} - ${periodoInstalacao}
+Por onde conheceu a empresa: ${conheceu}`;
+
+                // Abrir modal de OS com o texto gerado
+                const osBackdrop = document.getElementById('osBackdrop');
+                const osTextarea = document.getElementById('osTextarea');
+                
+                if (osBackdrop && osTextarea) {
+                    osTextarea.value = osText;
+                    osBackdrop.classList.add('show');
+                    
+                    // Fechar modal de cadastro
+                    closeCadastroModal();
+                    
+                    // Focar no textarea e selecionar todo o texto
+                    setTimeout(() => {
+                        osTextarea.focus();
+                        osTextarea.select();
+                    }, 100);
+                } else {
+                    // Fallback: copiar para área de transferência se modal não existir
+                    copyToClipboard(osText);
+                    showNotification('✓ OS de Instalação gerada e copiada!');
+                    closeCadastroModal();
+                }
+
+                // Limpar formulário
+                cadastroForm.reset();
+                
+                // Ocultar campo de roteador após limpar
+                if (cadastroRoteadorGroup) {
+                    cadastroRoteadorGroup.style.display = 'none';
+                }
+                if (cadastroRoteador) {
+                    cadastroRoteador.required = false;
+                }
+            });
+        }
+
+        // ========== MODAL DE OS GERADA ==========
+        const osBackdrop = document.getElementById('osBackdrop');
+        const osClose = document.getElementById('osClose');
+        const osCloseBtn = document.getElementById('osCloseBtn');
+        const osCopyBtn = document.getElementById('osCopyBtn');
+        const osTextarea = document.getElementById('osTextarea');
+
+        // Fechar modal de OS
+        function closeOSModal() {
+            if (osBackdrop) {
+                osBackdrop.classList.remove('show');
+            }
+        }
+
+        if (osClose) {
+            osClose.addEventListener('click', closeOSModal);
+        }
+
+        if (osCloseBtn) {
+            osCloseBtn.addEventListener('click', closeOSModal);
+        }
+
+        // Fechar ao clicar no backdrop
+        if (osBackdrop) {
+            osBackdrop.addEventListener('click', (e) => {
+                if (e.target === osBackdrop) {
+                    closeOSModal();
+                }
+            });
+        }
+
+        // Fechar com ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && osBackdrop && osBackdrop.classList.contains('show')) {
+                closeOSModal();
             }
         });
+
+        // Copiar OS
+        if (osCopyBtn && osTextarea) {
+            osCopyBtn.addEventListener('click', () => {
+                osTextarea.select();
+                copyToClipboard(osTextarea.value);
+                showNotification('✓ OS copiada para a área de transferência!');
+            });
+        }
+
+        // Máscaras de input
+        const cadastroCPF = document.getElementById('cadastroCPF');
+        if (cadastroCPF) {
+            cadastroCPF.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length <= 11) {
+                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                    value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                    e.target.value = value;
+                }
+            });
+        }
+
+        const cadastroCEP = document.getElementById('cadastroCEP');
+        if (cadastroCEP) {
+            cadastroCEP.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length <= 8) {
+                    value = value.replace(/(\d{5})(\d)/, '$1-$2');
+                    e.target.value = value;
+                }
+            });
+        }
+
+        const cadastroTelefone = document.getElementById('cadastroTelefone');
+        if (cadastroTelefone) {
+            cadastroTelefone.addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length <= 11) {
+                    if (value.length <= 10) {
+                        value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                        value = value.replace(/(\d{4})(\d)/, '$1-$2');
+                    } else {
+                        value = value.replace(/(\d{2})(\d)/, '($1) $2');
+                        value = value.replace(/(\d{5})(\d)/, '$1-$2');
+                    }
+                    e.target.value = value;
+                }
+            });
+        }
 
         }); // Fim do DOMContentLoaded
     </script>
