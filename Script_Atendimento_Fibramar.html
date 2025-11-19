@@ -844,6 +844,173 @@
             transform: scale(0.95);
         }
 
+        .os-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 1001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .os-backdrop.show {
+            display: flex;
+        }
+
+        .os-modal {
+            width: 800px;
+            max-width: 95%;
+            max-height: 90vh;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body.dark-mode .os-modal {
+            background: #2a2a2a;
+        }
+
+        .os-header {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+
+        body.dark-mode .os-header {
+            background: linear-gradient(135deg, #2d7a2f 0%, #1e5a20 100%);
+        }
+
+        .os-header h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .os-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            transition: all 0.2s ease;
+        }
+
+        .os-close:hover {
+            background: rgba(255, 100, 100, 0.5);
+            transform: scale(1.1);
+        }
+
+        .os-content {
+            padding: 25px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .os-textarea {
+            width: 100%;
+            min-height: 500px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-family: 'Courier New', monospace;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        body.dark-mode .os-textarea {
+            background: #1e1e1e;
+            border-color: #444;
+            color: #e0e0e0;
+        }
+
+        .os-textarea:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        body.dark-mode .os-textarea:focus {
+            border-color: #45a049;
+            box-shadow: 0 0 0 3px rgba(69, 160, 73, 0.2);
+        }
+
+        .os-actions {
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        body.dark-mode .os-actions {
+            background: #1a1a1a;
+            border-top-color: #333;
+        }
+
+        .os-btn-copy {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .os-btn-copy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .os-btn-close {
+            padding: 12px 30px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .os-btn-close:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 768px) {
             .floating-buttons {
                 flex-direction: column;
@@ -1166,6 +1333,25 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de OS Gerada -->
+    <div class="os-backdrop" id="osBackdrop">
+        <div class="os-modal" id="osModal">
+            <div class="os-header">
+                <h3>📄 OS de Instalação Gerada</h3>
+                <button class="os-close" id="osClose">✕</button>
+            </div>
+            <div class="os-content">
+                <textarea class="os-textarea" id="osTextarea" placeholder="OS de instalação será exibida aqui..."></textarea>
+            </div>
+            <div class="os-actions">
+                <button type="button" class="os-btn-copy" id="osCopyBtn">
+                    📋 Copiar OS
+                </button>
+                <button type="button" class="os-btn-close" id="osCloseBtn">Fechar</button>
             </div>
         </div>
     </div>
@@ -2266,6 +2452,67 @@
                 }
             });
         })();
+
+        // ========== MODAL DE OS GERADA ==========
+        const osBackdrop = document.getElementById('osBackdrop');
+        const osClose = document.getElementById('osClose');
+        const osCloseBtn = document.getElementById('osCloseBtn');
+        const osCopyBtn = document.getElementById('osCopyBtn');
+        const osTextarea = document.getElementById('osTextarea');
+
+        // Fechar modal de OS
+        function closeOSModal() {
+            if (osBackdrop) {
+                osBackdrop.classList.remove('show');
+            }
+        }
+
+        if (osClose) {
+            osClose.addEventListener('click', closeOSModal);
+        }
+
+        if (osCloseBtn) {
+            osCloseBtn.addEventListener('click', closeOSModal);
+        }
+
+        // Fechar ao clicar no backdrop
+        if (osBackdrop) {
+            osBackdrop.addEventListener('click', (e) => {
+                if (e.target === osBackdrop) {
+                    closeOSModal();
+                }
+            });
+        }
+
+        // Fechar com ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && osBackdrop && osBackdrop.classList.contains('show')) {
+                closeOSModal();
+            }
+        });
+
+        // Copiar OS
+        if (osCopyBtn && osTextarea) {
+            osCopyBtn.addEventListener('click', () => {
+                osTextarea.select();
+                copyToClipboard(osTextarea.value);
+                showNotification('✓ OS copiada para a área de transferência!');
+            });
+        }
+
+        // Função para abrir modal de OS (será chamada quando a OS for gerada)
+        window.openOSModal = function(osText) {
+            if (osBackdrop && osTextarea) {
+                osTextarea.value = osText;
+                osBackdrop.classList.add('show');
+                
+                // Focar no textarea e selecionar todo o texto
+                setTimeout(() => {
+                    osTextarea.focus();
+                    osTextarea.select();
+                }, 100);
+            }
+        };
 
         }); // Fim do DOMContentLoaded
     </script>
