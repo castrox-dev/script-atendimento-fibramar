@@ -1265,6 +1265,28 @@
             transition: all 0.3s ease;
         }
 
+        .cadastro-btn-processar {
+            padding: 12px 20px;
+            background: #ffc107;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .cadastro-btn-processar:hover {
+            background: #ffb300;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+        }
+
         .cadastro-btn-cancel:hover {
             background: #d32f2f;
             transform: translateY(-2px);
@@ -1775,6 +1797,15 @@
             </div>
             <div class="cadastro-content">
                 <form class="cadastro-form" id="cadastroForm">
+                    <div class="cadastro-form-group full-width" style="margin-bottom: 20px; padding: 15px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 2px dashed rgba(255, 193, 7, 0.3);">
+                        <label for="cadastroFichaColada" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            📋 <span>Cole a ficha preenchida pelo cliente aqui (opcional)</span>
+                        </label>
+                        <textarea id="cadastroFichaColada" rows="6" placeholder="Cole aqui a ficha que o cliente enviou pelo WhatsApp...&#10;&#10;Exemplo:&#10;Nome completo: João Silva&#10;CPF: 123.456.789-00&#10;E-mail: joao@email.com&#10;..."></textarea>
+                        <button type="button" id="cadastroProcessarFicha" class="cadastro-btn-processar" style="margin-top: 10px; padding: 10px 20px; background: #ffc107; color: #000; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%;">
+                            🔄 Processar Ficha e Preencher Campos
+                        </button>
+                    </div>
                     <div class="cadastro-form-group">
                         <label for="cadastroNome">Nome completo *</label>
                         <input type="text" id="cadastroNome" required>
@@ -1855,8 +1886,8 @@
                         <input type="date" id="cadastroDataInstalacao" required>
                     </div>
                     <div class="cadastro-form-group">
-                        <label for="cadastroPeriodoInstalacao">Período da instalação *</label>
-                        <select id="cadastroPeriodoInstalacao" required>
+                        <label for="cadastroPeriodoInstalacao">Período da instalação</label>
+                        <select id="cadastroPeriodoInstalacao">
                             <option value="">Selecione</option>
                             <option value="Manhã">Manhã</option>
                             <option value="Tarde">Tarde</option>
@@ -2471,7 +2502,7 @@
             cadastroButton.style.color = 'white';
             cadastroButton.style.fontSize = '1.2em';
             cadastroButton.style.fontWeight = '600';
-            cadastroButton.innerHTML = '📋 Abrir Formulário de Cadastro';
+            cadastroButton.innerHTML = '📋';
             
             cadastroButton.addEventListener('click', () => {
                 const backdrop = document.getElementById('cadastroBackdrop');
@@ -3381,6 +3412,267 @@
         const cadastroCancelBtn = document.getElementById('cadastroCancelBtn');
         const cadastroGenerateBtn = document.getElementById('cadastroGenerateBtn');
         const cadastroForm = document.getElementById('cadastroForm');
+        const cadastroFichaColada = document.getElementById('cadastroFichaColada');
+        const cadastroProcessarFicha = document.getElementById('cadastroProcessarFicha');
+
+        // Função para processar ficha colada e preencher campos automaticamente
+        function processarFichaColada() {
+            if (!cadastroFichaColada || !cadastroFichaColada.value.trim()) {
+                showNotification('⚠️ Por favor, cole a ficha do cliente no campo acima.');
+                return;
+            }
+
+            const ficha = cadastroFichaColada.value;
+            let dadosExtraidos = {};
+
+            // Função auxiliar para extrair valor após um rótulo
+            function extrairValor(rotulo, regexAlternativo = null) {
+                const padroes = [
+                    new RegExp(`${rotulo}[\\s:]*([^\\n]+)`, 'i'),
+                    new RegExp(`${rotulo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[\\s:]*([^\\n]+)`, 'i')
+                ];
+                
+                if (regexAlternativo) {
+                    padroes.push(regexAlternativo);
+                }
+
+                for (const padrao of padroes) {
+                    const match = ficha.match(padrao);
+                    if (match && match[1]) {
+                        return match[1].trim();
+                    }
+                }
+                return null;
+            }
+
+            // Extrair dados
+            dadosExtraidos.nome = extrairValor('Nome completo|Nome|nome completo');
+            dadosExtraidos.cpf = extrairValor('CPF|cpf');
+            dadosExtraidos.rg = extrairValor('RG|rg');
+            dadosExtraidos.dataNasc = extrairValor('Data de nascimento|Data nascimento|Nascimento');
+            dadosExtraidos.email = extrairValor('E-mail|Email|e-mail|email');
+            dadosExtraidos.plano = extrairValor('Plano desejado|Plano|plano desejado');
+            dadosExtraidos.vencimento = extrairValor('Data de vencimento|Vencimento|vencimento');
+            dadosExtraidos.telefone = extrairValor('Telefone|telefone|Telefone\\(s\\)');
+            dadosExtraidos.endereco = extrairValor('Endereço completo|Endereço|endereço completo');
+            dadosExtraidos.cep = extrairValor('CEP|cep');
+            dadosExtraidos.referencia = extrairValor('Referência visual|Referência|referência|Referencia');
+            dadosExtraidos.fidelidade = extrairValor('Fidelidade|fidelidade|Gostaria da fidelidade');
+            dadosExtraidos.dataInstalacao = extrairValor('Data da instalação|Data instalação|Data e período para a instalação');
+            dadosExtraidos.periodoInstalacao = extrairValor('Período da instalação|Período instalação|período');
+            dadosExtraidos.conheceu = extrairValor('Por onde conheceu|conheceu a empresa|Conheceu');
+            dadosExtraidos.roteador = extrairValor('Roteador|roteador');
+
+            // Preencher campos do formulário
+            if (dadosExtraidos.nome) {
+                document.getElementById('cadastroNome').value = dadosExtraidos.nome;
+            }
+            if (dadosExtraidos.cpf) {
+                document.getElementById('cadastroCPF').value = dadosExtraidos.cpf.replace(/[^0-9.-]/g, '');
+            }
+            if (dadosExtraidos.rg) {
+                document.getElementById('cadastroRG').value = dadosExtraidos.rg;
+            }
+            if (dadosExtraidos.dataNasc) {
+                // Tentar converter data para formato YYYY-MM-DD
+                const dataMatch = dadosExtraidos.dataNasc.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+                if (dataMatch) {
+                    const dia = dataMatch[1].padStart(2, '0');
+                    const mes = dataMatch[2].padStart(2, '0');
+                    const ano = dataMatch[3];
+                    document.getElementById('cadastroDataNasc').value = `${ano}-${mes}-${dia}`;
+                }
+            }
+            if (dadosExtraidos.email) {
+                document.getElementById('cadastroEmail').value = dadosExtraidos.email;
+            }
+            if (dadosExtraidos.plano) {
+                // Tentar encontrar o plano correspondente no select
+                const planoSelect = document.getElementById('cadastroPlano');
+                const planoLower = dadosExtraidos.plano.toLowerCase();
+                
+                // Mapear diferentes formas de escrever os planos
+                const mapeamentoPlanos = {
+                    '240': '240 MEGA',
+                    '240 mega': '240 MEGA',
+                    '240mega': '240 MEGA',
+                    '400': '400 MEGA',
+                    '400 mega': '400 MEGA',
+                    '400mega': '400 MEGA',
+                    '500': '500 MEGA',
+                    '500 mega': '500 MEGA',
+                    '500mega': '500 MEGA',
+                    '600': '600 MEGA',
+                    '600 mega': '600 MEGA',
+                    '600mega': '600 MEGA',
+                    '1 giga': '1 GIGA',
+                    '1giga': '1 GIGA',
+                    'giga': '1 GIGA'
+                };
+                
+                // Tentar encontrar correspondência exata primeiro
+                let planoEncontrado = null;
+                for (const [chave, valor] of Object.entries(mapeamentoPlanos)) {
+                    if (planoLower.includes(chave)) {
+                        planoEncontrado = valor;
+                        break;
+                    }
+                }
+                
+                // Se não encontrou, tentar buscar nos options
+                if (!planoEncontrado) {
+                    for (let option of planoSelect.options) {
+                        if (option.value) {
+                            const valorOption = option.value.toLowerCase();
+                            const numeroPlano = valorOption.match(/\d+/);
+                            if (numeroPlano && planoLower.includes(numeroPlano[0])) {
+                                planoEncontrado = option.value;
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                if (planoEncontrado) {
+                    planoSelect.value = planoEncontrado;
+                    // Trigger change para mostrar campo de roteador se necessário
+                    planoSelect.dispatchEvent(new Event('change'));
+                }
+            }
+            if (dadosExtraidos.vencimento) {
+                const vencimentoNum = dadosExtraidos.vencimento.match(/\d+/);
+                if (vencimentoNum) {
+                    document.getElementById('cadastroVencimento').value = vencimentoNum[0];
+                }
+            }
+            if (dadosExtraidos.telefone) {
+                document.getElementById('cadastroTelefone').value = dadosExtraidos.telefone;
+            }
+            if (dadosExtraidos.endereco) {
+                document.getElementById('cadastroEndereco').value = dadosExtraidos.endereco;
+            }
+            if (dadosExtraidos.cep) {
+                document.getElementById('cadastroCEP').value = dadosExtraidos.cep.replace(/[^0-9-]/g, '');
+            }
+            if (dadosExtraidos.referencia) {
+                document.getElementById('cadastroReferencia').value = dadosExtraidos.referencia;
+            }
+            if (dadosExtraidos.fidelidade) {
+                const fidelidadeLower = dadosExtraidos.fidelidade.toLowerCase();
+                if (fidelidadeLower.includes('sim') || fidelidadeLower.includes('s')) {
+                    document.getElementById('cadastroFidelidade').value = 'Sim';
+                } else if (fidelidadeLower.includes('não') || fidelidadeLower.includes('nao') || fidelidadeLower.includes('n')) {
+                    document.getElementById('cadastroFidelidade').value = 'Não';
+                }
+            }
+            if (dadosExtraidos.dataInstalacao) {
+                // Extrair apenas a data (pode vir com período junto)
+                const dataMatch = dadosExtraidos.dataInstalacao.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+                if (dataMatch) {
+                    const dia = dataMatch[1].padStart(2, '0');
+                    const mes = dataMatch[2].padStart(2, '0');
+                    const ano = dataMatch[3];
+                    document.getElementById('cadastroDataInstalacao').value = `${ano}-${mes}-${dia}`;
+                }
+                // Tentar extrair período da mesma linha se houver
+                const periodoMatch = dadosExtraidos.dataInstalacao.match(/(manhã|manha|tarde|integral|dia todo)/i);
+                if (periodoMatch) {
+                    const periodoLower = periodoMatch[1].toLowerCase();
+                    const periodoSelect = document.getElementById('cadastroPeriodoInstalacao');
+                    if (periodoLower.includes('manhã') || periodoLower.includes('manha')) {
+                        periodoSelect.value = 'Manhã';
+                    } else if (periodoLower.includes('tarde')) {
+                        periodoSelect.value = 'Tarde';
+                    } else if (periodoLower.includes('integral') || periodoLower.includes('dia todo')) {
+                        periodoSelect.value = 'Integral';
+                    }
+                }
+            }
+            if (dadosExtraidos.periodoInstalacao && !document.getElementById('cadastroPeriodoInstalacao').value) {
+                const periodoLower = dadosExtraidos.periodoInstalacao.toLowerCase();
+                const periodoSelect = document.getElementById('cadastroPeriodoInstalacao');
+                if (periodoLower.includes('manhã') || periodoLower.includes('manha')) {
+                    periodoSelect.value = 'Manhã';
+                } else if (periodoLower.includes('tarde')) {
+                    periodoSelect.value = 'Tarde';
+                } else if (periodoLower.includes('integral') || periodoLower.includes('dia todo')) {
+                    periodoSelect.value = 'Integral';
+                }
+            }
+            if (dadosExtraidos.conheceu) {
+                document.getElementById('cadastroConheceu').value = dadosExtraidos.conheceu;
+            }
+            if (dadosExtraidos.roteador) {
+                const roteadorLower = dadosExtraidos.roteador.toLowerCase();
+                if (roteadorLower.includes('aluguel') || roteadorLower.includes('alugar')) {
+                    document.getElementById('cadastroRoteador').value = 'Em aluguel';
+                } else if (roteadorLower.includes('cliente') || roteadorLower.includes('próprio') || roteadorLower.includes('proprio')) {
+                    document.getElementById('cadastroRoteador').value = 'Do cliente';
+                }
+            }
+
+            // Contar quantos campos foram preenchidos
+            const camposPreenchidos = Object.values(dadosExtraidos).filter(v => v !== null && v !== '').length;
+            
+            // Verificar campos obrigatórios faltantes
+            const camposObrigatorios = [
+                { id: 'cadastroNome', nome: 'Nome completo' },
+                { id: 'cadastroCPF', nome: 'CPF' },
+                { id: 'cadastroDataNasc', nome: 'Data de nascimento' },
+                { id: 'cadastroEmail', nome: 'E-mail' },
+                { id: 'cadastroPlano', nome: 'Plano desejado' },
+                { id: 'cadastroVencimento', nome: 'Data de vencimento' },
+                { id: 'cadastroTelefone', nome: 'Telefone(s)' },
+                { id: 'cadastroEndereco', nome: 'Endereço completo' },
+                { id: 'cadastroCEP', nome: 'CEP' },
+                { id: 'cadastroReferencia', nome: 'Referência visual' },
+                { id: 'cadastroFidelidade', nome: 'Fidelidade de 12 meses' },
+                { id: 'cadastroDataInstalacao', nome: 'Data da instalação' },
+                { id: 'cadastroConheceu', nome: 'Por onde conheceu a empresa' }
+            ];
+            
+            const camposFaltantes = [];
+            camposObrigatorios.forEach(campo => {
+                const elemento = document.getElementById(campo.id);
+                if (elemento && elemento.hasAttribute('required') && !elemento.value) {
+                    camposFaltantes.push(campo.nome);
+                }
+            });
+            
+            // Verificar se precisa de roteador (plano 240 MEGA)
+            const planoSelecionado = document.getElementById('cadastroPlano').value;
+            if (planoSelecionado === '240 MEGA') {
+                const roteador = document.getElementById('cadastroRoteador').value;
+                if (!roteador) {
+                    camposFaltantes.push('Roteador (obrigatório para plano 240 MEGA)');
+                }
+            }
+            
+            let mensagem = `✅ Ficha processada! ${camposPreenchidos} campo(s) preenchido(s) automaticamente.`;
+            
+            if (camposFaltantes.length > 0) {
+                mensagem += `\n\n⚠️ Ficou faltando os seguintes dados:\n${camposFaltantes.map(campo => `• ${campo}`).join('\n')}`;
+            }
+            
+            showNotification(mensagem);
+            
+            // Scroll para o primeiro campo não preenchido
+            setTimeout(() => {
+                const campos = cadastroForm.querySelectorAll('input[required], select[required], textarea[required]');
+                for (let campo of campos) {
+                    if (!campo.value) {
+                        campo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        campo.focus();
+                        break;
+                    }
+                }
+            }, 300);
+        }
+
+        // Event listener para o botão de processar ficha
+        if (cadastroProcessarFicha) {
+            cadastroProcessarFicha.addEventListener('click', processarFichaColada);
+        }
 
         // Abrir modal de cadastro
         if (cadastroOpenBtn) {
@@ -3507,7 +3799,7 @@ DATA DE VENCIMENTO: ${vencimento}
 
 CONSULTORA(O): ${atendente}
 
-CONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA ${dataInstalacaoFormatada} - ${periodoInstalacao}
+CONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA ${dataInstalacaoFormatada}${periodoInstalacao ? ` - ${periodoInstalacao}` : ''}
 
 CLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE
 
@@ -3528,7 +3820,7 @@ Endereço completo: ${endereco}
 CEP: ${cep}
 Referência visual: ${referencia}
 Fidelidade de 12 meses: ${fidelidade}
-Data e período para instalação: ${dataInstalacaoFormatada} - ${periodoInstalacao}
+Data e período para instalação: ${dataInstalacaoFormatada}${periodoInstalacao ? ` - ${periodoInstalacao}` : ''}
 Por onde conheceu a empresa: ${conheceu}
 
 ═══════════════════════════════════════════════════════════
