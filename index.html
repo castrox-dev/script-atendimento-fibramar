@@ -3414,10 +3414,11 @@
 
         // Função para processar ficha colada e preencher campos automaticamente
         function processarFichaColada() {
-            if (!cadastroFichaColada || !cadastroFichaColada.value.trim()) {
-                showNotification('⚠️ Por favor, cole a ficha do cliente no campo acima.');
-                return;
-            }
+            try {
+                if (!cadastroFichaColada || !cadastroFichaColada.value.trim()) {
+                    showNotification('⚠️ Por favor, cole a ficha do cliente no campo acima.');
+                    return;
+                }
 
             const ficha = cadastroFichaColada.value;
             let dadosExtraidos = {};
@@ -3475,8 +3476,9 @@
                 }
                 
                 // Telefone (contém números e pode ter parênteses, espaços, traços)
-                const telMatch = linha.match(/[\d\s\(\)\-]+/);
-                if (telMatch && linha.replace(/[^0-9]/g, '').length >= 10 && linha.replace(/[^0-9]/g, '').length <= 11) {
+                // Não deve ser CPF (11 dígitos sem formatação) ou CEP (8 dígitos)
+                const telLimpo = linha.replace(/[^0-9]/g, '');
+                if (telLimpo.length === 10 || (telLimpo.length === 11 && linha.match(/[\s\(\)\-]/))) {
                     return { tipo: 'telefone', valor: linha };
                 }
                 
@@ -3513,9 +3515,11 @@
 
             // Se não encontrou dados com rótulos, tentar detectar por formato (ficha sem rótulos)
             const linhas = ficha.split('\n').map(l => l.trim()).filter(l => l);
-            if (!dadosExtraidos.nome && !dadosExtraidos.cpf && !dadosExtraidos.email && linhas.length > 0) {
+            const temRotulos = dadosExtraidos.nome || dadosExtraidos.cpf || dadosExtraidos.email;
+            
+            if (!temRotulos && linhas.length > 0) {
                 // Primeira linha geralmente é o nome
-                if (!dadosExtraidos.nome && linhas[0] && !detectarTipoDado(linhas[0])) {
+                if (linhas[0] && !detectarTipoDado(linhas[0])) {
                     dadosExtraidos.nome = linhas[0];
                 }
                 
@@ -3761,6 +3765,10 @@
                     }
                 }
             }, 300);
+            } catch (error) {
+                console.error('Erro ao processar ficha:', error);
+                showNotification('❌ Erro ao processar a ficha. Por favor, verifique o console para mais detalhes.');
+            }
         }
 
         // Event listener para o botão de processar ficha
