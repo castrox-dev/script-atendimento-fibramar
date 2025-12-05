@@ -2011,9 +2011,6 @@
         }
         
         const scriptData = {
-            "📋 FORMULÁRIO DE CADASTRO": {
-                "type": "cadastro",
-                "action": "openCadastroForm"
             },
             "✅ INÍCIO DE ATENDIMENTO": [
                 "Olá! Seja bem-vindo(a) ao atendimento da Fibramar Internet.\n\nNosso atendimento é 24 horas, todos os dias.\n\nCaso prefira atendimento por ligação, utilize um dos nossos números:\n\n📞 0800 100 3850\n📞 (21) 3864-3850\n\nMeu nome é [NOME_ATENDENTE], e vou lhe atender agora.\n\nEm que posso ajudar?"
@@ -3445,7 +3442,58 @@
                 return null;
             }
 
-            // Extrair dados
+            // Função para detectar tipo de dado pelo formato
+            function detectarTipoDado(linha) {
+                linha = linha.trim();
+                if (!linha) return null;
+                
+                // Email
+                if (linha.includes('@') && linha.includes('.')) {
+                    return { tipo: 'email', valor: linha };
+                }
+                
+                // CPF (11 dígitos, pode ter pontos e traços)
+                const cpfLimpo = linha.replace(/[^0-9]/g, '');
+                if (cpfLimpo.length === 11) {
+                    return { tipo: 'cpf', valor: linha };
+                }
+                
+                // RG (geralmente 7-9 dígitos, mas não 8 que pode ser CEP)
+                if (cpfLimpo.length >= 7 && cpfLimpo.length <= 9 && cpfLimpo.length !== 8 && linha.length <= 15) {
+                    return { tipo: 'rg', valor: linha };
+                }
+                
+                // CEP (8 dígitos, sem letras, geralmente aparece depois de endereço)
+                if (cpfLimpo.length === 8 && linha.length <= 10 && !linha.match(/[a-zA-Z]/)) {
+                    return { tipo: 'cep', valor: linha };
+                }
+                
+                // Data (formato DD MM YYYY ou DD/MM/YYYY)
+                const dataMatch = linha.match(/(\d{1,2})[\/\s\-](\d{1,2})[\/\s\-](\d{4})/);
+                if (dataMatch) {
+                    return { tipo: 'dataNasc', valor: linha };
+                }
+                
+                // Telefone (contém números e pode ter parênteses, espaços, traços)
+                const telMatch = linha.match(/[\d\s\(\)\-]+/);
+                if (telMatch && linha.replace(/[^0-9]/g, '').length >= 10 && linha.replace(/[^0-9]/g, '').length <= 11) {
+                    return { tipo: 'telefone', valor: linha };
+                }
+                
+                // Plano (contém números e palavras como mega, giga)
+                if (linha.match(/\d+\s*(mega|giga|MEGA|GIGA)/i) || linha.toLowerCase().includes('giga') || linha.toLowerCase().includes('mega')) {
+                    return { tipo: 'plano', valor: linha };
+                }
+                
+                // Vencimento (apenas número de 1-2 dígitos, geralmente 1, 3, 6, 9, 13, 18)
+                if (/^\d{1,2}$/.test(linha) && parseInt(linha) <= 31) {
+                    return { tipo: 'vencimento', valor: linha };
+                }
+                
+                return null;
+            }
+
+            // Extrair dados com rótulos primeiro
             dadosExtraidos.nome = extrairValor('Nome completo|Nome|nome completo');
             dadosExtraidos.cpf = extrairValor('CPF|cpf');
             dadosExtraidos.rg = extrairValor('RG|rg');
@@ -3463,6 +3511,52 @@
             dadosExtraidos.conheceu = extrairValor('Por onde conheceu|conheceu a empresa|Conheceu');
             dadosExtraidos.roteador = extrairValor('Roteador|roteador');
 
+            // Se não encontrou dados com rótulos, tentar detectar por formato (ficha sem rótulos)
+            const linhas = ficha.split('\n').map(l => l.trim()).filter(l => l);
+            if (!dadosExtraidos.nome && !dadosExtraidos.cpf && !dadosExtraidos.email && linhas.length > 0) {
+                // Primeira linha geralmente é o nome
+                if (!dadosExtraidos.nome && linhas[0] && !detectarTipoDado(linhas[0])) {
+                    dadosExtraidos.nome = linhas[0];
+                }
+                
+                // Processar cada linha para detectar automaticamente
+                for (let i = 0; i < linhas.length; i++) {
+                    const linha = linhas[i];
+                    const detectado = detectarTipoDado(linha);
+                    
+                    if (detectado) {
+                        if (detectado.tipo === 'cpf' && !dadosExtraidos.cpf) {
+                            dadosExtraidos.cpf = detectado.valor;
+                        } else if (detectado.tipo === 'rg' && !dadosExtraidos.rg) {
+                            dadosExtraidos.rg = detectado.valor;
+                        } else if (detectado.tipo === 'dataNasc' && !dadosExtraidos.dataNasc) {
+                            dadosExtraidos.dataNasc = detectado.valor;
+                        } else if (detectado.tipo === 'email' && !dadosExtraidos.email) {
+                            dadosExtraidos.email = detectado.valor;
+                        } else if (detectado.tipo === 'plano' && !dadosExtraidos.plano) {
+                            dadosExtraidos.plano = detectado.valor;
+                        } else if (detectado.tipo === 'vencimento' && !dadosExtraidos.vencimento) {
+                            dadosExtraidos.vencimento = detectado.valor;
+                        } else if (detectado.tipo === 'telefone' && !dadosExtraidos.telefone) {
+                            dadosExtraidos.telefone = detectado.valor;
+                        } else if (detectado.tipo === 'cep' && !dadosExtraidos.cep) {
+                            dadosExtraidos.cep = detectado.valor;
+                        }
+                    } else {
+                        // Se não foi detectado como tipo específico, pode ser nome, endereço, referência ou conheceu
+                        if (!dadosExtraidos.nome && i === 0 && linha.length > 5 && !linha.match(/^\d+$/)) {
+                            dadosExtraidos.nome = linha;
+                        } else if (!dadosExtraidos.referencia && linha.length > 20 && (linha.toLowerCase().includes('frente') || linha.toLowerCase().includes('próximo') || linha.toLowerCase().includes('perto'))) {
+                            dadosExtraidos.referencia = linha;
+                        } else if (!dadosExtraidos.conheceu && (linha.toLowerCase().includes('internet') || linha.toLowerCase().includes('google') || linha.toLowerCase().includes('facebook') || linha.toLowerCase().includes('instagram') || linha.toLowerCase().includes('indic') || linha.toLowerCase().includes('amigo'))) {
+                            dadosExtraidos.conheceu = linha;
+                        } else if (!dadosExtraidos.endereco && linha.length > 10 && !dadosExtraidos.referencia) {
+                            dadosExtraidos.endereco = linha;
+                        }
+                    }
+                }
+            }
+
             // Preencher campos do formulário
             if (dadosExtraidos.nome) {
                 document.getElementById('cadastroNome').value = dadosExtraidos.nome;
@@ -3474,8 +3568,8 @@
                 document.getElementById('cadastroRG').value = dadosExtraidos.rg;
             }
             if (dadosExtraidos.dataNasc) {
-                // Tentar converter data para formato YYYY-MM-DD
-                const dataMatch = dadosExtraidos.dataNasc.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+                // Tentar converter data para formato YYYY-MM-DD (aceita /, - ou espaços)
+                const dataMatch = dadosExtraidos.dataNasc.match(/(\d{1,2})[\/\s\-](\d{1,2})[\/\s\-](\d{4})/);
                 if (dataMatch) {
                     const dia = dataMatch[1].padStart(2, '0');
                     const mes = dataMatch[2].padStart(2, '0');
