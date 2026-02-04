@@ -1870,6 +1870,14 @@
                         <input type="text" id="cadastroCEP" required placeholder="00000-000">
                     </div>
                     <div class="cadastro-form-group">
+                        <label for="cadastroBairro">Bairro *</label>
+                        <input type="text" id="cadastroBairro" required placeholder="Nome do bairro">
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroCidade">Cidade *</label>
+                        <input type="text" id="cadastroCidade" required placeholder="Nome da cidade" value="Maricá">
+                    </div>
+                    <div class="cadastro-form-group">
                         <label for="cadastroReferencia">Referência visual *</label>
                         <input type="text" id="cadastroReferencia" required placeholder="Ponto de referência próximo">
                     </div>
@@ -1879,6 +1887,17 @@
                             <option value="">Selecione</option>
                             <option value="Sim">Sim</option>
                             <option value="Não">Não</option>
+                        </select>
+                    </div>
+                    <div class="cadastro-form-group">
+                        <label for="cadastroModoPagamento">Modo de pagamento da instalação *</label>
+                        <select id="cadastroModoPagamento" required>
+                            <option value="">Selecione</option>
+                            <option value="PIX">PIX</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                            <option value="Cartão de Débito">Cartão de Débito</option>
+                            <option value="Cartão de Crédito">Cartão de Crédito</option>
+                            <option value="Transferência">Transferência</option>
                         </select>
                     </div>
                     <div class="cadastro-form-group">
@@ -2059,7 +2078,7 @@
                 "🚀 *Plano 1 GIGA Fibramar*\n\n*1 GIGA • R$ 149,99/mês* (pagando até o vencimento)\n\n*R$ 169,99/mês* (após vencimento)\n\n\n\n- Wi-Fi 6 incluso\n\n- 100% Fibra Óptica\n\n- 🤩 Instalação Grátis\n\n\n\n⚡️* Ideal para gamers, streamers e multitarefas que não podem ficar sem velocidade.*\n\n\n\n🔗 Opcional: Repetidor Mesh por apenas R$ 29,99/mês\n\n\n\n- Possui fidelidade de 12 meses",
             ],
             "📋 CADASTRO DE NOVO CLIENTE": [
-                "Promoção: Instalação GRÁTIS por tempo limitado (com a fidelidade de 12 meses).\n\n### Para iniciar o cadastro, envie os dados:\n\nNome completo:\nCPF:\nRG:\nData de nascimento:\nE-mail:\nPlano desejado:\nData de vencimento (1, 3, 6, 7, 9, 13 ou 18):\nTelefone(s):\nEndereço completo:\nCEP:\nReferência visual (ponto de referência próximo):\nGostaria da fidelidade de 12 meses?\nData e período para a instalação:\nPor onde conheceu a empresa ?",
+                "Promoção: Instalação GRÁTIS por tempo limitado (com a fidelidade de 12 meses).\n\n⚠️ ATENÇÃO: Em Maricá, todos os bairros EXCETO Itaipuaçu têm instalação PAGA.\n\n💰 Valores da Instalação:\n• Com fidelidade de 12 meses: R$ 100,00\n• Sem fidelidade: R$ 420,00 (com desconto: R$ 360,00)\n\n### Para iniciar o cadastro, envie os dados:\n\nNome completo:\nCPF:\nRG:\nData de nascimento:\nE-mail:\nPlano desejado:\nData de vencimento (1, 3, 6, 7, 9, 13 ou 18):\nTelefone(s):\nEndereço completo:\nCEP:\nBairro:\nCidade:\nReferência visual (ponto de referência próximo):\nGostaria da fidelidade de 12 meses?\nModo de pagamento da instalação (PIX, Dinheiro, Cartão, Transferência):\nData e período para a instalação:\nPor onde conheceu a empresa ?",
                 "Para finalizar seu cadastro, precisamos que envie os seguintes documentos:\n\n📌 1. Comprovante de residência legível no nome do titular.\n\n📌 2. Foto do documento de identificação (RG ou CNH – frente e verso).\n\n📌 3. Selfie segurando o documento (RG ou CNH), garantindo boa iluminação e que os dados fiquem visíveis.\n\nVocê pode enviar as fotos para:\n\n📧 fibramarprovedor@gmail.com\n\nou\n\n📱 WhatsApp (envie para o nosso número cadastrado).",
                 "✅ Cadastro concluído com sucesso.\n\n🔧 Instalação agendada para o dia [data].\n\nPosso ajudar em algo mais ou podemos finalizar seu atendimento?",
                 "Dados para cadastro do chip\n\n**DADOS PESSOAIS:**\nCPF/CNPJ:\nNome Completo:\nE-mail:\nData de nascimento:\nTelefone alternativo:\n\n**ENDEREÇO:**\nCEP:\nUF:\nCidade:\nEndereço:\nNúmero:\nBairro:\nComplemento:\nReferência (Opcional):\n\n**DADOS DO CHIP:**\nNúmero do Chip:\nDDD:\nPlano:\nPortabilidade: ( ) SIM ou ( ) NÃO\nForma de Pagamento:",
@@ -2403,6 +2422,68 @@
         });
 
         // Renderizar tópicos
+        // Função para atualizar mensagem de cadastro na tela (definida antes de renderTopics)
+        function atualizarMensagemCadastroNaTela() {
+            // Encontrar todos os elementos de mensagem de cadastro
+            const messageItems = document.querySelectorAll('.message-item');
+            
+            messageItems.forEach(item => {
+                const messageText = item.querySelector('.message-text');
+                if (messageText) {
+                    const texto = messageText.textContent;
+                    
+                    // Verificar se é a mensagem de cadastro
+                    if (texto.includes('CADASTRO DE NOVO CLIENTE') || 
+                        texto.includes('Para iniciar o cadastro, envie os dados')) {
+                        
+                        // Função auxiliar para obter vencimentos
+                        function getVencimentosByDia(diaInstalacao) {
+                            if (diaInstalacao >= 1 && diaInstalacao <= 10) {
+                                return [3, 6, 9];
+                            } else if (diaInstalacao >= 11 && diaInstalacao <= 20) {
+                                return [13, 18];
+                            } else if (diaInstalacao >= 21 && diaInstalacao <= 30) {
+                                return [22, 26, 1];
+                            }
+                            return [3, 6, 9, 13, 18, 22, 26, 1];
+                        }
+                        
+                        // Obter data de instalação
+                        const campoDataInstalacao = document.getElementById('cadastroDataInstalacao');
+                        let diaInstalacao = null;
+                        
+                        if (campoDataInstalacao && campoDataInstalacao.value) {
+                            const data = new Date(campoDataInstalacao.value + 'T00:00:00');
+                            diaInstalacao = data.getDate();
+                        } else {
+                            const hoje = new Date();
+                            diaInstalacao = hoje.getDate();
+                        }
+                        
+                        // Obter vencimentos disponíveis
+                        const vencimentosDisponiveis = getVencimentosByDia(diaInstalacao);
+                        const vencimentosTexto = vencimentosDisponiveis.join(', ');
+                        
+                        // Atualizar texto
+                        let textoAtualizado = texto.replace(
+                            /Data de vencimento\s*\([^)]*\)\s*:/g,
+                            `Data de vencimento (${vencimentosTexto}):`
+                        );
+                        
+                        if (!textoAtualizado.includes(`Data de vencimento (${vencimentosTexto}):`)) {
+                            textoAtualizado = textoAtualizado.replace(
+                                /Data de vencimento[^:\n]*:/g,
+                                `Data de vencimento (${vencimentosTexto}):`
+                            );
+                        }
+                        
+                        // Atualizar na tela
+                        messageText.textContent = textoAtualizado;
+                    }
+                }
+            });
+        }
+
         function renderTopics(data = scriptData, searchTerm = '') {
             const topicsContainer = document.getElementById('topics');
             topicsContainer.innerHTML = '';
@@ -2451,11 +2532,68 @@
                     const messageItem = document.createElement('div');
                     messageItem.className = 'message-item';
                     
+                    // Função para atualizar datas de vencimento na mensagem de cadastro
+                    function atualizarMensagemCadastro(texto) {
+                        if (texto.includes('CADASTRO DE NOVO CLIENTE') || 
+                            texto.includes('Para iniciar o cadastro, envie os dados')) {
+                            
+                            // Função auxiliar para obter vencimentos
+                            function getVencimentosByDia(diaInstalacao) {
+                                if (diaInstalacao >= 1 && diaInstalacao <= 10) {
+                                    return [3, 6, 9];
+                                } else if (diaInstalacao >= 11 && diaInstalacao <= 20) {
+                                    return [13, 18];
+                                } else if (diaInstalacao >= 21 && diaInstalacao <= 30) {
+                                    return [22, 26, 1];
+                                }
+                                return [3, 6, 9, 13, 18, 22, 26, 1];
+                            }
+                            
+                            // Tentar obter data de instalação do campo do formulário se existir
+                            const campoDataInstalacao = document.getElementById('cadastroDataInstalacao');
+                            let diaInstalacao = null;
+                            
+                            if (campoDataInstalacao && campoDataInstalacao.value) {
+                                const data = new Date(campoDataInstalacao.value + 'T00:00:00');
+                                diaInstalacao = data.getDate();
+                            } else {
+                                // Se não houver data no formulário, usar data atual
+                                const hoje = new Date();
+                                diaInstalacao = hoje.getDate();
+                            }
+                            
+                            // Obter vencimentos disponíveis
+                            const vencimentosDisponiveis = getVencimentosByDia(diaInstalacao);
+                            const vencimentosTexto = vencimentosDisponiveis.join(', ');
+                            
+                            // Substituir a linha de vencimento na mensagem
+                            let textoAtualizado = texto.replace(
+                                /Data de vencimento\s*\([^)]*\)\s*:/g,
+                                `Data de vencimento (${vencimentosTexto}):`
+                            );
+                            
+                            // Se não encontrou com parênteses, tenta sem parênteses
+                            if (!textoAtualizado.includes(`Data de vencimento (${vencimentosTexto}):`)) {
+                                textoAtualizado = textoAtualizado.replace(
+                                    /Data de vencimento[^:\n]*:/g,
+                                    `Data de vencimento (${vencimentosTexto}):`
+                                );
+                            }
+                            
+                            return textoAtualizado;
+                        }
+                        return texto;
+                    }
+                    
+                    // Atualizar mensagem se for de cadastro
+                    const mensagemAtualizada = atualizarMensagemCadastro(message);
+                    
                     const messageText = document.createElement('div');
                     messageText.className = 'message-text';
-                    messageText.textContent = message;
+                    messageText.textContent = mensagemAtualizada;
                     
                     messageItem.appendChild(messageText);
+                    // Usar a mensagem original para copiar (será atualizada na função copyToClipboard)
                     messageItem.addEventListener('click', () => copyToClipboard(message));
                     
                     messagesDiv.appendChild(messageItem);
@@ -2469,6 +2607,11 @@
                 topicDiv.appendChild(messagesDiv);
                 topicsContainer.appendChild(topicDiv);
             }
+            
+            // Atualizar mensagem de cadastro na tela após renderizar
+            setTimeout(() => {
+                atualizarMensagemCadastroNaTela();
+            }, 100);
         }
 
         // Renderizar tópico de cadastro
@@ -2645,7 +2788,56 @@
 
         // Copiar para área de transferência
         function copyToClipboard(text) {
-            const textAtualizado = replaceVariables(text);
+            let textAtualizado = replaceVariables(text);
+            
+            // Detectar se é a mensagem de cadastro de novo cliente
+            if (textAtualizado.includes('CADASTRO DE NOVO CLIENTE') || 
+                textAtualizado.includes('Para iniciar o cadastro, envie os dados')) {
+                
+                // Função auxiliar para obter vencimentos (definida localmente para garantir acesso)
+                function getVencimentosByDia(diaInstalacao) {
+                    if (diaInstalacao >= 1 && diaInstalacao <= 10) {
+                        return [3, 6, 9];
+                    } else if (diaInstalacao >= 11 && diaInstalacao <= 20) {
+                        return [13, 18];
+                    } else if (diaInstalacao >= 21 && diaInstalacao <= 30) {
+                        return [22, 26, 1];
+                    }
+                    return [3, 6, 9, 13, 18, 22, 26, 1];
+                }
+                
+                // Tentar obter data de instalação do campo do formulário se existir
+                const campoDataInstalacao = document.getElementById('cadastroDataInstalacao');
+                let diaInstalacao = null;
+                
+                if (campoDataInstalacao && campoDataInstalacao.value) {
+                    const data = new Date(campoDataInstalacao.value + 'T00:00:00');
+                    diaInstalacao = data.getDate();
+                } else {
+                    // Se não houver data no formulário, usar data atual
+                    const hoje = new Date();
+                    diaInstalacao = hoje.getDate();
+                }
+                
+                // Obter vencimentos disponíveis
+                const vencimentosDisponiveis = getVencimentosByDia(diaInstalacao);
+                const vencimentosTexto = vencimentosDisponiveis.join(', ');
+                
+                // Substituir a linha de vencimento na mensagem
+                // Procura por "Data de vencimento" seguido de parênteses com qualquer conteúdo e dois pontos
+                textAtualizado = textAtualizado.replace(
+                    /Data de vencimento\s*\([^)]*\)\s*:/g,
+                    `Data de vencimento (${vencimentosTexto}):`
+                );
+                
+                // Se não encontrou com parênteses, tenta sem parênteses
+                if (!textAtualizado.includes(`Data de vencimento (${vencimentosTexto}):`)) {
+                    textAtualizado = textAtualizado.replace(
+                        /Data de vencimento[^:\n]*:/g,
+                        `Data de vencimento (${vencimentosTexto}):`
+                    );
+                }
+            }
             
             navigator.clipboard.writeText(textAtualizado).then(() => {
                 showNotification();
@@ -3506,7 +3698,10 @@
             dadosExtraidos.endereco = extrairValor('Endereço completo|Endereço|endereço completo');
             dadosExtraidos.cep = extrairValor('CEP|cep');
             dadosExtraidos.referencia = extrairValor('Referência visual|Referência|referência|Referencia');
+            dadosExtraidos.bairro = extrairValor('Bairro|bairro');
+            dadosExtraidos.cidade = extrairValor('Cidade|cidade');
             dadosExtraidos.fidelidade = extrairValor('Fidelidade|fidelidade|Gostaria da fidelidade');
+            dadosExtraidos.modoPagamento = extrairValor('Modo de pagamento|modo de pagamento|Pagamento|pagamento');
             dadosExtraidos.dataInstalacao = extrairValor('Data da instalação|Data instalação|Data e período para a instalação');
             dadosExtraidos.periodoInstalacao = extrairValor('Período da instalação|Período instalação|período');
             dadosExtraidos.conheceu = extrairValor('Por onde conheceu|conheceu a empresa|Conheceu');
@@ -3639,7 +3834,22 @@
             if (dadosExtraidos.vencimento) {
                 const vencimentoNum = dadosExtraidos.vencimento.match(/\d+/);
                 if (vencimentoNum) {
-                    document.getElementById('cadastroVencimento').value = vencimentoNum[0];
+                    const vencimentoValue = vencimentoNum[0];
+                    const vencimentoSelect = document.getElementById('cadastroVencimento');
+                    // Verificar se o vencimento está disponível nas opções atuais
+                    const vencimentoDisponivel = Array.from(vencimentoSelect.options).some(
+                        option => option.value === vencimentoValue
+                    );
+                    if (vencimentoDisponivel) {
+                        vencimentoSelect.value = vencimentoValue;
+                    } else {
+                        // Se não estiver disponível, apenas definir se houver data de instalação
+                        // Caso contrário, deixar vazio para o usuário selecionar após definir a data
+                        if (document.getElementById('cadastroDataInstalacao').value) {
+                            // Se já tem data mas o vencimento não está disponível, não definir
+                            // O usuário precisará selecionar manualmente
+                        }
+                    }
                 }
             }
             if (dadosExtraidos.telefone) {
@@ -3654,12 +3864,35 @@
             if (dadosExtraidos.referencia) {
                 document.getElementById('cadastroReferencia').value = dadosExtraidos.referencia;
             }
+            if (dadosExtraidos.bairro) {
+                document.getElementById('cadastroBairro').value = dadosExtraidos.bairro;
+            }
+            if (dadosExtraidos.cidade) {
+                document.getElementById('cadastroCidade').value = dadosExtraidos.cidade;
+            }
             if (dadosExtraidos.fidelidade) {
                 const fidelidadeLower = dadosExtraidos.fidelidade.toLowerCase();
                 if (fidelidadeLower.includes('sim') || fidelidadeLower.includes('s')) {
                     document.getElementById('cadastroFidelidade').value = 'Sim';
                 } else if (fidelidadeLower.includes('não') || fidelidadeLower.includes('nao') || fidelidadeLower.includes('n')) {
                     document.getElementById('cadastroFidelidade').value = 'Não';
+                }
+            }
+            if (dadosExtraidos.modoPagamento) {
+                const modoPagamentoLower = dadosExtraidos.modoPagamento.toLowerCase();
+                const modoPagamentoSelect = document.getElementById('cadastroModoPagamento');
+                
+                // Mapear diferentes formas de escrever o modo de pagamento
+                if (modoPagamentoLower.includes('pix')) {
+                    modoPagamentoSelect.value = 'PIX';
+                } else if (modoPagamentoLower.includes('dinheiro')) {
+                    modoPagamentoSelect.value = 'Dinheiro';
+                } else if (modoPagamentoLower.includes('débito') || modoPagamentoLower.includes('debito')) {
+                    modoPagamentoSelect.value = 'Cartão de Débito';
+                } else if (modoPagamentoLower.includes('crédito') || modoPagamentoLower.includes('credito')) {
+                    modoPagamentoSelect.value = 'Cartão de Crédito';
+                } else if (modoPagamentoLower.includes('transferência') || modoPagamentoLower.includes('transferencia')) {
+                    modoPagamentoSelect.value = 'Transferência';
                 }
             }
             if (dadosExtraidos.dataInstalacao) {
@@ -3670,6 +3903,8 @@
                     const mes = dataMatch[2].padStart(2, '0');
                     const ano = dataMatch[3];
                     document.getElementById('cadastroDataInstalacao').value = `${ano}-${mes}-${dia}`;
+                    // Atualizar vencimentos baseado na data de instalação
+                    atualizarVencimentos();
                 }
                 // Tentar extrair período da mesma linha se houver
                 const periodoMatch = dadosExtraidos.dataInstalacao.match(/(manhã|manha|tarde|integral|dia todo)/i);
@@ -3834,6 +4069,90 @@
             });
         }
 
+        // Função para obter datas de vencimento baseado no dia da instalação
+        function getVencimentosByDiaInstalacao(diaInstalacao) {
+            if (diaInstalacao >= 1 && diaInstalacao <= 10) {
+                return [3, 6, 9];
+            } else if (diaInstalacao >= 11 && diaInstalacao <= 20) {
+                return [13, 18];
+            } else if (diaInstalacao >= 21 && diaInstalacao <= 30) {
+                return [22, 26, 1];
+            }
+            // Fallback: retorna todas as opções se não estiver no range esperado
+            return [3, 6, 9, 13, 18, 22, 26, 1];
+        }
+
+        // Atualizar opções de vencimento baseado na data de instalação
+        const cadastroDataInstalacao = document.getElementById('cadastroDataInstalacao');
+        const cadastroVencimento = document.getElementById('cadastroVencimento');
+
+        function atualizarVencimentos() {
+            if (!cadastroDataInstalacao || !cadastroVencimento) return;
+
+            const dataInstalacao = cadastroDataInstalacao.value;
+            
+            if (!dataInstalacao) {
+                // Se não houver data, limpar e mostrar todas as opções
+                cadastroVencimento.innerHTML = `
+                    <option value="">Selecione</option>
+                    <option value="1">1</option>
+                    <option value="3">3</option>
+                    <option value="6">6</option>
+                    <option value="9">9</option>
+                    <option value="13">13</option>
+                    <option value="18">18</option>
+                    <option value="22">22</option>
+                    <option value="26">26</option>
+                `;
+                return;
+            }
+
+            // Extrair o dia da data de instalação
+            const data = new Date(dataInstalacao + 'T00:00:00');
+            const diaInstalacao = data.getDate();
+            
+            // Obter vencimentos disponíveis para esse dia
+            const vencimentosDisponiveis = getVencimentosByDiaInstalacao(diaInstalacao);
+            
+            // Salvar valor selecionado atual
+            const valorSelecionado = cadastroVencimento.value;
+            
+            // Limpar e recriar opções
+            cadastroVencimento.innerHTML = '<option value="">Selecione</option>';
+            
+            // Adicionar opções baseadas no dia da instalação
+            vencimentosDisponiveis.forEach(vencimento => {
+                const option = document.createElement('option');
+                option.value = vencimento.toString();
+                option.textContent = vencimento.toString();
+                cadastroVencimento.appendChild(option);
+            });
+            
+            // Restaurar valor selecionado se ainda estiver disponível
+            if (valorSelecionado && vencimentosDisponiveis.includes(parseInt(valorSelecionado))) {
+                cadastroVencimento.value = valorSelecionado;
+            } else {
+                cadastroVencimento.value = '';
+            }
+        }
+
+        // Adicionar listener para atualizar vencimentos quando a data de instalação mudar
+        if (cadastroDataInstalacao) {
+            cadastroDataInstalacao.addEventListener('change', () => {
+                atualizarVencimentos();
+                atualizarMensagemCadastroNaTela();
+            });
+            cadastroDataInstalacao.addEventListener('input', () => {
+                atualizarVencimentos();
+                atualizarMensagemCadastroNaTela();
+            });
+        }
+        
+        // Atualizar mensagem na tela quando a página carregar
+        setTimeout(() => {
+            atualizarMensagemCadastroNaTela();
+        }, 500);
+
         // Gerar OS de Instalação
         if (cadastroGenerateBtn) {
             cadastroGenerateBtn.addEventListener('click', () => {
@@ -3868,14 +4187,59 @@
                 const telefone = document.getElementById('cadastroTelefone').value;
                 const endereco = document.getElementById('cadastroEndereco').value;
                 const cep = document.getElementById('cadastroCEP').value;
+                const bairro = document.getElementById('cadastroBairro').value;
+                const cidade = document.getElementById('cadastroCidade').value;
                 const referencia = document.getElementById('cadastroReferencia').value;
                 const fidelidade = document.getElementById('cadastroFidelidade').value;
+                const modoPagamento = document.getElementById('cadastroModoPagamento').value;
                 const dataInstalacao = document.getElementById('cadastroDataInstalacao').value;
                 const periodoInstalacao = document.getElementById('cadastroPeriodoInstalacao').value;
                 const conheceu = document.getElementById('cadastroConheceu').value;
 
                 // Obter nome do atendente
                 const atendente = document.getElementById('attendantName').value || '[NOME_ATENDENTE]';
+                
+                // Calcular valor da instalação baseado no bairro e fidelidade
+                let valorInstalacao = 0;
+                let textoInstalacao = '';
+                const bairroLower = bairro.toLowerCase();
+                const cidadeLower = cidade.toLowerCase();
+                
+                // Verificar se é Maricá e não é Itaipuaçu
+                if (cidadeLower.includes('maricá') || cidadeLower.includes('marica')) {
+                    if (!bairroLower.includes('itaipuaçu') && !bairroLower.includes('itaipuacu')) {
+                        // Instalação PAGA em Maricá (exceto Itaipuaçu)
+                        if (fidelidade === 'Sim') {
+                            valorInstalacao = 100;
+                            textoInstalacao = 'INSTALAÇÃO SERÁ PAGA NO VALOR DE R$ 100,00 (COM FIDELIDADE DE 12 MESES)';
+                        } else {
+                            valorInstalacao = 360;
+                            textoInstalacao = 'INSTALAÇÃO SERÁ PAGA NO VALOR DE R$ 360,00 (SEM FIDELIDADE - COM DESCONTO)';
+                        }
+                    } else {
+                        // Itaipuaçu - instalação GRÁTIS
+                        textoInstalacao = 'INSTALAÇÃO SERÁ GRATUITA NA PROMOÇÃO DO CARLOS';
+                    }
+                } else {
+                    // Outras cidades - instalação GRÁTIS
+                    textoInstalacao = 'INSTALAÇÃO SERÁ GRATUITA NA PROMOÇÃO DO CARLOS';
+                }
+
+                // Validar vencimento baseado na data de instalação
+                if (dataInstalacao && vencimento) {
+                    const data = new Date(dataInstalacao + 'T00:00:00');
+                    const diaInstalacao = data.getDate();
+                    const vencimentosDisponiveis = getVencimentosByDiaInstalacao(diaInstalacao);
+                    const vencimentoNum = parseInt(vencimento);
+                    
+                    if (!vencimentosDisponiveis.includes(vencimentoNum)) {
+                        showNotification(`⚠️ A data de vencimento ${vencimento} não é válida para instalação no dia ${diaInstalacao}. Vencimentos disponíveis: ${vencimentosDisponiveis.join(', ')}`);
+                        if (cadastroVencimento) {
+                            cadastroVencimento.focus();
+                        }
+                        return;
+                    }
+                }
 
                 // Formatar data de instalação
                 const dataInstalacaoFormatada = dataInstalacao ? 
@@ -3892,11 +4256,13 @@
                 }
 
                 // Gerar OS
-                const osText = `INSTALAÇÃO SERÁ GRATUITA NA PROMOÇÃO DO CARLOS
+                const osText = `${textoInstalacao}
 
 PLANO DE ${plano} / ${roteadorTexto}
 
 DATA DE VENCIMENTO: ${vencimento}
+${valorInstalacao > 0 ? `VALOR DA INSTALAÇÃO: R$ ${valorInstalacao.toFixed(2).replace('.', ',')}` : ''}
+${modoPagamento ? `MODO DE PAGAMENTO: ${modoPagamento}` : ''}
 
 CONSULTORA(O): ${atendente}
 
@@ -3919,8 +4285,11 @@ Data de vencimento: ${vencimento}
 Telefone(s): ${telefone}
 Endereço completo: ${endereco}
 CEP: ${cep}
+Bairro: ${bairro}
+Cidade: ${cidade}
 Referência visual: ${referencia}
 Fidelidade de 12 meses: ${fidelidade}
+${modoPagamento ? `Modo de pagamento da instalação: ${modoPagamento}` : ''}
 Data e período para instalação: ${dataInstalacaoFormatada}${periodoInstalacao ? ` - ${periodoInstalacao}` : ''}
 Por onde conheceu a empresa: ${conheceu}
 
