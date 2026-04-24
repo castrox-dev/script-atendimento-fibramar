@@ -972,24 +972,7 @@
                             { "user": "", "password": "multipro" }
                         ]
                     },
-                    {
-                        "title": "Configurações Padrão",
-                        "credentials": [
-                            { "user": "SSID", "password": "Contactar a Fibramar 08001003850" },
-                            { "user": "Senha WiFi", "password": "fibramar@2025" },
-                            { "user": "Login PPPoE", "password": "equipamento.resetado" },
-                            { "user": "Vlan", "password": "4000" },
-                            { "user": "IP de entrada", "password": "192.168.99.1" }
-                        ]
-                    },
-                    {
-                        "title": "ONT TP-Link resetada",
-                        "credentials": []
-                    },
-                    {
-                        "title": "═══════════════════════════",
-                        "credentials": ["CastroX"]
-                    },
+                    
                     {
                         "title": "📍 SÃO PAULO",
                         "credentials": []
@@ -1039,7 +1022,6 @@
                         ]
                     },
                     {
-                        "title": "═══════════════════════════",
                         "credentials": []
                     },
                     {
@@ -1095,7 +1077,6 @@
                         ]
                     },
                     {
-                        "title": "═══════════════════════════",
                         "credentials": []
                     },
                     {
@@ -1115,7 +1096,6 @@
                         ]
                     },
                     {
-                        "title": "═══════════════════════════",
                         "credentials": []
                     },
                     {
@@ -1132,7 +1112,6 @@
                         ]
                     },
                     {
-                        "title": "═══════════════════════════",
                         "credentials": []
                     },
                     {
@@ -1164,7 +1143,6 @@
                         ]
                     },
                     {
-                        "title": "═══════════════════════════",
                         "credentials": []
                     },
                     {
@@ -1318,69 +1296,118 @@
             const messagesDiv = document.createElement('div');
             messagesDiv.className = 'messages';
 
+            let hasVisibleItems = false;
+
             content.items.forEach(item => {
+                const isHeader = !item.credentials || item.credentials.length === 0;
+
                 if (searchTerm) {
                     const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        item.credentials.some(cred => 
-                            cred.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            cred.password.toLowerCase().includes(searchTerm.toLowerCase())
-                        );
+                        (item.credentials && item.credentials.some(cred => {
+                            const isObject = typeof cred === 'object' && cred !== null;
+                            const user = isObject ? (cred.user || '') : '';
+                            const pass = isObject ? (cred.password || '') : String(cred);
+                            return user.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                   pass.toLowerCase().includes(searchTerm.toLowerCase());
+                        }));
                     if (!matchesSearch) return;
                 }
 
+                hasVisibleItems = true;
+
                 // Criar grupo de credenciais
                 const groupDiv = document.createElement('div');
-                groupDiv.style.marginBottom = '15px';
+                groupDiv.style.marginBottom = '25px';
+                groupDiv.style.display = 'flex';
+                groupDiv.style.flexDirection = 'column';
+                
+                // Se for cabeçalho (sem credenciais), ocupar a largura toda
+                if (isHeader) {
+                    groupDiv.style.gridColumn = '1 / -1';
+                    groupDiv.style.marginTop = '10px';
+                }
 
                 // Título do grupo
                 if (item.title) {
                     const titleDiv = document.createElement('div');
-                    titleDiv.style.fontWeight = 'bold';
-                    titleDiv.style.marginBottom = '8px';
-                    titleDiv.style.color = body.classList.contains('dark-mode') ? '#a78bfa' : '#667eea';
+                    titleDiv.className = 'message-title';
+                    titleDiv.style.marginBottom = isHeader ? '0' : '12px';
+                    titleDiv.style.fontSize = isHeader ? '0.85em' : '0.75em';
+                    titleDiv.style.opacity = isHeader ? '0.8' : '1';
                     titleDiv.textContent = item.title;
+                    
+                    if (isHeader) {
+                        titleDiv.style.borderBottom = '1px solid rgba(167, 139, 250, 0.2)';
+                        titleDiv.style.paddingBottom = '8px';
+                        titleDiv.style.width = '100%';
+                    }
+                    
                     groupDiv.appendChild(titleDiv);
                 }
 
-                // Credenciais
-                item.credentials.forEach(cred => {
-                    const credDiv = document.createElement('div');
-                    credDiv.className = 'message-item password-item';
-                    credDiv.style.display = 'flex';
-                    credDiv.style.justifyContent = 'space-between';
-                    credDiv.style.alignItems = 'center';
-                    credDiv.style.padding = '10px 15px';
+                if (!isHeader) {
+                    // Container para os cards de credenciais no grupo
+                    const cardsContainer = document.createElement('div');
+                    cardsContainer.style.display = 'grid';
+                    cardsContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(150px, 1fr))';
+                    cardsContainer.style.gap = '12px';
 
-                    const isObject = typeof cred === 'object' && cred !== null;
-                    const userText = isObject ? (cred.user || '—') : '—';
-                    const passwordText = isObject ? cred.password : cred;
+                    // Credenciais
+                    item.credentials.forEach(cred => {
+                        const isObject = typeof cred === 'object' && cred !== null;
+                        const userText = isObject ? (cred.user || '') : '';
+                        const passwordText = isObject ? cred.password : cred;
 
-                    const userSpan = document.createElement('span');
-                    userSpan.style.fontWeight = '500';
-                    userSpan.style.color = body.classList.contains('dark-mode') ? '#b0b0b0' : '#666';
-                    userSpan.textContent = userText;
+                        const credDiv = document.createElement('div');
+                        credDiv.className = 'message-item password-item';
+                        credDiv.style.padding = '15px 12px';
+                        credDiv.style.display = 'flex';
+                        credDiv.style.flexDirection = 'column';
+                        credDiv.style.justifyContent = 'center';
+                        credDiv.style.alignItems = 'center';
+                        credDiv.style.textAlign = 'center';
+                        credDiv.style.minHeight = '90px';
+                        credDiv.style.margin = '0';
 
-                    const passwordSpan = document.createElement('span');
-                    passwordSpan.style.fontFamily = 'monospace';
-                    passwordSpan.style.fontWeight = 'bold';
-                    passwordSpan.style.color = body.classList.contains('dark-mode') ? '#e0e0e0' : '#333';
-                    passwordSpan.style.cursor = 'pointer';
-                    passwordSpan.textContent = passwordText;
+                        if (userText) {
+                            const userSpan = document.createElement('span');
+                            userSpan.style.fontSize = '0.7em';
+                            userSpan.style.textTransform = 'uppercase';
+                            userSpan.style.letterSpacing = '1.2px';
+                            userSpan.style.marginBottom = '6px';
+                            userSpan.style.opacity = '0.5';
+                            userSpan.style.fontWeight = '700';
+                            userSpan.style.color = body.classList.contains('dark-mode') ? '#94a3b8' : '#64748b';
+                            userSpan.textContent = userText;
+                            credDiv.appendChild(userSpan);
+                        }
 
-                    credDiv.appendChild(userSpan);
-                    credDiv.appendChild(passwordSpan);
+                        const passwordSpan = document.createElement('span');
+                        passwordSpan.style.fontFamily = 'monospace';
+                        passwordSpan.style.fontWeight = '800';
+                        passwordSpan.style.fontSize = '1.05em';
+                        passwordSpan.style.wordBreak = 'break-all';
+                        passwordSpan.style.color = body.classList.contains('dark-mode') ? '#f1f5f9' : '#1e293b';
+                        passwordSpan.textContent = passwordText;
 
-                    // Copiar apenas a senha ao clicar
-                    credDiv.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        copyToClipboard(passwordText);
+                        credDiv.appendChild(passwordSpan);
+
+                        // Copiar apenas a senha ao clicar
+                        credDiv.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            copyToClipboard(passwordText);
+                        });
+
+                        cardsContainer.appendChild(credDiv);
                     });
 
-                    groupDiv.appendChild(credDiv);
-                });
+                    groupDiv.appendChild(cardsContainer);
+                }
 
                 messagesDiv.appendChild(groupDiv);
             });
+
+            if (!hasVisibleItems && searchTerm) return;
 
             topicHeader.addEventListener('click', () => {
                 topicDiv.classList.toggle('active');
