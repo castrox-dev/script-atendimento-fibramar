@@ -356,6 +356,23 @@
             color: #e0e0e0;
         }
 
+        .message-title {
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+            padding-bottom: 4px;
+        }
+
+        body.dark-mode .message-title {
+            color: #a78bfa;
+            border-bottom-color: rgba(167, 139, 250, 0.1);
+        }
+
         .notification {
             position: fixed;
             top: 20px;
@@ -2031,26 +2048,26 @@
         
         const scriptData = {
             "✅ INÍCIO DE ATENDIMENTO": [
-                "Olá! Seja bem-vindo(a) ao atendimento da Fibramar Internet.\n\nNosso atendimento é 24 horas, todos os dias.\n\nCaso prefira atendimento por ligação, utilize um dos nossos números:\n\n📞 0800 100 3850\n📞 (21) 3864-3850\n\nMeu nome é [NOME_ATENDENTE], e vou lhe atender agora.\n\nEm que posso ajudar?"
+                { title: "👋 BOAS-VINDAS", content: "Olá! Seja bem-vindo(a) ao atendimento da Fibramar Internet.\n\nNosso atendimento é 24 horas, todos os dias.\n\nCaso prefira atendimento por ligação, utilize um dos nossos números:\n\n📞 0800 100 3850\n📞 (21) 3864-3850\n\nMeu nome é [NOME_ATENDENTE], e vou lhe atender agora.\n\nEm que posso ajudar?" }
             ],
             "🧾 IDENTIFICAÇÃO DO CLIENTE": [
-                "[PERIODO]! \nPoderia me informar o nome completo ou o cpf do titular, por gentileza?"
+                { title: "🆔 PEDIR DADOS", content: "[PERIODO]! \nPoderia me informar o nome completo ou o cpf do titular, por gentileza?" }
             ],
             "🔚 ENCERRAMENTOS": [
-                "Por falta de comunicação, o atendimento está sendo encerrado.\nPara atendimento, peço que retorne o contato com a nossa central nos telefones: FIBRAMAR: 0800 100 3850 \nOu envie uma mensagem por aqui novamente, nosso atendimento é 24 horas, todos os dias!\nAgradecemos o seu contato, tenha uma ótima semana!",
-                "Estávamos realizando uma manutenção na localidade porém já normalizou, poderia verificar?",
-                "Agradeço por escolher nossos serviços. A equipe da *FIBRAMAR* Está à disposição para qualquer necessidade futura!\n\nCANAIS DE ATENDIMENTO 📞👨🏻💻 0800 100 3850",
-                "Neste momento estou entrando em meu horário de almoço, então irei lhe transferir para que outro atendente possa dar continuidade ao seu atendimento. Tenha um ótimo dia!",
-                "Neste momento estou finalizando o meu expediente, então irei lhe transferir para que outro atendente possa dar continuidade ao seu atendimento. Tenha uma ótima semana!",
-                "🛠️ NOTIFICAÇÃO DE MANUTENÇÃO 🛠️\n\nPrezado(a) cliente,\n\nInformamos que nossas equipes técnicas estão realizando uma manutenção programada na sua localidade.\n\n⏰ Previsão para normalização: até às 18:00h de hoje.\n\nO serviço poderá ser restabelecido a qualquer momento antes desse horário.\n\nPedimos desculpas pelo transtorno temporário e agradecemos sua compreensão.\n\nEstamos trabalhando para melhorar cada vez mais nossos serviços.\n\nAtenciosamente,\n\nEquipe Fibramar Internet 🧡"
+                { title: "🔇 FALTA DE COMUNICAÇÃO", content: "Por falta de comunicação, o atendimento está sendo encerrado.\nPara atendimento, peço que retorne o contato com a nossa central nos telefones: FIBRAMAR: 0800 100 3850 \nOu envie uma mensagem por aqui novamente, nosso atendimento é 24 horas, todos os dias!\nAgradecemos o seu contato, tenha uma ótima semana!" },
+                { title: "🔧 MANUTENÇÃO FINALIZADA", content: "Estávamos realizando uma manutenção na localidade porém já normalizou, poderia verificar?" },
+                { title: "✅ FINALIZAÇÃO PADRÃO", content: "Agradeço por escolher nossos serviços. A equipe da *FIBRAMAR* Está à disposição para qualquer necessidade futura!\n\nCANAIS DE ATENDIMENTO 📞👨🏻💻 0800 100 3850" },
+                { title: "🍴 HORÁRIO DE ALMOÇO", content: "Neste momento estou entrando em meu horário de almoço, então irei lhe transferir para que outro atendente possa dar continuidade ao seu atendimento. Tenha um ótimo dia!" },
+                { title: "🕒 FIM DE EXPEDIENTE", content: "Neste momento estou finalizando o meu expediente, então irei lhe transferir para que outro atendente possa dar continuidade ao seu atendimento. Tenha uma ótima semana!" },
+                { title: "🛠️ MANUTENÇÃO PROGRAMADA", content: "🛠️ NOTIFICAÇÃO DE MANUTENÇÃO 🛠️\n\nPrezado(a) cliente,\n\nInformamos que nossas equipes técnicas estão realizando uma manutenção programada na sua localidade.\n\n⏰ Previsão para normalização: até às 18:00h de hoje.\n\nO serviço poderá ser restabelecido a qualquer momento antes desse horário.\n\nPedimos desculpas pelo transtorno temporário e agradecemos sua compreensão.\n\nEstamos trabalhando para melhorar cada vez mais nossos serviços.\n\nAtenciosamente,\n\nEquipe Fibramar Internet 🧡" }
             ],
             "💰 FATURAS E BOLETOS": [
-                "✅ Seu boleto foi enviado com sucesso! Confira seu e-mail.\n\nOriento em algo mais?",
-                "Para acessar suas faturas, entre no link:\n\nhttps://crnetfibramar.com.br/\n\nLogin: Seu CPF (sem pontos ou traços)\nSenha: Seu CPF (sem pontos ou traços)"
+                { title: "📧 BOLETO ENVIADO", content: "✅ Seu boleto foi enviado com sucesso! Confira seu e-mail.\n\nOriento em algo mais?" },
+                { title: "🔗 CENTRAL DO ASSINANTE", content: "Para acessar suas faturas, entre no link:\n\nhttps://crnetfibramar.com.br/\n\nLogin: Seu CPF (sem pontos ou traços)\nSenha: Seu CPF (sem pontos ou traços)" }
             ],
             "⚠️ PROBLEMA EXTERNO": [
-                "Estamos com uma instabilidade em nossa rede.\n\nNossa equipe técnica já está em campo resolvendo o mais rápido possível.\n\nPrevisão de normalização: até as 22:00h, podendo voltar a qualquer momento.\n\nPedimos desculpas pelo transtorno e agradecemos sua compreensão.\n\nOriento em algo mais?",
-                "📢 Informativo Emergencial\n\nPrezados clientes,\n\nEstamos enfrentando uma indisponibilidade massiva em nossa operadora de link. Nossa equipe, junto à operadora, já está atuando com prioridade máxima para restabelecer os serviços o mais rápido possível.\n\nPedimos desculpas pelos transtornos e agradecemos pela compreensão.\n\nAssim que tivermos novidades, manteremos todos informados.\n\nA previsão de normalização é até às 18h, podendo ocorrer a qualquer momento antes disso."
+                { title: "⚠️ INSTABILIDADE NA REDE", content: "Estamos com uma instabilidade em nossa rede.\n\nNossa equipe técnica já está em campo resolvendo o mais rápido possível.\n\nPrevisão de normalização: até as 22:00h, podendo voltar a qualquer momento.\n\nPedimos desculpas pelo transtorno e agradecemos sua compreensão.\n\nOriento em algo mais?" },
+                { title: "🚨 INDISPONIBILIDADE MASSIVA", content: "📢 Informativo Emergencial\n\nPrezados clientes,\n\nEstamos enfrentando uma indisponibilidade massiva em nossa operadora de link. Nossa equipe, junto à operadora, já está atuando with prioridade máxima para restabelecer os serviços o mais rápido possível.\n\nPedimos desculpas pelos transtornos e agradecemos pela compreensão.\n\nAssim que tivermos novidades, manteremos todos informados.\n\nA previsão de normalização é até às 18h, podendo ocorrer a qualquer momento antes disso." }
             ],
             "📱 PLANOS DISPONÍVEIS": [
                 "📱 Plano Essencial – 240 MEGA\n\nR$ 59,99/mês (pagando até o vencimento)\nR$ 79,99/mês (após vencimento)\n\nEste plano não inclui roteador Wi-Fi (você pode usar o seu próprio ou alugar por R$ 10,00/mês)\n\nInstalação em até 48h\nPermanência mínima de 12 meses",
@@ -2071,26 +2088,28 @@
             ],
             "📱 PLANOS DISPONÍVEIS ( Mimoso )": [
                 "📱 *Plano Essencial – 240 MEGA*\n\n*R$ 59,99/mês* (pagando até o vencimento)\n\n*R$ 79,99/mês* (após vencimento)\n\n- Instalação Grátis\n\n- *Este plano não inclui roteador Wi-Fi* (você pode usar o seu próprio ou alugar por R$ 10,00/mês)\n\n- Instalação em até 48h\n\n- Possui fidelidade de 12 meses",
-                "⚡️ *Plano 300 Mega*\n\n    *300 Mega • R$ 69,99/mês*\n\n- 100% Fibra Óptica\n\n- 🤩 Instalação Grátis\n\n- 😍 Super Wi-Fi incluso\n\n📄 Possui fidelidade de 12 meses\n\n 💨 *Perfeito para navegar, assistir e usar redes sociais com estabilidade.*",
+                "⚡️ *Plano 300 Mega*\n\n*300 Mega • R$ 69,99/mês*\n\n- 100% Fibra Óptica\n\n- 🤩 Instalação Grátis\n\n- 😍 Super Wi-Fi incluso\n\n📄 Possui fidelidade de 12 meses\n\n 💨 *Perfeito para navegar, assistir e usar redes sociais com estabilidade.*",
                 "🚀 *Plano Rápido*\n\n*400 Mega • R$ 79,99/mês* (pagando até o vencimento)\n\n*R$ 99,99/mês* (após vencimento)\n\n- Suporte Especializado\n\n- 100% Fibra Óptica\n\n- 🤩 Instalação Grátis\n\n- 😍 Super Wi-Fi 5Ghz incluso\n\n💨 *Velocidade na medida certa para toda a família navegar, assistir e conectar.*\n\n- Possui fidelidade de 12 meses",
                 "⚡️ *Plano Turbo*\n\n*500 Mega • R$ 99,99/mês* (pagando até o vencimento)\n\n*R$ 119,99/mês* (após vencimento)\n\n- Suporte Especializado\n\n- 100% Fibra Óptica\n\n- 🤩 Instalação Grátis\n\n- 😍 Super Wi-Fi 5Ghz incluso\n\n🚀 *Ideal para gamers, streamers e multitarefas que não podem ficar sem velocidade.*\n\n- Possui fidelidade de 12 meses",
-                "⚡️ *Plano Prime – 700 MEGA*\n\n*R$ 99,99/mês* (pagando até o vencimento)\n\n*R$ 119,99/mês* (após vencimento)\n\n- Suporte Especializado\n\n- Cursos Qualifica + Clube de vantagens\n\n- 100% Fibra Óptica\n\n- 😍 Super Wi-Fi 5Ghz incluso\n\n🚀 *Ideal para gamers, streamers e multitarefas que não podem ficar sem velocidade.*\n\n- Possui fidelidade de 12 meses",
                 "🔥 *Plano Ultra + Watch TV, Qualifica e Mediquo\n\n600 Mega • R$ 119,99/mês* (pagando até o vencimento)\n\n*R$ 139,99/mês* (após vencimento)\n\n- 🤩 Instalação Grátis\n\n- 😍 Super Wi-Fi 5Ghz incluso\n\n🎁 *Benefícios Exclusivos:*\n\n- 📺 *Watch TV*: filmes, séries e canais infantis\n\n- ⁠- 📽️ Paramount+\n\n- 🎓 *Qualifica*: +220 cursos on-line com certificado reconhecido pela ABED e Carteirinha do Estudante para meia-entrada\n\n- 🩺 *Mediquo*: consultas médicas ilimitadas 24 h\n\n- 🔰 McAfee antivírus\n\n\n\n- Possui fidelidade de 12 meses",
                 "🚀 *Plano 700 Mega*\n\n *700 Mega • R$ 89,99/mês*\n\n- 100% Fibra Óptica\n\n- 🤩 Instalação Grátis\n\n- 😍 Super Wi-Fi incluso\n\n- 🎓 Qualifica App (Aplicativo de cursos e clube de vantagens)\n\n📄 Possui fidelidade de 12 meses\n\n ✨ *Mais velocidade e benefícios para quem quer estudar, trabalhar e aproveitar o máximo da internet.*",
                 "🚀 *Plano 1 GIGA Fibramar*\n\n*1 GIGA • R$ 149,99/mês* (pagando até o vencimento)\n\n*R$ 169,99/mês* (após vencimento)\n\n\n\n- Wi-Fi 6 incluso\n\n- 100% Fibra Óptica\n\n- 🤩 Instalação Grátis\n\n\n\n⚡️* Ideal para gamers, streamers e multitarefas que não podem ficar sem velocidade.*\n\n\n\n🔗 Opcional: Repetidor Mesh por apenas R$ 29,99/mês\n\n\n\n- Possui fidelidade de 12 meses",
             ],
-            "📋 LEAD E CLIENTES": [
-                "[00] Lead qualificado:\n\nÓtima notícia! Verificamos a disponibilidade de instalação para o seu endereço e temos cobertura em Maricá (mudar apenas o nome da cidade).",
-            
-                "[01] Cliente Inadimplente (querendo instalar):\n\nPoxa! Ficamos felizes com seu interesse em contratar a Fibramar, mas o seu cadastro não foi aprovado, pois consta alguma restrição em seu CPF e em decorrência disso não poderemos dar continuidade ao seu pedido. Consigo te ajudar com mais alguma dúvida?",
-            
-                "[00] Obrigada por aguardar e seja bem-vindo(a) a Fibramar! Informo que seu cadastro já foi realizado. Ter você como nosso cliente é o que nos motiva!",
-
-                "[01] Obrigada por aguardar e seja bem-vindo(a) a Fibramar! Informo que seu cadastro já foi realizado. Ter você como nosso cliente é o que nos motiva!",
-            
-                "[00] Lead que veio do Google:\n\n(QUALQUER FORMA DE PESQUISA NO GOOGLE)",
-            
-                "[01] Lead que veio do Meta:\n\nMETA = Facebook, Instagram..."
+            "📋 MENSAGENS PADRÕES": [
+                { title: "2⃣ Sem viabilidade", content: "Obrigado por aguardar, verifiquei que infelizmente não temos viabilidade em sua localidade." },
+                { title: "📍 Maricá", content: "Ótima notícia! Verificamos a disponibilidade de instalação para o seu endereço e temos cobertura em Maricá." },
+                { title: "📍 Mimoso", content: "Ótima notícia! Verificamos a disponibilidade de instalação para o seu endereço e temos cobertura em Mimoso." },
+                { title: "📍 Piúma", content: "Ótima notícia! Verificamos a disponibilidade de instalação para o seu endereço e temos cobertura em Piúma." },
+                { title: "📍 Anchieta", content: "Ótima notícia! Verificamos a disponibilidade de instalação para o seu endereço e temos cobertura em Anchieta." },
+                { title: "📍 Muqui", content: "Ótima notícia! Verificamos a disponibilidade de instalação para o seu endereço e temos cobertura em Muqui." },
+                { title: "📍 Vila Velha", content: "Ótima notícia! Verificamos a disponibilidade de instalação para o seu endereço e temos cobertura em Vila Velha." },
+                { title: "📍 Saquarema", content: "Ótima notícia! Verificamos a disponibilidade de instalação para o seu endereço e temos cobertura em Saquarema." },
+                { title: "📍 Unamar", content: "Ótima notícia! Verificamos a disponibilidade de instalação para o seu endereço e temos cobertura em Unamar." },
+                { title: "📍 Santos Dumont", content: "Ótima notícia! Verificamos a disponibilidade de instalação para o seu endereço e temos cobertura em Santos Dumont." },
+                { title: "📍 São Paulo", content: "Ótima notícia! Verificamos a disponibilidade de instalação para o seu endereço e temos cobertura em São Paulo." },
+                { title: "4⃣ Inadimplente", content: "Poxa! Ficamos felizes com seu interesse em contratar a Fibramar, mas o seu cadastro não foi aprovado, pois consta alguma restrição em seu CPF e em decorrência disso não poderemos dar continuidade ao seu pedido. Consigo te ajudar com mais alguma dúvida?" },
+                { title: "🔵 GOOGLE", content: "[00] Obrigada por aguardar e seja bem-vindo(a) a Fibramar! Informo que seu cadastro já foi realizado. Ter você como nosso cliente é o que nos motiva!" },
+                { title: "🟢 META (Facebook/Instagram)", content: "[01] Obrigada por aguardar e seja bem-vindo(a) a Fibramar! Informo que seu cadastro já foi realizado. Ter você como nosso cliente é o que nos motiva!" }
             ],
 
             "📋 CADASTRO DE NOVO CLIENTE": [
@@ -2106,7 +2125,7 @@
 
             ],
             "🖥️ CONFIGURAÇÃO DO ROTEADOR": [
-                "Olá! Vou te ajudar passo a passo:\n\nConecte seu celular ao Wi-Fi do roteador.\n\nAbra o Chrome.\n\nLá em cima, onde você digita sites, coloque 192.168.0.1 e confirme.\n\nVai aparecer uma tela pedindo usuário e senha.\nAntes de digitar qualquer coisa, me mande um print da tela, por favor.\nAssim que eu ver, te informo a senha certa!\n"
+                { title: "⚙️ ACESSO AO ROTEADOR", content: "Olá! Vou te ajudar passo a passo:\n\nConecte seu celular ao Wi-Fi do roteador.\n\nAbra o Chrome.\n\nLá em cima, onde você digita sites, coloque 192.168.0.1 e confirme.\n\nVai aparecer uma tela pedindo usuário e senha.\nAntes de digitar qualquer coisa, me mande um print da tela, por favor.\nAssim que eu ver, te informo a senha certa!\n" }
             ],
             "🔧 SUPORTE / PROCEDIMENTOS": [
                 "Há alguma luz piscando ou com cor diferente no equipamento?",
@@ -2125,26 +2144,25 @@
                 
             ],
             "📑 PADRÃO DE ABERTURA DE O.S": [
-                "CLIENTE SEM CONEXÃO, FEITO OS PROCEDIMENTOS PADRÕES E NÃO RETORNOU\nPOTÊNCIA DA ONU: OFF\nÚLTIMA CONEXÃO: 1 HORA\nLOS VERMELHA: SIM\nTAG :\n[NOME_ATENDENTE] - [DATA] - [HORA]",
-                "CLIENTE RELATA LENTIDÃO, FEITO OS PROCEDIMENTOS PADRÕES SEM SUCESSO.\nTESTE DE VELOCIDADE:\nDOWNLOAD:  Mbps\nUPLOAD:  Mbps\nAPARELHO: \nPOTÊNCIA DA ONU: \nTAG :\n\n[NOME_ATENDENTE] - [DATA] - [HORA]",
-                "INSTALAÇÃO SERÁ GRATUITA NA PROMOÇÃO DO CARLOS\n\nPLANO DE / COM ROTEADOR EM COMODATO\n\nDATA DE VENCIMENTO: 12\n\nCONSULTORA(O): [NOME_ATENDENTE]\n\nCONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA\n\nCLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE",
-                "INSTALAÇÃO SERÁ PAGA NO VALOR DE R$\n\nPLANO DE / R$ COM ROTEADOR EM COMODATO\n\nDATA DE VENCIMENTO:\n\nCONSULTORA(O): [NOME_ATENDENTE]\n\nCONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA //\n\nCLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE",
-                "Atendente: [NOME_ATENDENTE] | Data: [DATA] | Hora: [HORA]"
+                { title: "🔌 SEM CONEXÃO (LOS VERMELHA)", content: "CLIENTE SEM CONEXÃO, FEITO OS PROCEDIMENTOS PADRÕES E NÃO RETORNOU\nPOTÊNCIA DA ONU: OFF\nÚLTIMA CONEXÃO: 1 HORA\nLOS VERMELHA: SIM\nTAG :\n[NOME_ATENDENTE] - [DATA] - [HORA]" },
+                { title: "🐢 LENTIDÃO / INSTABILIDADE", content: "CLIENTE RELATA LENTIDÃO, FEITO OS PROCEDIMENTOS PADRÕES SEM SUCESSO.\nTESTE DE VELOCIDADE:\nDOWNLOAD:  Mbps\nUPLOAD:  Mbps\nAPARELHO: \nPOTÊNCIA DA ONU: \nTAG :\n\n[NOME_ATENDENTE] - [DATA] - [HORA]" },
+                { title: "🎁 INSTALAÇÃO GRATUITA (PROMO)", content: "INSTALAÇÃO SERÁ GRATUITA NA PROMOÇÃO DO CARLOS\n\nPLANO DE / COM ROTEADOR EM COMODATO\n\nDATA DE VENCIMENTO: 12\n\nCONSULTORA(O): [NOME_ATENDENTE]\n\nCONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA\n\nCLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE" },
+                { title: "💰 INSTALAÇÃO PAGA", content: "INSTALAÇÃO SERÁ PAGA NO VALOR DE R$\n\nPLANO DE / R$ COM ROTEADOR EM COMODATO\n\nDATA DE VENCIMENTO:\n\nCONSULTORA(O): [NOME_ATENDENTE]\n\nCONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA //\n\nCLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE" },
+                { title: "🏷️ TAG DE ATENDIMENTO", content: "Atendente: [NOME_ATENDENTE] | Data: [DATA] | Hora: [HORA]" }
             ],
             "📝 TERMO DE RESPONSABILIDADE": [
                 "Para quem usa equipamento próprio:\n\n🔗 https://app.zapsign.com.br/verificar/doc/2794e63d-905c-4cb0-8c5e-7b22226901c3"
             ],
             "❌ CANCELAMENTO": [
-                "Por favor, envie os dados abaixo:\n\n- Nome completo:\n- CPF:\n- RG:\n Data de Nascimento: \n- Endereço completo:\n- Motivo do cancelamento:\n\nAssim que recebermos as informações, abriremos a solicitação no sistema.\n",
-                "Dentro de 72 horas úteis, o setor responsável entrará em contato para finalizar o equipamento e caso houver equipamento agendar a retirada dos equipamentos.",
-                "💸 PROPORCIONAL (Quebra de contrato)\n\nConforme fidelidade de 12 meses, o valor de R$ 360,00 da instalação é proporcional:\n\nR$ 30,00 x [meses restantes] = R$ [valor final]",
-                
+                { title: "📋 DADOS PARA CANCELAMENTO", content: "Por favor, envie os dados abaixo:\n\n- Nome completo:\n- CPF:\n- RG:\n Data de Nascimento: \n- Endereço completo:\n- Motivo do cancelamento:\n\nAssim que recebermos as informações, abriremos a solicitação no sistema.\n" },
+                { title: "⏳ PRAZO DE RETIRADA", content: "Dentro de 72 horas úteis, o setor responsável entrará em contato para finalizar o equipamento e caso houver equipamento agendar a retirada dos equipamentos." },
+                { title: "💸 MULTA FIDELIDADE", content: "💸 PROPORCIONAL (Quebra de contrato)\n\nConforme fidelidade de 12 meses, o valor de R$ 360,00 da instalação é proporcional:\n\nR$ 30,00 x [meses restantes] = R$ [valor final]" }
             ],
             "💲 PREÇOS E TAXAS": [
-                "- Instalação: R$ 360,00\n- Visita improdutiva: R$ 30,00\n- Conector: R$ 10,00\n- 1 metro de fibra: R$ 0,60"
+                { title: "💰 TABELA DE VALORES", content: "- Instalação: R$ 360,00\n- Visita improdutiva: R$ 30,00\n- Conector: R$ 10,00\n- 1 metro de fibra: R$ 0,60" }
             ],
             "📉 DESCONTO": [
-                "Para solicitar desconto, envie um e-mail com:\n\n- Nome completo:\n- CPF:\n- Telefone:\n- Motivo:\n- Endereço:\n- Dias afetados:\n\ndesconto@crnetfibramar.com.br"
+                { title: "📧 SOLICITAÇÃO DE DESCONTO", content: "Para solicitar desconto, envie um e-mail com:\n\n- Nome completo:\n- CPF:\n- Telefone:\n- Motivo:\n- Endereço:\n- Dias afetados:\n\ndesconto@crnetfibramar.com.br" }
             ],
             "📍 ENDEREÇOS DAS LOJAS": [
                 "CENTRO - MARICÁ\n\nAVENIDA VEREADOR FRANCISCO SABINO DA COSTA N° 78- NO SHOPPING CENTER 1 - TÉRREO\n\nEM FRENTE A CASA E VIDEO, DE ESQUINA COM O RESTAURANTE JOAO E JOAO",
@@ -2522,10 +2540,13 @@
                 // Filtrar mensagens se houver termo de busca
                 let filteredMessages = messages;
                 if (searchTerm) {
-                    filteredMessages = messages.filter(msg => 
-                        msg.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                        topicName.toLowerCase().includes(searchTerm.toLowerCase())
-                    );
+                    filteredMessages = messages.filter(msg => {
+                        const searchText = (typeof msg === 'object' && msg !== null) 
+                            ? (msg.title + ' ' + msg.content).toLowerCase()
+                            : msg.toLowerCase();
+                        return searchText.includes(searchTerm.toLowerCase()) ||
+                               topicName.toLowerCase().includes(searchTerm.toLowerCase());
+                    });
                     
                     // Pular tópico se não houver mensagens correspondentes
                     if (filteredMessages.length === 0) continue;
@@ -2548,8 +2569,18 @@
                     const messageItem = document.createElement('div');
                     messageItem.className = 'message-item';
                     
+                    // Extrair título e conteúdo se for objeto
+                    let title = '';
+                    let contentToDisplay = message;
+                    
+                    if (typeof message === 'object' && message !== null && message.title) {
+                        title = message.title;
+                        contentToDisplay = message.content;
+                    }
+                    
                     // Função para atualizar datas de vencimento na mensagem de cadastro
                     function atualizarMensagemCadastro(texto) {
+                        if (typeof texto !== 'string') return texto;
                         if (texto.includes('CADASTRO DE NOVO CLIENTE') || 
                             texto.includes('Para iniciar o cadastro, envie os dados')) {
                             
@@ -2602,7 +2633,14 @@
                     }
                     
                     // Atualizar mensagem se for de cadastro
-                    const mensagemAtualizada = atualizarMensagemCadastro(message);
+                    const mensagemAtualizada = atualizarMensagemCadastro(contentToDisplay);
+                    
+                    if (title) {
+                        const titleEl = document.createElement('div');
+                        titleEl.className = 'message-title';
+                        titleEl.textContent = title;
+                        messageItem.appendChild(titleEl);
+                    }
                     
                     const messageText = document.createElement('div');
                     messageText.className = 'message-text';
@@ -2803,8 +2841,13 @@
         }
 
         // Copiar para área de transferência
-        function copyToClipboard(text) {
-            let textAtualizado = replaceVariables(text);
+        function copyToClipboard(input) {
+            // Se for objeto com title e content, pegar apenas o content
+            const textToProcess = (typeof input === 'object' && input !== null && input.content) 
+                ? input.content 
+                : input;
+            
+            let textAtualizado = replaceVariables(textToProcess);
             
             // Detectar se é a mensagem de cadastro de novo cliente
             if (textAtualizado.includes('CADASTRO DE NOVO CLIENTE') || 
@@ -2873,8 +2916,13 @@
         }
 
         // Sistema de rastreamento de uso com data
-        function trackMessageUsage(messageText) {
+        function trackMessageUsage(input) {
             try {
+                // Se for objeto com title e content, pegar apenas o content
+                const messageText = (typeof input === 'object' && input !== null && input.content) 
+                    ? input.content 
+                    : input;
+
                 let usageHistory = JSON.parse(localStorage.getItem('messageUsageHistory') || '[]');
                 
                 // Adicionar registro de uso
