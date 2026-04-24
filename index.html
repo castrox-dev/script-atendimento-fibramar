@@ -89,10 +89,10 @@
         .header {
             background: var(--primary-gradient);
             color: white;
-            padding: 80px 40px;
+            padding: 80px 40px 100px 40px;
             text-align: center;
             position: relative;
-            min-height: 280px;
+            min-height: 320px;
             border-radius: var(--radius-lg) var(--radius-lg) 0 0;
             display: flex;
             flex-direction: column;
@@ -793,20 +793,16 @@
 
     <div class="container">
         <div class="header">
-            <div class="header-info">
-                <div class="datetime-widget" id="datetimeWidget">🕐 Carregando...</div>
-                <div class="weather-widget" id="weatherWidget">🌡️ Carregando clima...</div>
-            </div>
             <div class="name-config">
-                <label for="attendantName">👤 Nome do Atendente:</label>
-                <input type="text" id="attendantName" placeholder="Digite seu nome aqui" value="">
+                <label for="attendantName">👤 Nome do Atendente: <span style="color: #ef4444; font-size: 0.8em; margin-left: 5px;">(Obrigatório)</span></label>
+                <input type="text" id="attendantName" placeholder="Digite seu nome para poder copiar" value="">
             </div>
             <button class="theme-toggle" id="themeToggle">
                 <span id="themeIcon">🌙</span>
                 <span id="themeText">Dark</span>
             </button>
             <h1>📞 Script de Atendimento</h1>
-            <p>Fibramar Internet - Guia Rápido</p>
+            <p>Fibramar Internet - Script de Atendimento</p>
         </div>
 
         <div class="content">
@@ -1551,6 +1547,36 @@
 
         // Copiar para área de transferência
         function copyToClipboard(input) {
+            const attendantNameInput = document.getElementById('attendantName');
+            const attendantName = attendantNameInput.value.trim();
+
+            if (!attendantName) {
+                attendantNameInput.style.borderColor = '#ef4444';
+                attendantNameInput.style.boxShadow = '0 0 0 4px rgba(239, 68, 68, 0.1)';
+                attendantNameInput.focus();
+                
+                // Mostrar notificação de erro
+                const notification = document.getElementById('notification');
+                notification.textContent = '⚠️ Digite seu nome antes de copiar!';
+                notification.style.background = '#ef4444';
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    // Resetar estilos após um tempo
+                    setTimeout(() => {
+                        notification.textContent = '✓ Mensagem copiada!';
+                        notification.style.background = '';
+                    }, 300);
+                }, 2000);
+                
+                return;
+            }
+
+            // Resetar estilos caso o nome esteja preenchido
+            attendantNameInput.style.borderColor = '';
+            attendantNameInput.style.boxShadow = '';
+
             // Rastrear uso
             trackMessageUsage(input);
 
@@ -1896,6 +1922,11 @@
         attendantNameInput.addEventListener('input', function() {
             // Salvar nome do atendente no localStorage
             localStorage.setItem('attendantName', attendantNameInput.value);
+            // Resetar estilos de erro se começar a digitar
+            if (attendantNameInput.value.trim()) {
+                attendantNameInput.style.borderColor = '';
+                attendantNameInput.style.boxShadow = '';
+            }
             // Re-renderizar todos os tópicos com as variáveis atualizadas
             renderTopics();
         });
@@ -2023,91 +2054,6 @@
                 e.target.value = value;
             });
         });
-
-        // Widget de Data/Hora
-        const datetimeWidget = document.getElementById('datetimeWidget');
-        const weatherWidget = document.getElementById('weatherWidget');
-        
-        // Verificar se os widgets existem
-        if (!datetimeWidget) {
-            console.error('Widget de data/hora não encontrado');
-        }
-        if (!weatherWidget) {
-            console.error('Widget de clima não encontrado');
-        }
-
-        function updateDateTime() {
-            try {
-                const now = new Date();
-                const dias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-                const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-                
-                const diaSemana = dias[now.getDay()];
-                const dia = now.getDate();
-                const mes = meses[now.getMonth()];
-                const hora = String(now.getHours()).padStart(2, '0');
-                const minuto = String(now.getMinutes()).padStart(2, '0');
-                
-                if (datetimeWidget) {
-                    datetimeWidget.textContent = `🕐 ${diaSemana}, ${dia} ${mes} - ${hora}:${minuto}`;
-                }
-            } catch (error) {
-                console.log('Erro ao atualizar data/hora:', error);
-                if (datetimeWidget) {
-                    datetimeWidget.textContent = '🕐 Erro ao carregar';
-                }
-            }
-        }
-
-
-        // Buscar clima (usando API gratuita do Open-Meteo)
-        async function updateWeather() {
-            try {
-                // Coordenadas aproximadas do Rio de Janeiro (ajuste conforme sua localização)
-                const lat = -22.9068;
-                const lon = -43.1729;
-                
-                const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
-                
-                if (!response.ok) {
-                    throw new Error('Erro na API do clima');
-                }
-                
-                const data = await response.json();
-                
-                if (data.current_weather) {
-                    const temp = Math.round(data.current_weather.temperature);
-                    const weatherCode = data.current_weather.weathercode;
-                    
-                    // Mapear código do clima para emoji
-                    let weatherEmoji = '🌡️';
-                    if (weatherCode === 0) weatherEmoji = '☀️';
-                    else if (weatherCode <= 3) weatherEmoji = '⛅';
-                    else if (weatherCode <= 67) weatherEmoji = '🌧️';
-                    else if (weatherCode <= 77) weatherEmoji = '🌨️';
-                    else if (weatherCode <= 99) weatherEmoji = '⛈️';
-                    
-                    weatherWidget.textContent = `${weatherEmoji} ${temp}°C`;
-                } else {
-                    weatherWidget.textContent = '🌡️ --°C';
-                }
-            } catch (error) {
-                console.log('Erro ao buscar clima:', error);
-                weatherWidget.textContent = '🌡️ --°C';
-            }
-        }
-
-        // Inicializar widgets
-        if (datetimeWidget) {
-            updateDateTime();
-            setInterval(updateDateTime, 60000);
-        }
-        
-        if (weatherWidget) {
-            updateWeather();
-            // Atualizar clima a cada 30 minutos
-            setInterval(updateWeather, 1800000);
-        }
         }); // Fim do DOMContentLoaded
     </script>
 </body>
