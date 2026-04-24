@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <title>Script de Atendimento - Fibramar Internet</title>
     <style>
         :root {
@@ -712,6 +713,79 @@
             }
         }
 
+        /* Footer Style */
+        .footer-credits {
+            text-align: center;
+            padding: 60px 20px;
+            margin-top: 40px;
+            border-top: 1px solid rgba(167, 139, 250, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-text {
+            color: #64748b;
+            font-size: 0.9em;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        body.dark-mode .footer-text {
+            color: #94a3b8;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-link {
+            text-decoration: none;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: white;
+            color: #64748b;
+            font-size: 1.2em;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .footer-link {
+            background: #1e293b;
+            color: #94a3b8;
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-link:hover {
+            transform: translateY(-5px);
+            color: white;
+        }
+
+        .footer-link.instagram:hover {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            box-shadow: 0 10px 20px rgba(220, 39, 67, 0.3);
+        }
+
+        .footer-link.whatsapp:hover {
+            background: #25d366;
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .footer-credits .castro-name {
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-style: normal;
+        }
+
     </style>
 </head>
 <body>
@@ -774,6 +848,20 @@
 
             <div id="topics"></div>
         </div>
+        
+        <div class="footer-credits">
+             <div class="footer-text">
+                 Desenvolvido por <span class="castro-name">CastroX</span>
+             </div>
+             <div class="footer-links">
+                 <a href="https://www.instagram.com/_omoaye/" target="_blank" class="footer-link instagram" title="Instagram">
+                     <i class="fab fa-instagram"></i>
+                 </a>
+                 <a href="https://wa.me/5521968642276" target="_blank" class="footer-link whatsapp" title="WhatsApp">
+                     <i class="fab fa-whatsapp"></i>
+                 </a>
+             </div>
+         </div>
     </div>
 
     <script>
