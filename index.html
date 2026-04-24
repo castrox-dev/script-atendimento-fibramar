@@ -6,8 +6,42 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <title>Script de Atendimento - Fibramar Internet</title>
     <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --secondary: #a855f7;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            --dark-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --surface-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+            
+            --bg-light: #f8fafc;
+            --bg-dark: #0f172a;
+            
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-dark-bg: rgba(15, 23, 42, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-dark-border: rgba(255, 255, 255, 0.12);
+            
+            --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 25px 30px -10px rgba(0, 0, 0, 0.1), 0 15px 15px -10px rgba(0, 0, 0, 0.05);
+            --premium-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius-lg: 32px;
+            --radius-md: 20px;
+            --radius-sm: 14px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,171 +49,198 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-light);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, rgba(168, 85, 247, 0.1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.1) 0, transparent 50%);
             min-height: 100vh;
             padding: 20px;
-            transition: background 0.3s ease;
+            color: #1e293b;
+            transition: var(--transition);
+            line-height: 1.5;
         }
 
         body.dark-mode {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background-color: var(--bg-dark);
+            color: #f1f5f9;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            margin-right: 390px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--card-shadow);
             overflow: visible;
-            transition: all 0.3s ease;
-            word-wrap: break-word;
-        }
-
-        body.notepad-hidden .container {
-            margin-right: auto;
+            transition: var(--transition);
         }
 
         body.dark-mode .container {
-            background: #1e1e1e;
+            background: var(--glass-dark-bg);
+            border-color: var(--glass-dark-border);
         }
 
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-gradient);
             color: white;
-            padding: 30px;
+            padding: 80px 40px;
             text-align: center;
             position: relative;
-            min-height: 200px;
+            min-height: 280px;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 86c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zm66-3c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zm-46-4c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zm33-31c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM46 44c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM28 24c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='white' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E");
+            animation: backgroundMove 60s linear infinite;
+        }
+
+        @keyframes backgroundMove {
+            from { background-position: 0 0; }
+            to { background-position: 1000px 1000px; }
         }
 
         body.dark-mode .header {
-            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
+            background: var(--dark-gradient);
         }
 
         .header-info {
             position: absolute;
-            top: 15px;
-            left: 20px;
+            top: 30px;
+            left: 35px;
             display: flex;
             flex-direction: column;
-            gap: 5px;
+            gap: 8px;
             align-items: flex-start;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 20px;
+            border-radius: var(--radius-sm);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            z-index: 10;
         }
 
         .datetime-widget {
-            font-size: 0.9em;
-            opacity: 0.95;
-            font-weight: 500;
+            font-size: 0.95em;
+            letter-spacing: 0.8px;
+            font-weight: 700;
+            color: white;
         }
 
         .weather-widget {
             font-size: 0.85em;
-            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.9);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            font-weight: 500;
         }
 
         .name-config {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
+            bottom: 30px;
+            left: 35px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 15px;
             z-index: 10;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .name-config label {
-            font-size: 0.7em;
-            font-weight: 600;
-            opacity: 0.95;
-            white-space: nowrap;
+            font-size: 0.75em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .name-config input {
-            padding: 3px 6px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
             color: white;
-            font-size: 0.75em;
-            font-weight: 500;
+            font-size: 0.9em;
+            font-weight: 600;
             outline: none;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            width: 100px;
-            max-width: 100px;
-        }
-
-        @media (max-width: 768px) {
-            .name-config {
-                position: absolute;
-                bottom: 10px;
-                left: 10px;
-            }
-            
-            .theme-toggle {
-                top: 20px;
-                right: 20px;
-                padding: 8px 16px;
-                font-size: 1em;
-            }
-            
-            .name-config input {
-                width: 80px;
-            }
-        }
-
-        .name-config input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            transition: var(--transition);
+            width: 160px;
         }
 
         .name-config input:focus {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
             border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
+            width: 180px;
         }
 
         .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2em;
-            }
+            font-size: 3.8em;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -2.5px;
+            text-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
+            font-size: 1.3em;
+            opacity: 0.95;
+            font-weight: 500;
+            max-width: 650px;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .theme-toggle {
             position: absolute;
             top: 30px;
-            right: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            border-radius: 50px;
-            padding: 10px 20px;
+            right: 35px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 12px 24px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
             color: white;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            font-size: 0.95em;
+            font-weight: 700;
+            transition: var(--transition);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            z-index: 10;
         }
 
         .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .theme-toggle:active {
@@ -187,1402 +248,431 @@
         }
 
         .content {
-            padding: 30px;
-            transition: background 0.3s ease;
-        }
-
-        body.dark-mode .content {
-            background: #1e1e1e;
+            padding: 40px;
+            transition: var(--transition);
         }
 
         .topic {
-            margin-bottom: 15px;
-            border-radius: 10px;
-            overflow: visible;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
+            margin-bottom: 24px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
         }
 
         body.dark-mode .topic {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            background: #1e293b;
+            border-color: rgba(255, 255, 255, 0.05);
         }
 
         .topic:hover {
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
             transform: translateY(-2px);
-        }
-
-        body.dark-mode .topic:hover {
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+            box-shadow: var(--hover-shadow);
         }
 
         .topic-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
+            background: #ffffff;
+            color: #1e293b;
+            padding: 24px 32px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         body.dark-mode .topic-header {
-            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
+            background: #1e293b;
+            color: #f1f5f9;
+            border-bottom-color: rgba(255, 255, 255, 0.05);
         }
 
         .topic-header:hover {
-            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            background: #f8fafc;
         }
 
         body.dark-mode .topic-header:hover {
-            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+            background: #334155;
         }
 
         .topic-header h2 {
-            font-size: 1.3em;
-            font-weight: 600;
+            font-size: 1.25em;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
 
         .topic-icon {
-            font-size: 1.5em;
-            transition: transform 0.3s ease;
+            font-size: 1.4em;
+            opacity: 0.4;
+            transition: var(--transition);
         }
 
         .topic.active .topic-icon {
             transform: rotate(180deg);
+            opacity: 1;
+            color: var(--primary);
         }
 
         .messages {
             display: none;
-            background: #f8f9fa;
-            padding: 20px;
-            max-height: 0;
-            overflow: visible;
-            transition: max-height 0.3s ease;
+            background: #f8fafc;
+            padding: 32px;
+            transition: var(--transition);
         }
 
         body.dark-mode .messages {
-            background: #2a2a2a;
+            background: #0f172a;
         }
 
         .topic.active .messages {
-            display: block;
-            max-height: none;
-            overflow: visible;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
 
         .message-item {
             background: white;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border-radius: 8px;
+            padding: 24px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            border-left: 4px solid #667eea;
-            transition: all 0.2s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
             position: relative;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
             white-space: pre-wrap;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         body.dark-mode .message-item {
-            background: #333;
-            border-left-color: #5a67d8;
+            background: #1e293b;
+            border-color: rgba(255, 255, 255, 0.05);
         }
 
         .message-item:hover {
-            background: #e8eaf6;
-            border-left-color: #764ba2;
-            transform: translateX(5px);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px -10px rgba(99, 102, 241, 0.2);
         }
 
         body.dark-mode .message-item:hover {
-            background: #3a3a3a;
-            border-left-color: #7c3aed;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        .message-item:last-child {
-            margin-bottom: 0;
+            background: #334155;
+            border-color: var(--secondary);
+            box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.3);
         }
 
         .message-item::after {
-            content: '📋 Clique para copiar';
+            content: '📋 Copiar';
             position: absolute;
-            right: 10px;
-            bottom: 8px;
-            font-size: 0.75em;
-            color: #667eea;
+            top: 20px;
+            right: 20px;
+            font-size: 0.7em;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary);
             opacity: 0;
-            transition: opacity 0.2s ease;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2px 6px;
-            border-radius: 4px;
-            pointer-events: none;
+            transition: var(--transition);
+            background: #eef2ff;
+            padding: 6px 12px;
+            border-radius: 6px;
         }
 
         body.dark-mode .message-item::after {
-            color: #a78bfa;
-            background: rgba(51, 51, 51, 0.9);
+            color: #a5b4fc;
+            background: #312e81;
         }
 
         .message-item:hover::after {
             opacity: 1;
         }
 
-        .password-item::after {
-            content: none !important;
-        }
-
-        .message-item {
-            position: relative;
-        }
-
         .message-text {
-            white-space: pre-wrap;
             line-height: 1.6;
-            color: #333;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            max-width: 100%;
-            display: block;
-            overflow: visible;
-            text-overflow: unset;
+            color: #475569;
+            font-size: 0.95em;
+            flex: 1;
         }
 
         body.dark-mode .message-text {
-            color: #e0e0e0;
+            color: #cbd5e1;
         }
 
         .message-title {
             font-weight: 800;
-            color: #667eea;
-            margin-bottom: 8px;
-            font-size: 0.85em;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 0.75em;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: block;
-            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
-            padding-bottom: 4px;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .message-title::before {
+            content: '';
+            width: 3px;
+            height: 14px;
+            background: var(--primary-gradient);
+            border-radius: 2px;
         }
 
         body.dark-mode .message-title {
-            color: #a78bfa;
-            border-bottom-color: rgba(167, 139, 250, 0.1);
+            color: #a5b4fc;
         }
 
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #4caf50;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #1e293b;
             color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            padding: 16px 32px;
+            border-radius: 50px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
             opacity: 0;
-            transform: translateY(-50px);
-            transition: all 0.3s ease;
-            z-index: 1000;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2000;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        body.dark-mode .notification {
-            background: #66bb6a;
+        .notification::before {
+            content: '✓';
+            background: var(--success);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
         }
 
         .notification.show {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
         }
 
         .search-box {
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             position: relative;
         }
 
         .search-box input {
             width: 100%;
-            padding: 15px 20px;
-            font-size: 1.1em;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 22px 30px;
+            font-size: 1.15em;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: var(--radius-md);
             outline: none;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             background: white;
-            color: #333;
+            color: #1e293b;
+            box-shadow: var(--premium-shadow);
         }
 
         body.dark-mode .search-box input {
-            background: #2a2a2a;
-            border-color: #444;
-            color: #e0e0e0;
+            background: #1e293b;
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
         }
 
         .search-box input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        body.dark-mode .search-box input:focus {
-            border-color: #5a67d8;
-            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
-        }
-
-        body.dark-mode .search-box input::placeholder {
-            color: #888;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 5px rgba(99, 102, 241, 0.15), var(--hover-shadow);
+            transform: translateY(-2px);
         }
 
         .search-advanced-toggle {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
+            background: rgba(99, 102, 241, 0.05);
+            color: var(--primary);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            padding: 12px 24px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 0.9em;
-            margin-top: 10px;
-            transition: all 0.3s ease;
+            font-weight: 700;
+            margin-top: 15px;
+            transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 10px;
         }
 
         body.dark-mode .search-advanced-toggle {
-            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
+            background: rgba(165, 180, 252, 0.05);
+            color: #a5b4fc;
+            border-color: rgba(165, 180, 252, 0.1);
         }
 
         .search-advanced-toggle:hover {
+            background: rgba(99, 102, 241, 0.1);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
         }
 
         .search-advanced-panel {
-            margin-top: 15px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
+            margin-top: 20px;
+            padding: 30px;
+            background: white;
+            border-radius: var(--radius-md);
             display: none;
-            gap: 15px;
+            gap: 25px;
             flex-direction: column;
-            border: 2px solid #e0e0e0;
-            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
         }
 
         body.dark-mode .search-advanced-panel {
-            background: #2a2a2a;
-            border-color: #444;
+            background: #1e293b;
+            border-color: rgba(255, 255, 255, 0.05);
         }
 
         .search-advanced-panel.show {
             display: flex;
+            animation: slideUp 0.4s ease;
         }
 
         .search-filter-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
 
         .search-filter-group label {
-            font-weight: 600;
-            font-size: 0.9em;
-            color: #666;
+            font-weight: 800;
+            font-size: 0.8em;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
         }
 
         body.dark-mode .search-filter-group label {
-            color: #b0b0b0;
+            color: #94a3b8;
         }
 
-        .search-filter-select {
-            padding: 10px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.95em;
-            background: white;
-            color: #333;
+        .search-filter-select, .search-tags-input {
+            padding: 14px 20px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            font-size: 1em;
+            background: #f8fafc;
+            color: #1e293b;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
-        body.dark-mode .search-filter-select {
-            background: #1e1e1e;
-            border-color: #444;
-            color: #e0e0e0;
-        }
-
-        .search-filter-select:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        body.dark-mode .search-filter-select:focus {
-            border-color: #5a67d8;
-            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
-        }
-
-        .search-tags-input {
-            padding: 10px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.95em;
-            background: white;
-            color: #333;
-        }
-
+        body.dark-mode .search-filter-select, 
         body.dark-mode .search-tags-input {
-            background: #1e1e1e;
-            border-color: #444;
-            color: #e0e0e0;
+            background: #0f172a;
+            border-color: rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
         }
 
-        .search-tags-input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        .search-filter-select:focus, .search-tags-input:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
 
-        .search-tags-hint {
-            font-size: 0.8em;
-            color: #999;
-            margin-top: 5px;
-        }
-
-        body.dark-mode .search-tags-hint {
-            color: #777;
-        }
-
-        .search-tags-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .search-tag {
-            background: #667eea;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .search-tag .tag-remove {
-            cursor: pointer;
-            font-weight: bold;
-            opacity: 0.8;
-        }
-
-        .search-tag .tag-remove:hover {
-            opacity: 1;
+        body.dark-mode .search-filter-select:focus, 
+        body.dark-mode .search-tags-input:focus {
+            background: #0f172a;
         }
 
         .search-actions {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             margin-top: 10px;
         }
 
         .search-btn-apply {
-            flex: 1;
-            padding: 10px;
-            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            flex: 2;
+            padding: 16px;
+            background: var(--primary-gradient);
             color: white;
             border: none;
-            border-radius: 8px;
-            font-size: 0.95em;
-            font-weight: 600;
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .search-btn-clear {
+            flex: 1;
+            padding: 16px;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
         }
 
         .search-btn-apply:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
-        }
-
-        .search-btn-clear {
-            padding: 10px 20px;
-            background: #f44336;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
         }
 
         .search-btn-clear:hover {
-            background: #d32f2f;
-            transform: translateY(-2px);
+            background: #e2e8f0;
+            color: #1e293b;
         }
 
-                .notepad {
-            position: fixed;
-            bottom: 5px;
-            right: 5px;
-            width: 350px;
-            height: 400px;
-            min-width: 250px;
-            max-width: 800px;
-            min-height: 250px;
-            max-height: 90vh;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            z-index: 999;
-            transition: none;
-            display: flex;
-            flex-direction: column;
-        }
-
-        body.dark-mode .notepad {
-            background: #2a2a2a;
-        }
-
-        .notepad.minimized {
-            height: 60px;
-        }
-
-        .notepad-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            user-select: none;
-            flex-shrink: 0;
-        }
-
-        body.dark-mode .notepad-header {
-            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
-        }
-
-        .notepad-header h3 {
-            font-size: 1.1em;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .notepad-toggle {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
-            transition: all 0.2s ease;
-        }
-
-        .notepad-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-
-        .notepad-close {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2em;
-            transition: all 0.2s ease;
-            margin-left: 5px;
-        }
-
-        .notepad-close:hover {
-            background: rgba(255, 100, 100, 0.5);
-            transform: scale(1.1);
-        }
-
-        .notepad.hidden {
-            display: none;
-        }
-
-        .notepad-reopen {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 15px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            display: none;
-            align-items: center;
-            gap: 8px;
-        }
-
-        body.dark-mode .notepad-reopen {
-            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
-        }
-
-        .notepad-reopen.show {
-            display: flex;
-        }
-
-        .notepad-reopen:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-        }
-
-        .calculator-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .calculator-backdrop.show {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .calculator {
-            width: 1200px;
-            max-width: 95%;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            animation: slideUp 0.3s ease;
-        }
-
-        body.dark-mode .calculator {
-            background: #2a2a2a;
-        }
-
-        @media (max-width: 1200px) {
-            .calculator {
-                width: 90%;
-            }
-
-            .calculator-content {
-                flex-direction: column;
-            }
-
-            .calc-section {
-                flex: none;
-            }
-        }
-
-        .calculator-header {
-            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-            color: white;
-            padding: 12px 18px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-        }
-
-        body.dark-mode .calculator-header {
-            background: linear-gradient(135deg, #2d5a2e 0%, #1e3a1f 100%);
-        }
-
-        .calculator-header h3 {
-            font-size: 1.05em;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .calculator-close {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3em;
-            transition: all 0.2s ease;
-        }
-
-        .calculator-close:hover {
-            background: rgba(255, 100, 100, 0.5);
-            transform: scale(1.1);
-        }
-
-        .calculator-content {
-            padding: 15px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .calc-section {
-            flex: 1;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            border: 2px solid #e0e0e0;
-        }
-
-        body.dark-mode .calc-section {
-            background: #1e1e1e;
-            border-color: #444;
-        }
-
-        .calc-section h4 {
-            color: #4caf50;
-            margin-bottom: 12px;
-            font-size: 1em;
-            font-weight: 600;
-        }
-
-        body.dark-mode .calc-section h4 {
-            color: #66bb6a;
-        }
-
-        .calc-input-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 12px;
-        }
-
-        .calc-input-row .calc-input-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
-
-        .calc-input-group {
-            margin-bottom: 10px;
-        }
-
-        .calc-input-group label {
-            display: block;
-            margin-bottom: 4px;
-            font-size: 0.85em;
-            font-weight: 500;
-            color: #666;
-        }
-
-        body.dark-mode .calc-input-group label {
-            color: #b0b0b0;
-        }
-
-        .calc-input-group input {
-            width: 100%;
-            padding: 8px 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 0.9em;
-            outline: none;
-            transition: all 0.3s ease;
-            background: white;
-            color: #333;
-        }
-
-        @media (max-width: 768px) {
-            .calc-input-row {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .calc-input-row .calc-input-group {
-                margin-bottom: 12px;
-            }
-        }
-
-        body.dark-mode .calc-input-group input {
-            background: #1e1e1e;
-            border-color: #444;
-            color: #e0e0e0;
-        }
-
-        .calc-input-group input:focus {
-            border-color: #4caf50;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-        }
-
-        body.dark-mode .calc-input-group input:focus {
-            border-color: #66bb6a;
-            box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.2);
-        }
-
-        .calc-button {
-            width: 100%;
-            padding: 10px;
-            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 0.95em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 8px;
-        }
-
-        .calc-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        /* Micro-interactions */
+        .message-item:active {
+            transform: scale(0.98);
         }
 
         .calc-button:active {
-            transform: translateY(0);
+            transform: scale(0.96);
         }
 
-        .calc-result {
-            margin-top: 12px;
-            padding: 12px;
-            background: #e8f5e9;
-            border-left: 4px solid #4caf50;
-            border-radius: 6px;
-            display: none;
-        }
-
-        body.dark-mode .calc-result {
-            background: #1e3a1f;
-            border-left-color: #66bb6a;
-        }
-
-        .calc-result.show {
-            display: block;
-        }
-
-        .calc-result-label {
-            font-size: 0.8em;
-            color: #666;
-            margin-bottom: 4px;
-        }
-
-        body.dark-mode .calc-result-label {
-            color: #b0b0b0;
-        }
-
-        .calc-result-value {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #2e7d32;
-        }
-
-        body.dark-mode .calc-result-value {
-            color: #81c784;
-        }
-
-        .floating-buttons {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            display: flex;
-            gap: 15px;
-            z-index: 998;
-        }
-
-        .calculator-open-btn {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.8em;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        body.dark-mode .calculator-open-btn {
-            background: linear-gradient(135deg, #2d5a2e 0%, #1e3a1f 100%);
-        }
-
-        .calculator-open-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(76, 175, 80, 0.5);
-        }
-
-        .calculator-open-btn:active {
-            transform: scale(0.95);
-        }
-
-        .cadastro-open-btn {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.8em;
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        body.dark-mode .cadastro-open-btn {
-            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
-        }
-
-        .cadastro-open-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
-        }
-
-        .cadastro-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+        /* Utility Classes */
+        .glass-panel {
+            background: var(--glass-bg);
             backdrop-filter: blur(10px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-md);
         }
 
-        .cadastro-backdrop.show {
-            display: flex;
+        body.dark-mode .glass-panel {
+            background: var(--glass-dark-bg);
+            border-color: var(--glass-dark-border);
         }
 
-        .cadastro-modal {
-            width: 800px;
-            max-width: 95%;
-            max-height: 90vh;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            animation: slideUp 0.3s ease;
-            display: flex;
-            flex-direction: column;
+        @keyframes modalSlideUp {
+            from { transform: translateY(40px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
         }
 
-        body.dark-mode .cadastro-modal {
-            background: #2a2a2a;
+        @keyframes backgroundMove {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
 
-        .cadastro-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        body.dark-mode .cadastro-header {
-            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
-        }
-
-        .cadastro-header h3 {
-            font-size: 1.3em;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .cadastro-close {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3em;
-            transition: all 0.2s ease;
-        }
-
-        .cadastro-close:hover {
-            background: rgba(255, 100, 100, 0.5);
-            transform: scale(1.1);
-        }
-
-        .cadastro-content {
-            padding: 25px;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .cadastro-form {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        @media (max-width: 768px) {
-            .cadastro-form {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .cadastro-form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .cadastro-form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
-        .cadastro-form-group label {
-            font-weight: 600;
-            font-size: 0.9em;
-            color: #666;
-        }
-
-        body.dark-mode .cadastro-form-group label {
-            color: #b0b0b0;
-        }
-
-        .cadastro-form-group input,
-        .cadastro-form-group select,
-        .cadastro-form-group textarea {
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.95em;
-            outline: none;
-            transition: all 0.3s ease;
-            background: white;
-            color: #333;
-            font-family: inherit;
-        }
-
-        body.dark-mode .cadastro-form-group input,
-        body.dark-mode .cadastro-form-group select,
-        body.dark-mode .cadastro-form-group textarea {
-            background: #1e1e1e;
-            border-color: #444;
-            color: #e0e0e0;
-        }
-
-        .cadastro-form-group input:focus,
-        .cadastro-form-group select:focus,
-        .cadastro-form-group textarea:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        body.dark-mode .cadastro-form-group input:focus,
-        body.dark-mode .cadastro-form-group select:focus,
-        body.dark-mode .cadastro-form-group textarea:focus {
-            border-color: #5a67d8;
-            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
-        }
-
-        .cadastro-form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .cadastro-actions {
-            padding: 20px 25px;
-            background: #f8f9fa;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-        }
-
-        body.dark-mode .cadastro-actions {
-            background: #1a1a1a;
-            border-top-color: #333;
-        }
-
-        .cadastro-btn-generate {
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .cadastro-btn-generate:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .cadastro-btn-cancel {
-            padding: 12px 30px;
-            background: #f44336;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .cadastro-btn-processar {
-            padding: 12px 20px;
-            background: #ffc107;
-            color: #000;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .cadastro-btn-processar:hover {
-            background: #ffb300;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
-        }
-
-        .cadastro-btn-cancel:hover {
-            background: #d32f2f;
-            transform: translateY(-2px);
-        }
-
-        .os-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            z-index: 1001;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .os-backdrop.show {
-            display: flex;
-        }
-
-        .os-modal {
-            width: 800px;
-            max-width: 95%;
-            max-height: 90vh;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-            animation: slideUp 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-
-        body.dark-mode .os-modal {
-            background: #2a2a2a;
-        }
-
-        .os-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-        }
-
-        body.dark-mode .os-header {
-            background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 100%);
-        }
-
-        .os-header h3 {
-            font-size: 1.3em;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .os-close {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3em;
-            transition: all 0.2s ease;
-        }
-
-        .os-close:hover {
-            background: rgba(255, 100, 100, 0.5);
-            transform: scale(1.1);
-        }
-
-        .os-content {
-            padding: 25px;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .os-textarea {
-            width: 100%;
-            min-height: 500px;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 0.95em;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            outline: none;
-            transition: all 0.3s ease;
-            background: white;
-            color: #333;
-            resize: vertical;
-            line-height: 1.6;
-        }
-
-        body.dark-mode .os-textarea {
-            background: #1e1e1e;
-            border-color: #444;
-            color: #e0e0e0;
-        }
-
-        .os-textarea:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        body.dark-mode .os-textarea:focus {
-            border-color: #5a67d8;
-            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
-        }
-
-        .os-actions {
-            padding: 20px 25px;
-            background: #f8f9fa;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-        }
-
-        body.dark-mode .os-actions {
-            background: #1a1a1a;
-            border-top-color: #333;
-        }
-
-        .os-btn-copy {
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .os-btn-copy:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .os-btn-close {
-            padding: 12px 30px;
-            background: #f44336;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .os-btn-close:hover {
-            background: #d32f2f;
-            transform: translateY(-2px);
-        }
-
-        @media (max-width: 768px) {
-            .floating-buttons {
-                flex-direction: column;
-                gap: 10px;
-            }
-        }
-
-        .notepad-content {
-            padding: 15px;
-            display: block;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .notepad.minimized .notepad-content {
-            display: none;
-        }
-
-        .notepad-textarea {
-            width: 100%;
-            height: 100%;
-            min-height: 100px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 12px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            font-size: 0.95em;
-            resize: none;
-            outline: none;
-            transition: all 0.3s ease;
-            background: white;
-            color: #333;
-            position: relative;
-        }
-
-
-        body.dark-mode .notepad-textarea {
-            background: #1e1e1e;
-            border-color: #444;
-            color: #e0e0e0;
-        }
-
-        .notepad-textarea:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        body.dark-mode .notepad-textarea:focus {
-            border-color: #5a67d8;
-            box-shadow: 0 0 0 3px rgba(90, 103, 216, 0.2);
-        }
-
-        .notepad-footer {
-            padding: 12px 15px;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #ddd;
-            flex-wrap: wrap;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-
-        body.dark-mode .notepad-footer {
-            background: #1a1a1a;
-            border-top-color: #333;
-        }
-
-        .notepad-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .notepad-clear, .notepad-export, .notepad-import-btn {
-            background: #f44336;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .notepad-export {
-            background: #2196F3;
-        }
-
-        .notepad-export:hover {
-            background: #1976D2;
-            transform: scale(1.05);
-        }
-
-        .notepad-import-btn {
-            background: #FF9800;
-        }
-
-        .notepad-import-btn:hover {
-            background: #F57C00;
-            transform: scale(1.05);
-        }
-
-        .notepad-clear:hover {
-            background: #d32f2f;
-            transform: scale(1.05);
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         @media (max-width: 768px) {
@@ -1606,363 +696,26 @@
             }
 
             .container {
-                margin-right: auto;
                 max-width: 100%;
             }
 
-            .notepad {
-                width: calc(100% - 40px);
+            .calculator {
+                width: 100%;
+                height: 100%;
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
+            .floating-buttons {
+                bottom: 20px;
                 left: 20px;
-                right: 20px;
             }
-
-            .notepad-textarea {
-                min-height: 150px;
-            }
-
-            .notepad-reopen {
-                padding: 12px 18px;
-                font-size: 0.9em;
-            }
-        }
-
-        .notepad-resize-handle {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 20px;
-            height: 100%;
-            cursor: ew-resize;
-            z-index: 1000;
-        }
-        
-        .notepad-resize-handle::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 40px;
-            background: rgba(102, 126, 234, 0.3);
-            border-radius: 2px;
-            transition: all 0.2s ease;
-        }
-        
-        .notepad-resize-handle:hover::before {
-            background: rgba(102, 126, 234, 0.6);
-            height: 60px;
-        }
-        
-        body.dark-mode .notepad-resize-handle::before {
-            background: rgba(167, 139, 250, 0.3);
-        }
-        
-        body.dark-mode .notepad-resize-handle:hover::before {
-            background: rgba(167, 139, 250, 0.6);
-        }
-
-
-        .notepad-resize-handle-vertical {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 25px;
-            height: 25px;
-            cursor: nwse-resize;
-            z-index: 1001;
-        }
-        
-        .notepad-resize-handle-vertical::before {
-            content: '';
-            position: absolute;
-            left: 5px;
-            top: 5px;
-            width: 0;
-            height: 0;
-            border-left: 12px solid rgba(102, 126, 234, 0.4);
-            border-bottom: 12px solid transparent;
-            transition: all 0.2s ease;
-        }
-        
-        .notepad-resize-handle-vertical:hover::before {
-            border-left-color: rgba(102, 126, 234, 0.7);
-        }
-        
-        body.dark-mode .notepad-resize-handle-vertical::before {
-            border-left-color: rgba(167, 139, 250, 0.4);
-        }
-        
-        body.dark-mode .notepad-resize-handle-vertical:hover::before {
-            border-left-color: rgba(167, 139, 250, 0.7);
         }
 
     </style>
 </head>
 <body>
     <div class="notification" id="notification">✓ Mensagem copiada!</div>
-
-    <!-- Bloco de Notas -->
-    <div class="notepad" id="notepad">
-        <div class="notepad-header">
-            <h3>📝 Bloco de Notas</h3>
-            <div style="display: flex; gap: 5px;">
-                <button class="notepad-toggle" id="notepadToggle">−</button>
-                <button class="notepad-close" id="notepadClose">✕</button>
-            </div>
-        </div>
-        <div class="notepad-content">
-            <textarea class="notepad-textarea" id="notepadTextarea" placeholder="Digite suas anotações aqui..."></textarea>
-        </div>
-        <div class="notepad-footer">
-            <div class="notepad-actions">
-                <button class="notepad-export" id="notepadExport" title="Exportar notas">💾 Exportar</button>
-                <button class="notepad-import-btn" id="notepadImportBtn" title="Importar notas">📂 Importar</button>
-                <input type="file" id="notepadImport" accept=".txt" style="display: none;">
-                <button class="notepad-clear" id="notepadClear">🗑️ Limpar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Botões Flutuantes -->
-    <div class="floating-buttons">
-        <button class="notepad-reopen" id="notepadReopen">
-            📝 Abrir Notas
-        </button>
-        <button class="calculator-open-btn" id="calculatorOpenBtn" title="Calculadora Financeira">
-            💰
-        </button>
-        <button class="cadastro-open-btn" id="cadastroOpenBtn" title="Formulário de Cadastro">
-            📋
-        </button>
-    </div>
-
-    <!-- Calculadora Financeira (Modal) -->
-    <div class="calculator-backdrop" id="calculatorBackdrop">
-        <div class="calculator" id="calculator">
-            <div class="calculator-header">
-                <h3>💰 Calculadora Financeira</h3>
-                <button class="calculator-close" id="calculatorClose">✕</button>
-            </div>
-            <div class="calculator-content">
-                <!-- Cálculo Proporcional -->
-                <div class="calc-section">
-                    <h4>📊 Cálculo Proporcional de Uso</h4>
-                    <div class="calc-input-group">
-                        <label>Valor do Plano (R$)</label>
-                        <input type="number" id="valorPlano" placeholder="Ex: 99.99" step="0.01" min="0">
-                    </div>
-                    <div class="calc-input-group">
-                        <label>Dias do Mês</label>
-                        <input type="number" id="diasMes" placeholder="Ex: 30" min="1" max="31">
-                    </div>
-                    <div class="calc-input-group">
-                        <label>Dias Utilizados</label>
-                        <input type="number" id="diasUtilizados" placeholder="Ex: 15" min="0">
-                    </div>
-                    <button class="calc-button" id="calcProporcional">Calcular Proporcional</button>
-                    <div class="calc-result" id="resultProporcional">
-                        <div class="calc-result-label">Valor Proporcional:</div>
-                        <div class="calc-result-value" id="valorProporcional">R$ 0,00</div>
-                    </div>
-                </div>
-
-                <!-- Cálculo de Acordo -->
-                <div class="calc-section">
-                    <h4>🤝 Cálculo de Acordo (1 Fatura e Meia)</h4>
-                    <div class="calc-input-group">
-                        <label>Valor da Fatura (R$)</label>
-                        <input type="number" id="valorFatura" placeholder="Ex: 99.99" step="0.01" min="0">
-                    </div>
-                    <button class="calc-button" id="calcAcordo">Calcular Acordo</button>
-                    <div class="calc-result" id="resultAcordo">
-                        <div class="calc-result-label">Valor do Acordo (1,5x):</div>
-                        <div class="calc-result-value" id="valorAcordo">R$ 0,00</div>
-                    </div>
-                </div>
-
-                <!-- Calculadora de Comissão -->
-                <div class="calc-section">
-                    <h4>💰 Calculadora de Comissão</h4>
-                    <div class="calc-input-group">
-                        <label>Quantidade de Cadastros</label>
-                        <input type="number" id="qtdCadastros" placeholder="Ex: 5" min="0" value="0">
-                    </div>
-                    <div class="calc-input-group">
-                        <label>Valor Total de Acordos (R$)</label>
-                        <input type="number" id="valorAcordos" placeholder="Ex: 500.00" step="0.01" min="0" value="0">
-                    </div>
-                    <button class="calc-button" id="calcComissao">Calcular Comissão</button>
-                    <div class="calc-result" id="resultComissao">
-                        <div class="calc-result-label">Sua Comissão Total:</div>
-                        <div class="calc-result-value" id="valorComissao">R$ 0,00</div>
-                        <div style="font-size: 0.75em; margin-top: 8px; opacity: 0.8;">
-                            <div id="detalhesComissao"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Cadastro -->
-    <div class="cadastro-backdrop" id="cadastroBackdrop">
-        <div class="cadastro-modal" id="cadastroModal">
-            <div class="cadastro-header">
-                <h3>📋 Formulário de Cadastro</h3>
-                <button class="cadastro-close" id="cadastroClose">✕</button>
-            </div>
-            <div class="cadastro-content">
-                <form class="cadastro-form" id="cadastroForm">
-                    <div class="cadastro-form-group full-width" style="margin-bottom: 20px; padding: 15px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border: 2px dashed rgba(255, 193, 7, 0.3);">
-                        <label for="cadastroFichaColada" style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
-                            📋 <span>Cole a ficha preenchida pelo cliente aqui (opcional)</span>
-                        </label>
-                        <textarea id="cadastroFichaColada" rows="6" placeholder="Cole aqui a ficha que o cliente enviou pelo WhatsApp...&#10;&#10;Exemplo:&#10;Nome completo: João Silva&#10;CPF: 123.456.789-00&#10;E-mail: joao@email.com&#10;..."></textarea>
-                        <button type="button" id="cadastroProcessarFicha" class="cadastro-btn-processar" style="margin-top: 10px; padding: 10px 20px; background: #ffc107; color: #000; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%;">
-                            🔄 Processar Ficha e Preencher Campos
-                        </button>
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroNome">Nome completo *</label>
-                        <input type="text" id="cadastroNome" required>
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroCPF">CPF *</label>
-                        <input type="text" id="cadastroCPF" required placeholder="000.000.000-00">
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroRG">RG</label>
-                        <input type="text" id="cadastroRG">
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroDataNasc">Data de nascimento *</label>
-                        <input type="date" id="cadastroDataNasc" required>
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroEmail">E-mail *</label>
-                        <input type="email" id="cadastroEmail" required>
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroPlano">Plano desejado *</label>
-                        <select id="cadastroPlano" required>
-                            <option value="">Selecione o plano</option>
-                            <option value="240 MEGA">240 MEGA - R$ 59,99</option>
-                            <option value="400 MEGA">400 MEGA - R$ 79,99</option>
-                            <option value="500 MEGA">500 MEGA - R$ 99,99</option>
-                            <option value="600 MEGA">600 MEGA - R$ 119,99</option>
-                            <option value="1 GIGA">1 GIGA - R$ 149,99</option>
-                        </select>
-                    </div>
-                    <div class="cadastro-form-group" id="cadastroRoteadorGroup" style="display: none;">
-                        <label for="cadastroRoteador">Roteador *</label>
-                        <select id="cadastroRoteador">
-                            <option value="">Selecione</option>
-                            <option value="Em aluguel">Em aluguel (R$ 10,00/mês)</option>
-                            <option value="Do cliente">Do cliente</option>
-                        </select>
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroVencimento">Data de vencimento *</label>
-                        <select id="cadastroVencimento" required>
-                            <option value="">Selecione</option>
-                            <option value="1">1</option>
-                            <option value="3">3</option>
-                            <option value="6">6</option>
-                            <option value="9">9</option>
-                            <option value="13">13</option>
-                            <option value="18">18</option>
-                        </select>
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroTelefone">Telefone(s) *</label>
-                        <input type="text" id="cadastroTelefone" required placeholder="(00) 00000-0000">
-                    </div>
-                    <div class="cadastro-form-group full-width">
-                        <label for="cadastroEndereco">Endereço completo *</label>
-                        <textarea id="cadastroEndereco" required></textarea>
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroCEP">CEP *</label>
-                        <input type="text" id="cadastroCEP" required placeholder="00000-000">
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroBairro">Bairro *</label>
-                        <input type="text" id="cadastroBairro" required placeholder="Nome do bairro">
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroCidade">Cidade *</label>
-                        <input type="text" id="cadastroCidade" required placeholder="Nome da cidade" value="Maricá">
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroReferencia">Referência visual *</label>
-                        <input type="text" id="cadastroReferencia" required placeholder="Ponto de referência próximo">
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroFidelidade">Fidelidade de 12 meses? *</label>
-                        <select id="cadastroFidelidade" required>
-                            <option value="">Selecione</option>
-                            <option value="Sim">Sim</option>
-                            <option value="Não">Não</option>
-                        </select>
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroModoPagamento">Modo de pagamento da instalação *</label>
-                        <select id="cadastroModoPagamento" required>
-                            <option value="">Selecione</option>
-                            <option value="PIX">PIX</option>
-                            <option value="Dinheiro">Dinheiro</option>
-                            <option value="Cartão de Débito">Cartão de Débito</option>
-                            <option value="Cartão de Crédito">Cartão de Crédito</option>
-                            <option value="Transferência">Transferência</option>
-                        </select>
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroDataInstalacao">Data da instalação *</label>
-                        <input type="date" id="cadastroDataInstalacao" required>
-                    </div>
-                    <div class="cadastro-form-group">
-                        <label for="cadastroPeriodoInstalacao">Período da instalação</label>
-                        <select id="cadastroPeriodoInstalacao">
-                            <option value="">Selecione</option>
-                            <option value="Manhã">Manhã</option>
-                            <option value="Tarde">Tarde</option>
-                            <option value="Integral">Integral</option>
-                        </select>
-                    </div>
-                    <div class="cadastro-form-group full-width">
-                        <label for="cadastroConheceu">Por onde conheceu a empresa? *</label>
-                        <input type="text" id="cadastroConheceu" required>
-                    </div>
-                </form>
-            </div>
-            <div class="cadastro-actions">
-                <button type="button" class="cadastro-btn-cancel" id="cadastroCancelBtn">Cancelar</button>
-                <button type="button" class="cadastro-btn-generate" id="cadastroGenerateBtn">
-                    📄 Gerar OS de Instalação
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de OS Gerada -->
-    <div class="os-backdrop" id="osBackdrop">
-        <div class="os-modal" id="osModal">
-            <div class="os-header">
-                <h3>📄 OS de Instalação Gerada</h3>
-                <button class="os-close" id="osClose">✕</button>
-            </div>
-            <div class="os-content">
-                <textarea class="os-textarea" id="osTextarea" placeholder="OS de instalação será exibida aqui..."></textarea>
-            </div>
-            <div class="os-actions">
-                <button type="button" class="os-btn-copy" id="osCopyBtn">
-                    📋 Copiar OS
-                </button>
-                <button type="button" class="os-btn-close" id="osCloseBtn">Fechar</button>
-            </div>
-        </div>
-    </div>
 
     <div class="container">
         <div class="header">
@@ -2076,7 +829,6 @@
                 "🔥 Plano Ultra + Watch TV, Qualifica e Mediquo - 600 Mega\n\nR$ 119,99/mês* (pagando até o vencimento)\nR$ 139,99/mês* (após vencimento)\n😍 Super Wi-Fi 5Ghz incluso\n\n🎁 Benefícios Exclusivos:\n\n📺 Watch TV: filmes, séries e canais infantis\n📽️ Paramount\n🎓 Qualifica: +220 cursos on-line com certificado reconhecido pela ABED e Carteirinha do Estudante para meia-entrada\n🩺 Mediquo: consultas médicas ilimitadas 24 h\n🔰 McAfee antivírus\n\nPermanência mínima de 12 meses",
                 "⚡️ *Plano Prime – 700 MEGA*\n\n*R$ 99,99/mês* (pagando até o vencimento)\n\n*R$ 119,99/mês* (após vencimento)\n\n- Suporte Especializado\n\n- Cursos Qualifica + Clube de vantagens\n\n- 100% Fibra Óptica\n\n- 😍 Super Wi-Fi 5Ghz incluso\n\n🚀 *Ideal para gamers, streamers e multitarefas que não podem ficar sem velocidade.*\n\n- Possui fidelidade de 12 meses",
                 "Plano Novo – 1 GIGA Fibramar Internet ✨\n\n📡 Velocidade: 1 GIGA\n💰 Valor: R$ 169,99\n➡️ Promoção: pagando até o vencimento, sai por apenas R$ 149,99\n📶 Wi-Fi 6 incluso 🚀\n📄 Contrato de fidelidade: 12 meses\n🔗 Opcional: Repetidor Mesh por apenas R$ 29,99 mensais\n",
-                "Qual dessas opções encaixa melhor para você? Vamos realizar o cadastro agora? 🧡",
                 "📢 PLANOS DE INTERNET MÓVEL FIBRAMAR 📢\n\nEscolha o pacote ideal para o seu dia a dia 👇\n\n💠 1 GIGA – R$ 24,99\n💠 2 GIGA – R$ 29,99\n💠 5 GIGA – R$ 32,99\n💠 10 GIGA – R$ 39,99\n💠 15 GIGA – R$ 49,99\n💠 20 GIGA – R$ 52,99\n💠 24 GIGA – R$ 54,99\n💠 30 GIGA – R$ 64,99\n💠 35 GIGA – R$ 69,99\n💠 50 GIGA – R$ 84,99\n💠 80 GIGA – R$ 129,99\n\n✅ WhatsApp Ilimitado\n✅ Ligações Ilimitadas\n✅ Portabilidade disponível",
                 "*Você gostaria de incluir algum serviço adicional para deixar sua experiência ainda melhor*❓\n\nCada serviço adicional é R$: 14,99 adicional na mensalidade \n\n- *McAfee* – Proteção antivírus\n- *MediQuo* – Assistência médica 24h por teleconsulta\n- *Qualifica* – Cursos online com certificado\n- *Paramount+* – Filmes e séries premium\n- *Watch* – Conteúdo de streaming variado\n- *Nick Jr.* – Conteúdos educativos para crianças",
             ],
@@ -2112,18 +864,7 @@
                 { title: "🟢 META (Facebook/Instagram)", content: "[01] Obrigada por aguardar e seja bem-vindo(a) a Fibramar! Informo que seu cadastro já foi realizado. Ter você como nosso cliente é o que nos motiva!" }
             ],
 
-            "📋 CADASTRO DE NOVO CLIENTE": [
-                "🌐 Para que você aproveite ao máximo nosso serviço, a instalação possui o valor de R$ 100,00.\n\n🛠 Esse valor contribui para o suporte técnico essencial, garantindo que a instalação e a configuração da sua internet sejam feitas com todo o cuidado necessário.\n\n💳 Para facilitar, esse valor pode ser parcelado em até 10x de R$ 10,00, no cartão.",
-                "🌐 Para que você aproveite ao máximo nosso serviço, a instalação é totalmente gratuita ao optar pela fidelidade de 12 meses.\n\n🛠 Caso prefira contratar sem fidelidade, será aplicada uma taxa de instalação no valor de R$ 360,00.\n\n💳 Para facilitar, esse valor pode ser parcelado no cartão.",
-                "Para iniciar o cadastro, envie os dados:\n\nNome completo:\nCPF:\nRG:\nData de nascimento:\nE-mail:\nPlano desejado:\nData de vencimento (1, 3, 6, 7, 9, 13 ou 18):\nTelefone(s):\nEndereço completo:\nCEP:\nBairro:\nCidade:\nReferência visual (ponto de referência próximo):\nGostaria da fidelidade de 12 meses?\nModo de pagamento da instalação (PIX, Dinheiro, Cartão):\nData e período para a instalação:\nPor onde conheceu a empresa ?",
-                "⚠️ ATENÇÃO: Instalação gratuita na fidelidade de 12 meses\n### Para iniciar o cadastro, envie os dados:\n\nNome completo:\nCPF:\nRG:\nData de nascimento:\nE-mail:\nPlano desejado:\nData de vencimento (1, 3, 6, 7, 9, 13 ou 18):\nTelefone(s):\nEndereço completo:\nCEP:\nBairro:\nCidade:\nReferência visual (ponto de referência próximo):\nGostaria da fidelidade de 12 meses?\nData e período para a instalação:\nPor onde conheceu a empresa ?",
-                "Para finalizar seu cadastro, precisamos que envie os seguintes documentos:\n\n📌 1. Comprovante de residência legível no nome do titular.\n\n📌 2. Foto do documento de identificação (RG ou CNH – frente e verso).\n\n📌 3. Selfie segurando o documento (RG ou CNH), garantindo boa iluminação e que os dados fiquem visíveis.\n\nVocê pode enviar as fotos para:\n\n📧 fibramarprovedor@gmail.com\n\nou\n\n📱 WhatsApp (envie para o nosso número cadastrado).",
-                "✅ Cadastro concluído com sucesso.\n\n🔧 Instalação agendada para o dia [data].\n\nPosso ajudar em algo mais ou podemos finalizar seu atendimento?",
-                "Dados para cadastro do chip\n\n**DADOS PESSOAIS:**\nCPF/CNPJ:\nNome Completo:\nE-mail:\nData de nascimento:\nTelefone alternativo:\n\n**ENDEREÇO:**\nCEP:\nUF:\nCidade:\nEndereço:\nNúmero:\nBairro:\nComplemento:\nReferência (Opcional):\n\n**DADOS DO CHIP:**\nNúmero do Chip:\nDDD:\nPlano:\nPortabilidade: ( ) SIM ou ( ) NÃO\nForma de Pagamento:",
-                "✅ Cadastro do chip concluído com sucesso.\n\n📱 Ativação será processada apos o pagamento.\n\nPosso ajudar em algo mais ou podemos finalizar seu atendimento?",
-                "Sobre os boletos, o primeiro mês é proporcional aos dias utilizados, podendo vir um pouco mais ou um pouco menos, dependendo do vencimento.\nO sistema gera automaticamente esse proporcional, não temos como saber quanto será.\nPode ser que ele gere pro mesmo mês e chegue um valor pequeno, ou, pode gerar pro mês seguinte e juntar com a mensalidade. Porém, isso é apenas no primeiro mês, devido ao proporcional.\nDe segundo mês em diante as faturas chegam normais.\nOs boletos são enviados para o email do cadastro. Também ficam disponíveis na central do assinante ou em nosso aplicativo. (https://crnetfibramar.com.br/central_assinante_web/login)",
 
-            ],
             "🖥️ CONFIGURAÇÃO DO ROTEADOR": [
                 { title: "⚙️ ACESSO AO ROTEADOR", content: "Olá! Vou te ajudar passo a passo:\n\nConecte seu celular ao Wi-Fi do roteador.\n\nAbra o Chrome.\n\nLá em cima, onde você digita sites, coloque 192.168.0.1 e confirme.\n\nVai aparecer uma tela pedindo usuário e senha.\nAntes de digitar qualquer coisa, me mande um print da tela, por favor.\nAssim que eu ver, te informo a senha certa!\n" }
             ],
@@ -2456,79 +1197,11 @@
         });
 
         // Renderizar tópicos
-        // Função para atualizar mensagem de cadastro na tela (definida antes de renderTopics)
-        function atualizarMensagemCadastroNaTela() {
-            // Encontrar todos os elementos de mensagem de cadastro
-            const messageItems = document.querySelectorAll('.message-item');
-            
-            messageItems.forEach(item => {
-                const messageText = item.querySelector('.message-text');
-                if (messageText) {
-                    const texto = messageText.textContent;
-                    
-                    // Verificar se é a mensagem de cadastro
-                    if (texto.includes('CADASTRO DE NOVO CLIENTE') || 
-                        texto.includes('Para iniciar o cadastro, envie os dados')) {
-                        
-                        // Função auxiliar para obter vencimentos
-                        function getVencimentosByDia(diaInstalacao) {
-                            if (diaInstalacao >= 1 && diaInstalacao <= 10) {
-                                return [3, 6, 9];
-                            } else if (diaInstalacao >= 11 && diaInstalacao <= 20) {
-                                return [13, 18];
-                            } else if (diaInstalacao >= 21 && diaInstalacao <= 30) {
-                                return [22, 26, 1];
-                            }
-                            return [3, 6, 9, 13, 18, 22, 26, 1];
-                        }
-                        
-                        // Obter data de instalação
-                        const campoDataInstalacao = document.getElementById('cadastroDataInstalacao');
-                        let diaInstalacao = null;
-                        
-                        if (campoDataInstalacao && campoDataInstalacao.value) {
-                            const data = new Date(campoDataInstalacao.value + 'T00:00:00');
-                            diaInstalacao = data.getDate();
-                        } else {
-                            const hoje = new Date();
-                            diaInstalacao = hoje.getDate();
-                        }
-                        
-                        // Obter vencimentos disponíveis
-                        const vencimentosDisponiveis = getVencimentosByDia(diaInstalacao);
-                        const vencimentosTexto = vencimentosDisponiveis.join(', ');
-                        
-                        // Atualizar texto
-                        let textoAtualizado = texto.replace(
-                            /Data de vencimento\s*\([^)]*\)\s*:/g,
-                            `Data de vencimento (${vencimentosTexto}):`
-                        );
-                        
-                        if (!textoAtualizado.includes(`Data de vencimento (${vencimentosTexto}):`)) {
-                            textoAtualizado = textoAtualizado.replace(
-                                /Data de vencimento[^:\n]*:/g,
-                                `Data de vencimento (${vencimentosTexto}):`
-                            );
-                        }
-                        
-                        // Atualizar na tela
-                        messageText.textContent = textoAtualizado;
-                    }
-                }
-            });
-        }
-
         function renderTopics(data = scriptData, searchTerm = '') {
             const topicsContainer = document.getElementById('topics');
             topicsContainer.innerHTML = '';
 
             for (const [topicName, content] of Object.entries(data)) {
-                // Verificar se é o tópico de cadastro
-                if (content.type === 'cadastro') {
-                    renderCadastroTopic(topicName, content);
-                    continue;
-                }
-                
                 // Verificar se é o tópico de senhas com estrutura especial
                 if (content.type === 'passwords') {
                     renderPasswordTopic(topicName, content, searchTerm);
@@ -2578,63 +1251,6 @@
                         contentToDisplay = message.content;
                     }
                     
-                    // Função para atualizar datas de vencimento na mensagem de cadastro
-                    function atualizarMensagemCadastro(texto) {
-                        if (typeof texto !== 'string') return texto;
-                        if (texto.includes('CADASTRO DE NOVO CLIENTE') || 
-                            texto.includes('Para iniciar o cadastro, envie os dados')) {
-                            
-                            // Função auxiliar para obter vencimentos
-                            function getVencimentosByDia(diaInstalacao) {
-                                if (diaInstalacao >= 1 && diaInstalacao <= 10) {
-                                    return [3, 6, 9];
-                                } else if (diaInstalacao >= 11 && diaInstalacao <= 20) {
-                                    return [13, 18];
-                                } else if (diaInstalacao >= 21 && diaInstalacao <= 30) {
-                                    return [22, 26, 1];
-                                }
-                                return [3, 6, 9, 13, 18, 22, 26, 1];
-                            }
-                            
-                            // Tentar obter data de instalação do campo do formulário se existir
-                            const campoDataInstalacao = document.getElementById('cadastroDataInstalacao');
-                            let diaInstalacao = null;
-                            
-                            if (campoDataInstalacao && campoDataInstalacao.value) {
-                                const data = new Date(campoDataInstalacao.value + 'T00:00:00');
-                                diaInstalacao = data.getDate();
-                            } else {
-                                // Se não houver data no formulário, usar data atual
-                                const hoje = new Date();
-                                diaInstalacao = hoje.getDate();
-                            }
-                            
-                            // Obter vencimentos disponíveis
-                            const vencimentosDisponiveis = getVencimentosByDia(diaInstalacao);
-                            const vencimentosTexto = vencimentosDisponiveis.join(', ');
-                            
-                            // Substituir a linha de vencimento na mensagem
-                            let textoAtualizado = texto.replace(
-                                /Data de vencimento\s*\([^)]*\)\s*:/g,
-                                `Data de vencimento (${vencimentosTexto}):`
-                            );
-                            
-                            // Se não encontrou com parênteses, tenta sem parênteses
-                            if (!textoAtualizado.includes(`Data de vencimento (${vencimentosTexto}):`)) {
-                                textoAtualizado = textoAtualizado.replace(
-                                    /Data de vencimento[^:\n]*:/g,
-                                    `Data de vencimento (${vencimentosTexto}):`
-                                );
-                            }
-                            
-                            return textoAtualizado;
-                        }
-                        return texto;
-                    }
-                    
-                    // Atualizar mensagem se for de cadastro
-                    const mensagemAtualizada = atualizarMensagemCadastro(contentToDisplay);
-                    
                     if (title) {
                         const titleEl = document.createElement('div');
                         titleEl.className = 'message-title';
@@ -2644,10 +1260,10 @@
                     
                     const messageText = document.createElement('div');
                     messageText.className = 'message-text';
-                    messageText.textContent = mensagemAtualizada;
+                    messageText.textContent = contentToDisplay;
                     
                     messageItem.appendChild(messageText);
-                    // Usar a mensagem original para copiar (será atualizada na função copyToClipboard)
+                    // Usar a mensagem original para copiar
                     messageItem.addEventListener('click', () => copyToClipboard(message));
                     
                     messagesDiv.appendChild(messageItem);
@@ -2661,66 +1277,6 @@
                 topicDiv.appendChild(messagesDiv);
                 topicsContainer.appendChild(topicDiv);
             }
-            
-            // Atualizar mensagem de cadastro na tela após renderizar
-            setTimeout(() => {
-                atualizarMensagemCadastroNaTela();
-            }, 100);
-        }
-
-        // Renderizar tópico de cadastro
-        function renderCadastroTopic(topicName, content) {
-            const topicsContainer = document.getElementById('topics');
-            
-            const topicDiv = document.createElement('div');
-            topicDiv.className = 'topic';
-            topicDiv.style.cursor = 'pointer';
-
-            const topicHeader = document.createElement('div');
-            topicHeader.className = 'topic-header';
-            topicHeader.innerHTML = `
-                <h2>${topicName}</h2>
-                <span class="topic-icon">📋</span>
-            `;
-
-            const messagesDiv = document.createElement('div');
-            messagesDiv.className = 'messages';
-            
-            const cadastroButton = document.createElement('div');
-            cadastroButton.className = 'message-item';
-            cadastroButton.style.textAlign = 'center';
-            cadastroButton.style.padding = '30px';
-            cadastroButton.style.cursor = 'pointer';
-            cadastroButton.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)';
-            cadastroButton.style.color = 'white';
-            cadastroButton.style.fontSize = '1.2em';
-            cadastroButton.style.fontWeight = '600';
-            cadastroButton.innerHTML = '📋';
-            
-            cadastroButton.addEventListener('click', () => {
-                const backdrop = document.getElementById('cadastroBackdrop');
-                if (backdrop) {
-                    backdrop.classList.add('show');
-                }
-            });
-            
-            cadastroButton.addEventListener('mouseenter', () => {
-                cadastroButton.style.transform = 'scale(1.02)';
-            });
-            
-            cadastroButton.addEventListener('mouseleave', () => {
-                cadastroButton.style.transform = 'scale(1)';
-            });
-
-            messagesDiv.appendChild(cadastroButton);
-
-            topicHeader.addEventListener('click', () => {
-                topicDiv.classList.toggle('active');
-            });
-
-            topicDiv.appendChild(topicHeader);
-            topicDiv.appendChild(messagesDiv);
-            topicsContainer.appendChild(topicDiv);
         }
 
         // Renderizar tópico de senhas com estrutura especial
@@ -2773,17 +1329,21 @@
                     credDiv.style.alignItems = 'center';
                     credDiv.style.padding = '10px 15px';
 
+                    const isObject = typeof cred === 'object' && cred !== null;
+                    const userText = isObject ? (cred.user || '—') : '—';
+                    const passwordText = isObject ? cred.password : cred;
+
                     const userSpan = document.createElement('span');
                     userSpan.style.fontWeight = '500';
                     userSpan.style.color = body.classList.contains('dark-mode') ? '#b0b0b0' : '#666';
-                    userSpan.textContent = cred.user || '—';
+                    userSpan.textContent = userText;
 
                     const passwordSpan = document.createElement('span');
                     passwordSpan.style.fontFamily = 'monospace';
                     passwordSpan.style.fontWeight = 'bold';
                     passwordSpan.style.color = body.classList.contains('dark-mode') ? '#e0e0e0' : '#333';
                     passwordSpan.style.cursor = 'pointer';
-                    passwordSpan.textContent = cred.password;
+                    passwordSpan.textContent = passwordText;
 
                     credDiv.appendChild(userSpan);
                     credDiv.appendChild(passwordSpan);
@@ -2791,7 +1351,7 @@
                     // Copiar apenas a senha ao clicar
                     credDiv.addEventListener('click', (e) => {
                         e.stopPropagation();
-                        copyToClipboard(cred.password);
+                        copyToClipboard(passwordText);
                     });
 
                     groupDiv.appendChild(credDiv);
@@ -2842,61 +1402,15 @@
 
         // Copiar para área de transferência
         function copyToClipboard(input) {
+            // Rastrear uso
+            trackMessageUsage(input);
+
             // Se for objeto com title e content, pegar apenas o content
             const textToProcess = (typeof input === 'object' && input !== null && input.content) 
                 ? input.content 
                 : input;
             
             let textAtualizado = replaceVariables(textToProcess);
-            
-            // Detectar se é a mensagem de cadastro de novo cliente
-            if (textAtualizado.includes('CADASTRO DE NOVO CLIENTE') || 
-                textAtualizado.includes('Para iniciar o cadastro, envie os dados')) {
-                
-                // Função auxiliar para obter vencimentos (definida localmente para garantir acesso)
-                function getVencimentosByDia(diaInstalacao) {
-                    if (diaInstalacao >= 1 && diaInstalacao <= 10) {
-                        return [3, 6, 9];
-                    } else if (diaInstalacao >= 11 && diaInstalacao <= 20) {
-                        return [13, 18];
-                    } else if (diaInstalacao >= 21 && diaInstalacao <= 30) {
-                        return [22, 26, 1];
-                    }
-                    return [3, 6, 9, 13, 18, 22, 26, 1];
-                }
-                
-                // Tentar obter data de instalação do campo do formulário se existir
-                const campoDataInstalacao = document.getElementById('cadastroDataInstalacao');
-                let diaInstalacao = null;
-                
-                if (campoDataInstalacao && campoDataInstalacao.value) {
-                    const data = new Date(campoDataInstalacao.value + 'T00:00:00');
-                    diaInstalacao = data.getDate();
-                } else {
-                    // Se não houver data no formulário, usar data atual
-                    const hoje = new Date();
-                    diaInstalacao = hoje.getDate();
-                }
-                
-                // Obter vencimentos disponíveis
-                const vencimentosDisponiveis = getVencimentosByDia(diaInstalacao);
-                const vencimentosTexto = vencimentosDisponiveis.join(', ');
-                
-                // Substituir a linha de vencimento na mensagem
-                // Procura por "Data de vencimento" seguido de parênteses com qualquer conteúdo e dois pontos
-                textAtualizado = textAtualizado.replace(
-                    /Data de vencimento\s*\([^)]*\)\s*:/g,
-                    `Data de vencimento (${vencimentosTexto}):`
-                );
-                
-                // Se não encontrou com parênteses, tenta sem parênteses
-                if (!textAtualizado.includes(`Data de vencimento (${vencimentosTexto}):`)) {
-                    textAtualizado = textAtualizado.replace(
-                        /Data de vencimento[^:\n]*:/g,
-                        `Data de vencimento (${vencimentosTexto}):`
-                    );
-                }
-            }
             
             navigator.clipboard.writeText(textAtualizado).then(() => {
                 showNotification();
@@ -2944,13 +1458,6 @@
             }
         }
 
-        // Atualizar copyToClipboard para rastrear uso
-        const originalCopyToClipboard = copyToClipboard;
-        window.copyToClipboard = function(text) {
-            trackMessageUsage(text);
-            return originalCopyToClipboard(text);
-        };
-
         // Busca Avançada
         const searchAdvancedToggle = document.getElementById('searchAdvancedToggle');
         const searchAdvancedPanel = document.getElementById('searchAdvancedPanel');
@@ -2975,7 +1482,7 @@
             }
             
             const categories = Object.keys(scriptData).filter(key => 
-                scriptData[key].type !== 'passwords' && scriptData[key].type !== 'cadastro'
+                scriptData[key].type !== 'passwords'
             );
             
             categories.forEach(category => {
@@ -3069,13 +1576,16 @@
             if (activeTags.length > 0) {
                 const tagFiltered = {};
                 for (const [topicName, content] of Object.entries(filteredData)) {
-                    if (content.type === 'passwords' || content.type === 'cadastro') {
+                    if (content.type === 'passwords') {
                         tagFiltered[topicName] = content;
                         continue;
                     }
                     
                     const filteredMessages = content.filter(msg => {
-                        const msgLower = msg.toLowerCase();
+                        const msgText = (typeof msg === 'object' && msg !== null) 
+                            ? (msg.title + ' ' + msg.content) 
+                            : msg;
+                        const msgLower = msgText.toLowerCase();
                         return activeTags.some(tag => 
                             msgLower.includes(tag.toLowerCase()) ||
                             msgLower.includes('#' + tag.toLowerCase())
@@ -3122,14 +1632,15 @@
                     // Filtrar apenas mensagens usadas recentemente
                     const dateFiltered = {};
                     for (const [topicName, content] of Object.entries(filteredData)) {
-                        if (content.type === 'passwords' || content.type === 'cadastro') {
+                        if (content.type === 'passwords') {
                             dateFiltered[topicName] = content;
                             continue;
                         }
                         
-                        const filteredMessages = content.filter(msg => 
-                            recentMessages.has(msg)
-                        );
+                        const filteredMessages = content.filter(msg => {
+                            const msgText = (typeof msg === 'object' && msg !== null) ? msg.content : msg;
+                            return recentMessages.has(msgText);
+                        });
                         
                         if (filteredMessages.length > 0) {
                             dateFiltered[topicName] = filteredMessages;
@@ -3147,12 +1658,35 @@
                 const searchLower = searchTerm.toLowerCase();
                 
                 for (const [topicName, content] of Object.entries(filteredData)) {
-                    if (content.type === 'passwords' || content.type === 'cadastro') continue;
+                    if (content.type === 'passwords') {
+                        if (topicName.toLowerCase().includes(searchLower)) {
+                            textFiltered[topicName] = content;
+                        } else {
+                            // Verificar se algum item ou credencial corresponde à busca
+                            const hasMatch = content.items.some(item => 
+                                item.title.toLowerCase().includes(searchLower) ||
+                                item.credentials.some(cred => {
+                                    const isObject = typeof cred === 'object' && cred !== null;
+                                    const user = isObject ? (cred.user || '') : '';
+                                    const password = isObject ? cred.password : cred;
+                                    return user.toLowerCase().includes(searchLower) || 
+                                           password.toLowerCase().includes(searchLower);
+                                })
+                            );
+                            if (hasMatch) {
+                                textFiltered[topicName] = content;
+                            }
+                        }
+                        continue;
+                    }
                     
-                    const filteredMessages = content.filter(msg => 
-                        msg.toLowerCase().includes(searchLower) ||
-                        topicName.toLowerCase().includes(searchLower)
-                    );
+                    const filteredMessages = content.filter(msg => {
+                        const msgText = (typeof msg === 'object' && msg !== null) 
+                            ? (msg.title + ' ' + msg.content) 
+                            : msg;
+                        return msgText.toLowerCase().includes(searchLower) ||
+                               topicName.toLowerCase().includes(searchLower);
+                    });
                     
                     if (filteredMessages.length > 0) {
                         textFiltered[topicName] = filteredMessages;
@@ -3216,150 +1750,6 @@
             // Re-renderizar todos os tópicos com as variáveis atualizadas
             renderTopics();
         });
-
-        // Bloco de Notas
-        const notepad = document.getElementById('notepad');
-        const notepadToggle = document.getElementById('notepadToggle');
-        const notepadClose = document.getElementById('notepadClose');
-        const notepadReopen = document.getElementById('notepadReopen');
-        const notepadTextarea = document.getElementById('notepadTextarea');
-        const notepadClear = document.getElementById('notepadClear');
-        const charCount = document.getElementById('charCount');
-
-        // Verificar se os elementos existem antes de usar
-        if (!notepad || !notepadTextarea) {
-            console.error('Elementos do bloco de notas não encontrados!');
-        } else {
-            // Carregar notas salvas
-            const savedNotes = localStorage.getItem('notepadContent');
-            if (savedNotes) {
-                notepadTextarea.value = savedNotes;
-                if (charCount) updateCharCount();
-            }
-
-            // Carregar estado do bloco de notas
-            const notepadHidden = localStorage.getItem('notepadHidden') === 'true';
-            if (notepadHidden && notepad && notepadReopen) {
-                notepad.classList.add('hidden');
-                notepadReopen.classList.add('show');
-                body.classList.add('notepad-hidden');
-            }
-
-            // Minimizar/Maximizar
-            if (notepadToggle) {
-                notepadToggle.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    notepad.classList.toggle('minimized');
-                    notepadToggle.textContent = notepad.classList.contains('minimized') ? '+' : '−';
-                });
-            }
-
-            // Fechar bloco de notas
-            if (notepadClose) {
-                notepadClose.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    notepad.classList.add('hidden');
-                    if (notepadReopen) {
-                        notepadReopen.classList.add('show');
-                    }
-                    body.classList.add('notepad-hidden');
-                    localStorage.setItem('notepadHidden', 'true');
-                });
-            }
-
-            // Reabrir bloco de notas
-            if (notepadReopen) {
-                notepadReopen.addEventListener('click', () => {
-                    notepad.classList.remove('hidden');
-                    notepadReopen.classList.remove('show');
-                    body.classList.remove('notepad-hidden');
-                    localStorage.setItem('notepadHidden', 'false');
-                });
-            }
-
-            // Salvar automaticamente
-            notepadTextarea.addEventListener('input', () => {
-                localStorage.setItem('notepadContent', notepadTextarea.value);
-                if (charCount) updateCharCount();
-            });
-
-            // Limpar notas
-            if (notepadClear) {
-                notepadClear.addEventListener('click', () => {
-                    if (confirm('Tem certeza que deseja limpar todas as anotações?')) {
-                        notepadTextarea.value = '';
-                        localStorage.removeItem('notepadContent');
-                        if (charCount) updateCharCount();
-                    }
-                });
-            }
-
-            // Exportar notas
-            const notepadExport = document.getElementById('notepadExport');
-            if (notepadExport) {
-                notepadExport.addEventListener('click', () => {
-                    const content = notepadTextarea.value;
-                    if (!content.trim()) {
-                        alert('Não há conteúdo para exportar!');
-                        return;
-                    }
-                    
-                    const blob = new Blob([content], { type: 'text/plain' });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    const now = new Date();
-                    const filename = `notas-atendimento-${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}-${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}.txt`;
-                    a.download = filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                    
-                    showNotification('✓ Notas exportadas com sucesso!');
-                });
-            }
-
-            // Importar notas
-            const notepadImportBtn = document.getElementById('notepadImportBtn');
-            const notepadImport = document.getElementById('notepadImport');
-            
-            if (notepadImportBtn && notepadImport) {
-                notepadImportBtn.addEventListener('click', () => {
-                    notepadImport.click();
-                });
-
-                notepadImport.addEventListener('change', (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-                    
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        const content = event.target.result;
-                        if (notepadTextarea.value.trim() && !confirm('Deseja substituir o conteúdo atual?')) {
-                            notepadImport.value = '';
-                            return;
-                        }
-                        notepadTextarea.value = content;
-                        localStorage.setItem('notepadContent', content);
-                        if (charCount) updateCharCount();
-                        showNotification('✓ Notas importadas com sucesso!');
-                        notepadImport.value = '';
-                    };
-                    reader.readAsText(file);
-                });
-            }
-
-            // Atualizar contador de caracteres
-            function updateCharCount() {
-                if (!charCount || !notepadTextarea) return;
-                const count = notepadTextarea.value.length;
-                charCount.textContent = `${count} caractere${count !== 1 ? 's' : ''}`;
-            }
-        }
-
-        // Sistema de correção ortográfica removido
-        // (Funcionalidade removida devido à complexidade de implementação adequada)
 
         // Calculadora Financeira (Modal)
         const calculatorBackdrop = document.getElementById('calculatorBackdrop');
@@ -3569,927 +1959,6 @@
             // Atualizar clima a cada 30 minutos
             setInterval(updateWeather, 1800000);
         }
-    
-        // Funcionalidade de redimensionamento do bloco de notas
-        (function() {
-            const notepad = document.getElementById('notepad');
-            if (!notepad) return;
-            
-            let isResizingH = false;
-            let isResizingV = false;
-            let startX = 0;
-            let startY = 0;
-            let startWidth = 0;
-            let startHeight = 0;
-            let startBottom = 0;
-
-            // Criar handle de redimensionamento horizontal (lateral esquerda)
-            const resizeHandleH = document.createElement('div');
-            resizeHandleH.className = 'notepad-resize-handle';
-            notepad.insertBefore(resizeHandleH, notepad.firstChild);
-
-            // Criar handle de redimensionamento vertical (canto superior esquerdo)
-            const resizeHandleV = document.createElement('div');
-            resizeHandleV.className = 'notepad-resize-handle-vertical';
-            notepad.insertBefore(resizeHandleV, notepad.firstChild);
-
-            // Redimensionamento horizontal
-            resizeHandleH.addEventListener('mousedown', (e) => {
-                isResizingH = true;
-                startX = e.clientX;
-                startWidth = notepad.offsetWidth;
-                document.body.style.cursor = 'ew-resize';
-                document.body.style.userSelect = 'none';
-                e.preventDefault();
-                e.stopPropagation();
-            });
-
-            // Redimensionamento vertical e horizontal (canto)
-            resizeHandleV.addEventListener('mousedown', (e) => {
-                isResizingV = true;
-                startX = e.clientX;
-                startY = e.clientY;
-                startWidth = notepad.offsetWidth;
-                startHeight = notepad.offsetHeight;
-                const rect = notepad.getBoundingClientRect();
-                startBottom = window.innerHeight - rect.bottom;
-                document.body.style.cursor = 'nwse-resize';
-                document.body.style.userSelect = 'none';
-                e.preventDefault();
-                e.stopPropagation();
-            });
-
-            document.addEventListener('mousemove', (e) => {
-                if (isResizingH) {
-                    const deltaX = startX - e.clientX;
-                    const newWidth = startWidth + deltaX;
-                    
-                    if (newWidth >= 250 && newWidth <= 800) {
-                        notepad.style.width = newWidth + 'px';
-                    }
-                }
-                
-                if (isResizingV) {
-                    const deltaX = startX - e.clientX;
-                    const deltaY = startY - e.clientY;
-                    const newWidth = startWidth + deltaX;
-                    const newHeight = startHeight + deltaY;
-                    const maxHeight = window.innerHeight * 0.8;
-                    
-                    if (newWidth >= 250 && newWidth <= 800) {
-                        notepad.style.width = newWidth + 'px';
-                    }
-                    
-                    if (newHeight >= 200 && newHeight <= maxHeight) {
-                        notepad.style.height = newHeight + 'px';
-                        notepad.style.bottom = startBottom + 'px';
-                    }
-                }
-            });
-
-            document.addEventListener('mouseup', () => {
-                if (isResizingH || isResizingV) {
-                    isResizingH = false;
-                    isResizingV = false;
-                    document.body.style.cursor = '';
-                    document.body.style.userSelect = '';
-                }
-            });
-        })();
-
-        // ========== FORMULÁRIO DE CADASTRO ==========
-        const cadastroBackdrop = document.getElementById('cadastroBackdrop');
-        const cadastroOpenBtn = document.getElementById('cadastroOpenBtn');
-        const cadastroClose = document.getElementById('cadastroClose');
-        const cadastroCancelBtn = document.getElementById('cadastroCancelBtn');
-        const cadastroGenerateBtn = document.getElementById('cadastroGenerateBtn');
-        const cadastroForm = document.getElementById('cadastroForm');
-        const cadastroFichaColada = document.getElementById('cadastroFichaColada');
-        const cadastroProcessarFicha = document.getElementById('cadastroProcessarFicha');
-
-        // Função para processar ficha colada e preencher campos automaticamente
-        function processarFichaColada() {
-            try {
-                if (!cadastroFichaColada || !cadastroFichaColada.value.trim()) {
-                    showNotification('⚠️ Por favor, cole a ficha do cliente no campo acima.');
-                    return;
-                }
-
-            const ficha = cadastroFichaColada.value;
-            let dadosExtraidos = {};
-
-            // Função auxiliar para extrair valor após um rótulo
-            function extrairValor(rotulo, regexAlternativo = null) {
-                const padroes = [
-                    new RegExp(`${rotulo}[\\s:]*([^\\n]+)`, 'i'),
-                    new RegExp(`${rotulo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[\\s:]*([^\\n]+)`, 'i')
-                ];
-                
-                if (regexAlternativo) {
-                    padroes.push(regexAlternativo);
-                }
-
-                for (const padrao of padroes) {
-                    const match = ficha.match(padrao);
-                    if (match && match[1]) {
-                        return match[1].trim();
-                    }
-                }
-                return null;
-            }
-
-            // Função para detectar tipo de dado pelo formato
-            function detectarTipoDado(linha) {
-                linha = linha.trim();
-                if (!linha) return null;
-                
-                // Email
-                if (linha.includes('@') && linha.includes('.')) {
-                    return { tipo: 'email', valor: linha };
-                }
-                
-                // CPF (11 dígitos, pode ter pontos e traços)
-                const cpfLimpo = linha.replace(/[^0-9]/g, '');
-                if (cpfLimpo.length === 11) {
-                    return { tipo: 'cpf', valor: linha };
-                }
-                
-                // RG (geralmente 7-9 dígitos, mas não 8 que pode ser CEP)
-                if (cpfLimpo.length >= 7 && cpfLimpo.length <= 9 && cpfLimpo.length !== 8 && linha.length <= 15) {
-                    return { tipo: 'rg', valor: linha };
-                }
-                
-                // CEP (8 dígitos, sem letras, geralmente aparece depois de endereço)
-                if (cpfLimpo.length === 8 && linha.length <= 10 && !linha.match(/[a-zA-Z]/)) {
-                    return { tipo: 'cep', valor: linha };
-                }
-                
-                // Data (formato DD MM YYYY ou DD/MM/YYYY)
-                const dataMatch = linha.match(/(\d{1,2})[\/\s\-](\d{1,2})[\/\s\-](\d{4})/);
-                if (dataMatch) {
-                    return { tipo: 'dataNasc', valor: linha };
-                }
-                
-                // Telefone (contém números e pode ter parênteses, espaços, traços)
-                // Não deve ser CPF (11 dígitos sem formatação) ou CEP (8 dígitos)
-                const telLimpo = linha.replace(/[^0-9]/g, '');
-                if (telLimpo.length === 10 || (telLimpo.length === 11 && linha.match(/[\s\(\)\-]/))) {
-                    return { tipo: 'telefone', valor: linha };
-                }
-                
-                // Plano (contém números e palavras como mega, giga)
-                if (linha.match(/\d+\s*(mega|giga|MEGA|GIGA)/i) || linha.toLowerCase().includes('giga') || linha.toLowerCase().includes('mega')) {
-                    return { tipo: 'plano', valor: linha };
-                }
-                
-                // Vencimento (apenas número de 1-2 dígitos, geralmente 1, 3, 6, 9, 13, 18)
-                if (/^\d{1,2}$/.test(linha) && parseInt(linha) <= 31) {
-                    return { tipo: 'vencimento', valor: linha };
-                }
-                
-                return null;
-            }
-
-            // Extrair dados com rótulos primeiro
-            dadosExtraidos.nome = extrairValor('Nome completo|Nome|nome completo');
-            dadosExtraidos.cpf = extrairValor('CPF|cpf');
-            dadosExtraidos.rg = extrairValor('RG|rg');
-            dadosExtraidos.dataNasc = extrairValor('Data de nascimento|Data nascimento|Nascimento');
-            dadosExtraidos.email = extrairValor('E-mail|Email|e-mail|email');
-            dadosExtraidos.plano = extrairValor('Plano desejado|Plano|plano desejado');
-            dadosExtraidos.vencimento = extrairValor('Data de vencimento|Vencimento|vencimento');
-            dadosExtraidos.telefone = extrairValor('Telefone|telefone|Telefone\\(s\\)');
-            dadosExtraidos.endereco = extrairValor('Endereço completo|Endereço|endereço completo');
-            dadosExtraidos.cep = extrairValor('CEP|cep');
-            dadosExtraidos.referencia = extrairValor('Referência visual|Referência|referência|Referencia');
-            dadosExtraidos.bairro = extrairValor('Bairro|bairro');
-            dadosExtraidos.cidade = extrairValor('Cidade|cidade');
-            dadosExtraidos.fidelidade = extrairValor('Fidelidade|fidelidade|Gostaria da fidelidade');
-            dadosExtraidos.modoPagamento = extrairValor('Modo de pagamento|modo de pagamento|Pagamento|pagamento');
-            dadosExtraidos.dataInstalacao = extrairValor('Data da instalação|Data instalação|Data e período para a instalação');
-            dadosExtraidos.periodoInstalacao = extrairValor('Período da instalação|Período instalação|período');
-            dadosExtraidos.conheceu = extrairValor('Por onde conheceu|conheceu a empresa|Conheceu');
-            dadosExtraidos.roteador = extrairValor('Roteador|roteador');
-
-            // Se não encontrou dados com rótulos, tentar detectar por formato (ficha sem rótulos)
-            const linhas = ficha.split('\n').map(l => l.trim()).filter(l => l);
-            const temRotulos = dadosExtraidos.nome || dadosExtraidos.cpf || dadosExtraidos.email;
-            
-            if (!temRotulos && linhas.length > 0) {
-                // Primeira linha geralmente é o nome
-                if (linhas[0] && !detectarTipoDado(linhas[0])) {
-                    dadosExtraidos.nome = linhas[0];
-                }
-                
-                // Processar cada linha para detectar automaticamente
-                for (let i = 0; i < linhas.length; i++) {
-                    const linha = linhas[i];
-                    const detectado = detectarTipoDado(linha);
-                    
-                    if (detectado) {
-                        if (detectado.tipo === 'cpf' && !dadosExtraidos.cpf) {
-                            dadosExtraidos.cpf = detectado.valor;
-                        } else if (detectado.tipo === 'rg' && !dadosExtraidos.rg) {
-                            dadosExtraidos.rg = detectado.valor;
-                        } else if (detectado.tipo === 'dataNasc' && !dadosExtraidos.dataNasc) {
-                            dadosExtraidos.dataNasc = detectado.valor;
-                        } else if (detectado.tipo === 'email' && !dadosExtraidos.email) {
-                            dadosExtraidos.email = detectado.valor;
-                        } else if (detectado.tipo === 'plano' && !dadosExtraidos.plano) {
-                            dadosExtraidos.plano = detectado.valor;
-                        } else if (detectado.tipo === 'vencimento' && !dadosExtraidos.vencimento) {
-                            dadosExtraidos.vencimento = detectado.valor;
-                        } else if (detectado.tipo === 'telefone' && !dadosExtraidos.telefone) {
-                            dadosExtraidos.telefone = detectado.valor;
-                        } else if (detectado.tipo === 'cep' && !dadosExtraidos.cep) {
-                            dadosExtraidos.cep = detectado.valor;
-                        }
-                    } else {
-                        // Se não foi detectado como tipo específico, pode ser nome, endereço, referência ou conheceu
-                        if (!dadosExtraidos.nome && i === 0 && linha.length > 5 && !linha.match(/^\d+$/)) {
-                            dadosExtraidos.nome = linha;
-                        } else if (!dadosExtraidos.referencia && linha.length > 20 && (linha.toLowerCase().includes('frente') || linha.toLowerCase().includes('próximo') || linha.toLowerCase().includes('perto'))) {
-                            dadosExtraidos.referencia = linha;
-                        } else if (!dadosExtraidos.conheceu && (linha.toLowerCase().includes('internet') || linha.toLowerCase().includes('google') || linha.toLowerCase().includes('facebook') || linha.toLowerCase().includes('instagram') || linha.toLowerCase().includes('indic') || linha.toLowerCase().includes('amigo'))) {
-                            dadosExtraidos.conheceu = linha;
-                        } else if (!dadosExtraidos.endereco && linha.length > 10 && !dadosExtraidos.referencia) {
-                            dadosExtraidos.endereco = linha;
-                        }
-                    }
-                }
-            }
-
-            // Preencher campos do formulário
-            if (dadosExtraidos.nome) {
-                document.getElementById('cadastroNome').value = dadosExtraidos.nome;
-            }
-            if (dadosExtraidos.cpf) {
-                document.getElementById('cadastroCPF').value = dadosExtraidos.cpf.replace(/[^0-9.-]/g, '');
-            }
-            if (dadosExtraidos.rg) {
-                document.getElementById('cadastroRG').value = dadosExtraidos.rg;
-            }
-            if (dadosExtraidos.dataNasc) {
-                // Tentar converter data para formato YYYY-MM-DD (aceita /, - ou espaços)
-                const dataMatch = dadosExtraidos.dataNasc.match(/(\d{1,2})[\/\s\-](\d{1,2})[\/\s\-](\d{4})/);
-                if (dataMatch) {
-                    const dia = dataMatch[1].padStart(2, '0');
-                    const mes = dataMatch[2].padStart(2, '0');
-                    const ano = dataMatch[3];
-                    document.getElementById('cadastroDataNasc').value = `${ano}-${mes}-${dia}`;
-                }
-            }
-            if (dadosExtraidos.email) {
-                document.getElementById('cadastroEmail').value = dadosExtraidos.email;
-            }
-            if (dadosExtraidos.plano) {
-                // Tentar encontrar o plano correspondente no select
-                const planoSelect = document.getElementById('cadastroPlano');
-                const planoLower = dadosExtraidos.plano.toLowerCase();
-                
-                // Mapear diferentes formas de escrever os planos
-                const mapeamentoPlanos = {
-                    '240': '240 MEGA',
-                    '240 mega': '240 MEGA',
-                    '240mega': '240 MEGA',
-                    '400': '400 MEGA',
-                    '400 mega': '400 MEGA',
-                    '400mega': '400 MEGA',
-                    '500': '500 MEGA',
-                    '500 mega': '500 MEGA',
-                    '500mega': '500 MEGA',
-                    '600': '600 MEGA',
-                    '600 mega': '600 MEGA',
-                    '600mega': '600 MEGA',
-                    '1 giga': '1 GIGA',
-                    '1giga': '1 GIGA',
-                    'giga': '1 GIGA'
-                };
-                
-                // Tentar encontrar correspondência exata primeiro
-                let planoEncontrado = null;
-                for (const [chave, valor] of Object.entries(mapeamentoPlanos)) {
-                    if (planoLower.includes(chave)) {
-                        planoEncontrado = valor;
-                        break;
-                    }
-                }
-                
-                // Se não encontrou, tentar buscar nos options
-                if (!planoEncontrado) {
-                    for (let option of planoSelect.options) {
-                        if (option.value) {
-                            const valorOption = option.value.toLowerCase();
-                            const numeroPlano = valorOption.match(/\d+/);
-                            if (numeroPlano && planoLower.includes(numeroPlano[0])) {
-                                planoEncontrado = option.value;
-                                break;
-                            }
-                        }
-                    }
-                }
-                
-                if (planoEncontrado) {
-                    planoSelect.value = planoEncontrado;
-                    // Trigger change para mostrar campo de roteador se necessário
-                    planoSelect.dispatchEvent(new Event('change'));
-                }
-            }
-            if (dadosExtraidos.vencimento) {
-                const vencimentoNum = dadosExtraidos.vencimento.match(/\d+/);
-                if (vencimentoNum) {
-                    const vencimentoValue = vencimentoNum[0];
-                    const vencimentoSelect = document.getElementById('cadastroVencimento');
-                    // Verificar se o vencimento está disponível nas opções atuais
-                    const vencimentoDisponivel = Array.from(vencimentoSelect.options).some(
-                        option => option.value === vencimentoValue
-                    );
-                    if (vencimentoDisponivel) {
-                        vencimentoSelect.value = vencimentoValue;
-                    } else {
-                        // Se não estiver disponível, apenas definir se houver data de instalação
-                        // Caso contrário, deixar vazio para o usuário selecionar após definir a data
-                        if (document.getElementById('cadastroDataInstalacao').value) {
-                            // Se já tem data mas o vencimento não está disponível, não definir
-                            // O usuário precisará selecionar manualmente
-                        }
-                    }
-                }
-            }
-            if (dadosExtraidos.telefone) {
-                document.getElementById('cadastroTelefone').value = dadosExtraidos.telefone;
-            }
-            if (dadosExtraidos.endereco) {
-                document.getElementById('cadastroEndereco').value = dadosExtraidos.endereco;
-            }
-            if (dadosExtraidos.cep) {
-                document.getElementById('cadastroCEP').value = dadosExtraidos.cep.replace(/[^0-9-]/g, '');
-            }
-            if (dadosExtraidos.referencia) {
-                document.getElementById('cadastroReferencia').value = dadosExtraidos.referencia;
-            }
-            if (dadosExtraidos.bairro) {
-                document.getElementById('cadastroBairro').value = dadosExtraidos.bairro;
-            }
-            if (dadosExtraidos.cidade) {
-                document.getElementById('cadastroCidade').value = dadosExtraidos.cidade;
-            }
-            if (dadosExtraidos.fidelidade) {
-                const fidelidadeLower = dadosExtraidos.fidelidade.toLowerCase();
-                if (fidelidadeLower.includes('sim') || fidelidadeLower.includes('s')) {
-                    document.getElementById('cadastroFidelidade').value = 'Sim';
-                } else if (fidelidadeLower.includes('não') || fidelidadeLower.includes('nao') || fidelidadeLower.includes('n')) {
-                    document.getElementById('cadastroFidelidade').value = 'Não';
-                }
-            }
-            if (dadosExtraidos.modoPagamento) {
-                const modoPagamentoLower = dadosExtraidos.modoPagamento.toLowerCase();
-                const modoPagamentoSelect = document.getElementById('cadastroModoPagamento');
-                
-                // Mapear diferentes formas de escrever o modo de pagamento
-                if (modoPagamentoLower.includes('pix')) {
-                    modoPagamentoSelect.value = 'PIX';
-                } else if (modoPagamentoLower.includes('dinheiro')) {
-                    modoPagamentoSelect.value = 'Dinheiro';
-                } else if (modoPagamentoLower.includes('débito') || modoPagamentoLower.includes('debito')) {
-                    modoPagamentoSelect.value = 'Cartão de Débito';
-                } else if (modoPagamentoLower.includes('crédito') || modoPagamentoLower.includes('credito')) {
-                    modoPagamentoSelect.value = 'Cartão de Crédito';
-                } else if (modoPagamentoLower.includes('transferência') || modoPagamentoLower.includes('transferencia')) {
-                    modoPagamentoSelect.value = 'Transferência';
-                }
-            }
-            if (dadosExtraidos.dataInstalacao) {
-                // Extrair apenas a data (pode vir com período junto)
-                const dataMatch = dadosExtraidos.dataInstalacao.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
-                if (dataMatch) {
-                    const dia = dataMatch[1].padStart(2, '0');
-                    const mes = dataMatch[2].padStart(2, '0');
-                    const ano = dataMatch[3];
-                    document.getElementById('cadastroDataInstalacao').value = `${ano}-${mes}-${dia}`;
-                    // Atualizar vencimentos baseado na data de instalação
-                    atualizarVencimentos();
-                }
-                // Tentar extrair período da mesma linha se houver
-                const periodoMatch = dadosExtraidos.dataInstalacao.match(/(manhã|manha|tarde|integral|dia todo)/i);
-                if (periodoMatch) {
-                    const periodoLower = periodoMatch[1].toLowerCase();
-                    const periodoSelect = document.getElementById('cadastroPeriodoInstalacao');
-                    if (periodoLower.includes('manhã') || periodoLower.includes('manha')) {
-                        periodoSelect.value = 'Manhã';
-                    } else if (periodoLower.includes('tarde')) {
-                        periodoSelect.value = 'Tarde';
-                    } else if (periodoLower.includes('integral') || periodoLower.includes('dia todo')) {
-                        periodoSelect.value = 'Integral';
-                    }
-                }
-            }
-            if (dadosExtraidos.periodoInstalacao && !document.getElementById('cadastroPeriodoInstalacao').value) {
-                const periodoLower = dadosExtraidos.periodoInstalacao.toLowerCase();
-                const periodoSelect = document.getElementById('cadastroPeriodoInstalacao');
-                if (periodoLower.includes('manhã') || periodoLower.includes('manha')) {
-                    periodoSelect.value = 'Manhã';
-                } else if (periodoLower.includes('tarde')) {
-                    periodoSelect.value = 'Tarde';
-                } else if (periodoLower.includes('integral') || periodoLower.includes('dia todo')) {
-                    periodoSelect.value = 'Integral';
-                }
-            }
-            if (dadosExtraidos.conheceu) {
-                document.getElementById('cadastroConheceu').value = dadosExtraidos.conheceu;
-            }
-            if (dadosExtraidos.roteador) {
-                const roteadorLower = dadosExtraidos.roteador.toLowerCase();
-                if (roteadorLower.includes('aluguel') || roteadorLower.includes('alugar')) {
-                    document.getElementById('cadastroRoteador').value = 'Em aluguel';
-                } else if (roteadorLower.includes('cliente') || roteadorLower.includes('próprio') || roteadorLower.includes('proprio')) {
-                    document.getElementById('cadastroRoteador').value = 'Do cliente';
-                }
-            }
-
-            // Contar quantos campos foram preenchidos
-            const camposPreenchidos = Object.values(dadosExtraidos).filter(v => v !== null && v !== '').length;
-            
-            // Verificar campos obrigatórios faltantes
-            const camposObrigatorios = [
-                { id: 'cadastroNome', nome: 'Nome completo' },
-                { id: 'cadastroCPF', nome: 'CPF' },
-                { id: 'cadastroDataNasc', nome: 'Data de nascimento' },
-                { id: 'cadastroEmail', nome: 'E-mail' },
-                { id: 'cadastroPlano', nome: 'Plano desejado' },
-                { id: 'cadastroVencimento', nome: 'Data de vencimento' },
-                { id: 'cadastroTelefone', nome: 'Telefone(s)' },
-                { id: 'cadastroEndereco', nome: 'Endereço completo' },
-                { id: 'cadastroCEP', nome: 'CEP' },
-                { id: 'cadastroReferencia', nome: 'Referência visual' },
-                { id: 'cadastroFidelidade', nome: 'Fidelidade de 12 meses' },
-                { id: 'cadastroDataInstalacao', nome: 'Data da instalação' },
-                { id: 'cadastroConheceu', nome: 'Por onde conheceu a empresa' }
-            ];
-            
-            const camposFaltantes = [];
-            camposObrigatorios.forEach(campo => {
-                const elemento = document.getElementById(campo.id);
-                if (elemento && elemento.hasAttribute('required') && !elemento.value) {
-                    camposFaltantes.push(campo.nome);
-                }
-            });
-            
-            // Verificar se precisa de roteador (plano 240 MEGA)
-            const planoSelecionado = document.getElementById('cadastroPlano').value;
-            if (planoSelecionado === '240 MEGA') {
-                const roteador = document.getElementById('cadastroRoteador').value;
-                if (!roteador) {
-                    camposFaltantes.push('Roteador (obrigatório para plano 240 MEGA)');
-                }
-            }
-            
-            let mensagem = `✅ Ficha processada! ${camposPreenchidos} campo(s) preenchido(s) automaticamente.`;
-            
-            if (camposFaltantes.length > 0) {
-                mensagem += `\n\n⚠️ Ficou faltando os seguintes dados:\n${camposFaltantes.map(campo => `• ${campo}`).join('\n')}`;
-            }
-            
-            showNotification(mensagem);
-            
-            // Scroll para o primeiro campo não preenchido
-            setTimeout(() => {
-                const campos = cadastroForm.querySelectorAll('input[required], select[required], textarea[required]');
-                for (let campo of campos) {
-                    if (!campo.value) {
-                        campo.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        campo.focus();
-                        break;
-                    }
-                }
-            }, 300);
-            } catch (error) {
-                console.error('Erro ao processar ficha:', error);
-                showNotification('❌ Erro ao processar a ficha. Por favor, verifique o console para mais detalhes.');
-            }
-        }
-
-        // Event listener para o botão de processar ficha
-        if (cadastroProcessarFicha) {
-            cadastroProcessarFicha.addEventListener('click', processarFichaColada);
-        }
-
-        // Abrir modal de cadastro
-        if (cadastroOpenBtn) {
-            cadastroOpenBtn.addEventListener('click', () => {
-                if (cadastroBackdrop) {
-                    cadastroBackdrop.classList.add('show');
-                }
-            });
-        }
-
-        // Fechar modal
-        function closeCadastroModal() {
-            if (cadastroBackdrop) {
-                cadastroBackdrop.classList.remove('show');
-            }
-        }
-
-        if (cadastroClose) {
-            cadastroClose.addEventListener('click', closeCadastroModal);
-        }
-
-        if (cadastroCancelBtn) {
-            cadastroCancelBtn.addEventListener('click', closeCadastroModal);
-        }
-
-        // Fechar ao clicar no backdrop
-        if (cadastroBackdrop) {
-            cadastroBackdrop.addEventListener('click', (e) => {
-                if (e.target === cadastroBackdrop) {
-                    closeCadastroModal();
-                }
-            });
-        }
-
-        // Fechar com ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && cadastroBackdrop && cadastroBackdrop.classList.contains('show')) {
-                closeCadastroModal();
-            }
-        });
-
-        // Mostrar/ocultar campo de roteador baseado no plano
-        const cadastroPlano = document.getElementById('cadastroPlano');
-        const cadastroRoteadorGroup = document.getElementById('cadastroRoteadorGroup');
-        const cadastroRoteador = document.getElementById('cadastroRoteador');
-
-        if (cadastroPlano && cadastroRoteadorGroup && cadastroRoteador) {
-            cadastroPlano.addEventListener('change', (e) => {
-                const planoSelecionado = e.target.value;
-                if (planoSelecionado === '240 MEGA') {
-                    cadastroRoteadorGroup.style.display = 'flex';
-                    cadastroRoteador.required = true;
-                } else {
-                    cadastroRoteadorGroup.style.display = 'none';
-                    cadastroRoteador.required = false;
-                    cadastroRoteador.value = '';
-                }
-            });
-        }
-
-        // Função para obter datas de vencimento baseado no dia da instalação
-        function getVencimentosByDiaInstalacao(diaInstalacao) {
-            if (diaInstalacao >= 1 && diaInstalacao <= 10) {
-                return [3, 6, 9];
-            } else if (diaInstalacao >= 11 && diaInstalacao <= 20) {
-                return [13, 18];
-            } else if (diaInstalacao >= 21 && diaInstalacao <= 30) {
-                return [22, 26, 1];
-            }
-            // Fallback: retorna todas as opções se não estiver no range esperado
-            return [3, 6, 9, 13, 18, 22, 26, 1];
-        }
-
-        // Atualizar opções de vencimento baseado na data de instalação
-        const cadastroDataInstalacao = document.getElementById('cadastroDataInstalacao');
-        const cadastroVencimento = document.getElementById('cadastroVencimento');
-
-        function atualizarVencimentos() {
-            if (!cadastroDataInstalacao || !cadastroVencimento) return;
-
-            const dataInstalacao = cadastroDataInstalacao.value;
-            
-            if (!dataInstalacao) {
-                // Se não houver data, limpar e mostrar todas as opções
-                cadastroVencimento.innerHTML = `
-                    <option value="">Selecione</option>
-                    <option value="1">1</option>
-                    <option value="3">3</option>
-                    <option value="6">6</option>
-                    <option value="9">9</option>
-                    <option value="13">13</option>
-                    <option value="18">18</option>
-                    <option value="22">22</option>
-                    <option value="26">26</option>
-                `;
-                return;
-            }
-
-            // Extrair o dia da data de instalação
-            const data = new Date(dataInstalacao + 'T00:00:00');
-            const diaInstalacao = data.getDate();
-            
-            // Obter vencimentos disponíveis para esse dia
-            const vencimentosDisponiveis = getVencimentosByDiaInstalacao(diaInstalacao);
-            
-            // Salvar valor selecionado atual
-            const valorSelecionado = cadastroVencimento.value;
-            
-            // Limpar e recriar opções
-            cadastroVencimento.innerHTML = '<option value="">Selecione</option>';
-            
-            // Adicionar opções baseadas no dia da instalação
-            vencimentosDisponiveis.forEach(vencimento => {
-                const option = document.createElement('option');
-                option.value = vencimento.toString();
-                option.textContent = vencimento.toString();
-                cadastroVencimento.appendChild(option);
-            });
-            
-            // Restaurar valor selecionado se ainda estiver disponível
-            if (valorSelecionado && vencimentosDisponiveis.includes(parseInt(valorSelecionado))) {
-                cadastroVencimento.value = valorSelecionado;
-            } else {
-                cadastroVencimento.value = '';
-            }
-        }
-
-        // Adicionar listener para atualizar vencimentos quando a data de instalação mudar
-        if (cadastroDataInstalacao) {
-            cadastroDataInstalacao.addEventListener('change', () => {
-                atualizarVencimentos();
-                atualizarMensagemCadastroNaTela();
-            });
-            cadastroDataInstalacao.addEventListener('input', () => {
-                atualizarVencimentos();
-                atualizarMensagemCadastroNaTela();
-            });
-        }
-        
-        // Atualizar mensagem na tela quando a página carregar
-        setTimeout(() => {
-            atualizarMensagemCadastroNaTela();
-        }, 500);
-
-        // Gerar OS de Instalação
-        if (cadastroGenerateBtn) {
-            cadastroGenerateBtn.addEventListener('click', () => {
-                // Validar campo de roteador se plano for 240 MEGA
-                const planoSelecionado = document.getElementById('cadastroPlano').value;
-                if (planoSelecionado === '240 MEGA') {
-                    const roteador = document.getElementById('cadastroRoteador').value;
-                    if (!roteador) {
-                        showNotification('⚠️ Por favor, selecione se o roteador é em aluguel ou do cliente para o plano de 240 MEGA.');
-                        if (cadastroRoteador) {
-                            cadastroRoteador.focus();
-                        }
-                        return;
-                    }
-                }
-                
-                // Validar formulário
-                if (!cadastroForm.checkValidity()) {
-                    cadastroForm.reportValidity();
-                    return;
-                }
-
-                // Coletar dados do formulário
-                const nome = document.getElementById('cadastroNome').value;
-                const cpf = document.getElementById('cadastroCPF').value;
-                const rg = document.getElementById('cadastroRG').value;
-                const dataNasc = document.getElementById('cadastroDataNasc').value;
-                const email = document.getElementById('cadastroEmail').value;
-                const plano = document.getElementById('cadastroPlano').value;
-                const roteador = document.getElementById('cadastroRoteador').value;
-                const vencimento = document.getElementById('cadastroVencimento').value;
-                const telefone = document.getElementById('cadastroTelefone').value;
-                const endereco = document.getElementById('cadastroEndereco').value;
-                const cep = document.getElementById('cadastroCEP').value;
-                const bairro = document.getElementById('cadastroBairro').value;
-                const cidade = document.getElementById('cadastroCidade').value;
-                const referencia = document.getElementById('cadastroReferencia').value;
-                const fidelidade = document.getElementById('cadastroFidelidade').value;
-                const modoPagamento = document.getElementById('cadastroModoPagamento').value;
-                const dataInstalacao = document.getElementById('cadastroDataInstalacao').value;
-                const periodoInstalacao = document.getElementById('cadastroPeriodoInstalacao').value;
-                const conheceu = document.getElementById('cadastroConheceu').value;
-
-                // Obter nome do atendente
-                const atendente = document.getElementById('attendantName').value || '[NOME_ATENDENTE]';
-                
-                // Calcular valor da instalação baseado no bairro e fidelidade
-                let valorInstalacao = 0;
-                let textoInstalacao = '';
-                const bairroLower = bairro.toLowerCase();
-                const cidadeLower = cidade.toLowerCase();
-                
-                // Verificar se é Maricá e não é Itaipuaçu
-                if (cidadeLower.includes('maricá') || cidadeLower.includes('marica')) {
-                    if (!bairroLower.includes('itaipuaçu') && !bairroLower.includes('itaipuacu')) {
-                        // Instalação PAGA em Maricá (exceto Itaipuaçu)
-                        if (fidelidade === 'Sim') {
-                            valorInstalacao = 100;
-                            textoInstalacao = 'INSTALAÇÃO SERÁ PAGA NO VALOR DE R$ 100,00 (COM FIDELIDADE DE 12 MESES)';
-                        } else {
-                            valorInstalacao = 360;
-                            textoInstalacao = 'INSTALAÇÃO SERÁ PAGA NO VALOR DE R$ 360,00 (SEM FIDELIDADE - COM DESCONTO)';
-                        }
-                    } else {
-                        // Itaipuaçu - instalação GRÁTIS
-                        textoInstalacao = 'INSTALAÇÃO SERÁ GRATUITA NA PROMOÇÃO DO CARLOS';
-                    }
-                } else {
-                    // Outras cidades - instalação GRÁTIS
-                    textoInstalacao = 'INSTALAÇÃO SERÁ GRATUITA NA PROMOÇÃO DO CARLOS';
-                }
-
-                // Validar vencimento baseado na data de instalação
-                if (dataInstalacao && vencimento) {
-                    const data = new Date(dataInstalacao + 'T00:00:00');
-                    const diaInstalacao = data.getDate();
-                    const vencimentosDisponiveis = getVencimentosByDiaInstalacao(diaInstalacao);
-                    const vencimentoNum = parseInt(vencimento);
-                    
-                    if (!vencimentosDisponiveis.includes(vencimentoNum)) {
-                        showNotification(`⚠️ A data de vencimento ${vencimento} não é válida para instalação no dia ${diaInstalacao}. Vencimentos disponíveis: ${vencimentosDisponiveis.join(', ')}`);
-                        if (cadastroVencimento) {
-                            cadastroVencimento.focus();
-                        }
-                        return;
-                    }
-                }
-
-                // Formatar data de instalação
-                const dataInstalacaoFormatada = dataInstalacao ? 
-                    new Date(dataInstalacao).toLocaleDateString('pt-BR') : '';
-
-                // Determinar texto do roteador na OS
-                let roteadorTexto = 'COM ROTEADOR EM COMODATO';
-                if (plano === '240 MEGA') {
-                    if (roteador === 'Em aluguel') {
-                        roteadorTexto = 'COM ROTEADOR EM ALUGUEL (R$ 10,00/mês)';
-                    } else if (roteador === 'Do cliente') {
-                        roteadorTexto = 'COM ROTEADOR DO CLIENTE';
-                    }
-                }
-
-                // Gerar OS
-                const osText = `${textoInstalacao}
-
-PLANO DE ${plano} / ${roteadorTexto}
-
-DATA DE VENCIMENTO: ${vencimento}
-${valorInstalacao > 0 ? `VALOR DA INSTALAÇÃO: R$ ${valorInstalacao.toFixed(2).replace('.', ',')}` : ''}
-${modoPagamento ? `MODO DE PAGAMENTO: ${modoPagamento}` : ''}
-
-CONSULTORA(O): ${atendente}
-
-CONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA ${dataInstalacaoFormatada}${periodoInstalacao ? ` - ${periodoInstalacao}` : ''}
-
-CLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE
-
-═══════════════════════════════════════════════════════════
-
-📋 FICHA DE CADASTRO:
-
-Nome completo: ${nome}
-CPF: ${cpf}
-${rg ? `RG: ${rg}` : ''}
-Data de nascimento: ${dataNasc ? new Date(dataNasc).toLocaleDateString('pt-BR') : ''}
-E-mail: ${email}
-Plano desejado: ${plano}
-${plano === '240 MEGA' && roteador ? `Roteador: ${roteador}` : ''}
-Data de vencimento: ${vencimento}
-Telefone(s): ${telefone}
-Endereço completo: ${endereco}
-CEP: ${cep}
-Bairro: ${bairro}
-Cidade: ${cidade}
-Referência visual: ${referencia}
-Fidelidade de 12 meses: ${fidelidade}
-${modoPagamento ? `Modo de pagamento da instalação: ${modoPagamento}` : ''}
-Data e período para instalação: ${dataInstalacaoFormatada}${periodoInstalacao ? ` - ${periodoInstalacao}` : ''}
-Por onde conheceu a empresa: ${conheceu}
-
-═══════════════════════════════════════════════════════════
-
-✅ Cadastro concluído com sucesso.
-
-🔧 Instalação agendada para o dia ${dataInstalacaoFormatada}.
-
-Posso ajudar em algo mais ou podemos finalizar seu atendimento?`;
-
-                // Abrir modal de OS com o texto gerado
-                const osBackdrop = document.getElementById('osBackdrop');
-                const osTextarea = document.getElementById('osTextarea');
-                
-                if (osBackdrop && osTextarea) {
-                    osTextarea.value = osText;
-                    osBackdrop.classList.add('show');
-                    
-                    // Fechar modal de cadastro
-                    closeCadastroModal();
-                    
-                    // Focar no textarea e selecionar todo o texto
-                    setTimeout(() => {
-                        osTextarea.focus();
-                        osTextarea.select();
-                    }, 100);
-                } else {
-                    // Fallback: copiar para área de transferência se modal não existir
-                    copyToClipboard(osText);
-                    showNotification('✓ OS de Instalação gerada e copiada!');
-                    closeCadastroModal();
-                }
-
-                // Limpar formulário
-                cadastroForm.reset();
-                
-                // Ocultar campo de roteador após limpar
-                if (cadastroRoteadorGroup) {
-                    cadastroRoteadorGroup.style.display = 'none';
-                }
-                if (cadastroRoteador) {
-                    cadastroRoteador.required = false;
-                }
-            });
-        }
-
-        // ========== MODAL DE OS GERADA ==========
-        const osBackdrop = document.getElementById('osBackdrop');
-        const osClose = document.getElementById('osClose');
-        const osCloseBtn = document.getElementById('osCloseBtn');
-        const osCopyBtn = document.getElementById('osCopyBtn');
-        const osTextarea = document.getElementById('osTextarea');
-
-        // Fechar modal de OS
-        function closeOSModal() {
-            if (osBackdrop) {
-                osBackdrop.classList.remove('show');
-            }
-        }
-
-        if (osClose) {
-            osClose.addEventListener('click', closeOSModal);
-        }
-
-        if (osCloseBtn) {
-            osCloseBtn.addEventListener('click', closeOSModal);
-        }
-
-        // Fechar ao clicar no backdrop
-        if (osBackdrop) {
-            osBackdrop.addEventListener('click', (e) => {
-                if (e.target === osBackdrop) {
-                    closeOSModal();
-                }
-            });
-        }
-
-        // Fechar com ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && osBackdrop && osBackdrop.classList.contains('show')) {
-                closeOSModal();
-            }
-        });
-
-        // Copiar OS
-        if (osCopyBtn && osTextarea) {
-            osCopyBtn.addEventListener('click', () => {
-                osTextarea.select();
-                copyToClipboard(osTextarea.value);
-                showNotification('✓ OS copiada para a área de transferência!');
-            });
-        }
-
-        // Máscaras de input
-        const cadastroCPF = document.getElementById('cadastroCPF');
-        if (cadastroCPF) {
-            cadastroCPF.addEventListener('input', (e) => {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length <= 11) {
-                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                    value = value.replace(/(\d{3})(\d)/, '$1.$2');
-                    value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-                    e.target.value = value;
-                }
-            });
-        }
-
-        const cadastroCEP = document.getElementById('cadastroCEP');
-        if (cadastroCEP) {
-            cadastroCEP.addEventListener('input', (e) => {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length <= 8) {
-                    value = value.replace(/(\d{5})(\d)/, '$1-$2');
-                    e.target.value = value;
-                }
-            });
-        }
-
-        const cadastroTelefone = document.getElementById('cadastroTelefone');
-        if (cadastroTelefone) {
-            cadastroTelefone.addEventListener('input', (e) => {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length <= 11) {
-                    if (value.length <= 10) {
-                        value = value.replace(/(\d{2})(\d)/, '($1) $2');
-                        value = value.replace(/(\d{4})(\d)/, '$1-$2');
-                    } else {
-                        value = value.replace(/(\d{2})(\d)/, '($1) $2');
-                        value = value.replace(/(\d{5})(\d)/, '$1-$2');
-                    }
-                    e.target.value = value;
-                }
-            });
-        }
-
         }); // Fim do DOMContentLoaded
     </script>
 </body>
