@@ -1118,6 +1118,10 @@
                         <span>📅</span>
                         <span>Vencimentos</span>
                     </button>
+                    <button class="support-toggle-btn" id="btnOltUnamar" style="background: rgba(6, 182, 212, 0.05); color: var(--accent); border-color: rgba(6, 182, 212, 0.1);">
+                        <span>🌐</span>
+                        <span>OLT UNAMAR COND</span>
+                    </button>
                 </div>
             </div>
 
@@ -1988,6 +1992,7 @@
         const boxDueDates = document.getElementById('boxDueDates');
         const btnWallets = document.getElementById('btnWallets');
         const btnDueDates = document.getElementById('btnDueDates');
+        const btnOltUnamar = document.getElementById('btnOltUnamar');
         const closeSupportModal = document.getElementById('closeSupportModal');
         const infoBalloons = document.getElementById('infoBalloons');
 
@@ -2022,6 +2027,37 @@
                     infoBalloons.classList.add('show');
                 }
             });
+
+            if (btnOltUnamar) {
+                btnOltUnamar.addEventListener('click', () => {
+                    // Abrir o link em nova guia
+                    window.open('https://179.42.140.4:4443/action/login.html', '_blank');
+                    
+                    // Mostrar notificação com as credenciais
+                    const notification = document.getElementById('notification');
+                    const originalText = notification.innerHTML;
+                    const originalBg = notification.style.background;
+                    
+                    notification.innerHTML = '🌐 OLT UNAMAR<br>User: admin | Pass: Xpon@Olt9417#';
+                    notification.style.background = 'var(--accent)';
+                    notification.style.height = 'auto';
+                    notification.style.padding = '15px 25px';
+                    notification.classList.add('show');
+                    
+                    // Copiar a senha automaticamente para o clipboard
+                    navigator.clipboard.writeText('Xpon@Olt9417#');
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        setTimeout(() => {
+                            notification.innerHTML = originalText;
+                            notification.style.background = originalBg;
+                            notification.style.height = '';
+                            notification.style.padding = '';
+                        }, 300);
+                    }, 6000);
+                });
+            }
         }
 
         if (closeSupportModal) {
