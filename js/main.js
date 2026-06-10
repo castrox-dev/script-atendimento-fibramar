@@ -1,4 +1,5 @@
 import { scriptData } from './data/scripts.js';
+import { topicCategories } from './data/categories.js';
 import { supportData } from './data/support.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -56,6 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
         let supportBoxesPopulated = false;
         let selectedTopicName = null;
         let notificationTimer = null;
+
+        const topicCategoryMap = new Map();
+        topicCategories.forEach(category => {
+            category.topics.forEach(topicName => {
+                topicCategoryMap.set(topicName, category.label.toLowerCase());
+            });
+        });
 
         const TOAST_ICONS = {
             success: '<i class="fas fa-check"></i>',
@@ -250,24 +258,35 @@ document.addEventListener('DOMContentLoaded', () => {
             return topicHeader;
         }
 
-        function createTopicNavItem(topicName, count) {
-            const label = count === 1 ? 'script' : 'scripts';
+        function createTopicNavItem(topicName) {
             const navItem = document.createElement('button');
             navItem.type = 'button';
             navItem.className = 'topics-nav-item';
             navItem.dataset.topicName = topicName;
-            navItem.innerHTML = `
-                <span class="topics-nav-label">${topicName}</span>
-                <span class="topics-nav-badge">${count} ${label}</span>
-            `;
+            navItem.innerHTML = `<span class="topics-nav-label">${topicName}</span>`;
             return navItem;
         }
 
-        function updateNavBadge(navItem, count) {
-            const badge = navItem.querySelector('.topics-nav-badge');
-            if (!badge) return;
-            const label = count === 1 ? 'script' : 'scripts';
-            badge.textContent = `${count} ${label}`;
+        function toggleNavGroup(group, { forceOpen = false, accordion = true } = {}) {
+            if (!group) return;
+
+            const willOpen = forceOpen || !group.classList.contains('is-open');
+
+            if (accordion && willOpen) {
+                topicsNav.querySelectorAll('.topics-nav-group.is-open').forEach(openGroup => {
+                    if (openGroup !== group) openGroup.classList.remove('is-open');
+                });
+            }
+
+            group.classList.toggle('is-open', willOpen);
+            group.querySelector('.topics-nav-category-toggle')?.setAttribute('aria-expanded', String(willOpen));
+        }
+
+        function expandCategoryForTopic(topicName) {
+            const navItem = Array.from(topicsNav.querySelectorAll('.topics-nav-item'))
+                .find(item => item.dataset.topicName === topicName);
+            if (!navItem) return;
+            toggleNavGroup(navItem.closest('.topics-nav-group'), { forceOpen: true });
         }
 
         function selectTopic(topicName) {
@@ -283,6 +302,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isActive = navItem.dataset.topicName === topicName;
                 navItem.classList.toggle('is-active', isActive);
                 if (isActive) {
+                    expandCategoryForTopic(topicName);
                     navItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
                 }
             });
@@ -309,10 +329,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!badge) return;
             const label = count === 1 ? 'script' : 'scripts';
             badge.textContent = `${count} ${label}`;
-
-            const navItem = Array.from(topicsNav.querySelectorAll('.topics-nav-item'))
-                .find(item => item.dataset.topicName === topicEl.dataset.topicName);
-            if (navItem) updateNavBadge(navItem, count);
         }
 
         function copyPassword(text, triggerBtn = null) {
@@ -419,40 +435,99 @@ document.addEventListener('DOMContentLoaded', () => {
             return topicDiv;
         }
 
+        function createTopicNavGroup(category) {
+            const group = document.createElement('div');
+            group.className = 'topics-nav-group';
+            group.dataset.categoryId = category.id;
+
+            const toggle = document.createElement('button');
+            toggle.type = 'button';
+            toggle.className = 'topics-nav-category-toggle';
+            toggle.setAttribute('aria-expanded', 'false');
+            toggle.innerHTML = `
+                <span class="topics-nav-category-label">
+                    <i class="fas ${category.icon}"></i>
+                    <span>${category.label}</span>
+                </span>
+                <i class="fas fa-chevron-down topics-nav-chevron" aria-hidden="true"></i>
+            `;
+            group.appendChild(toggle);
+
+            const list = document.createElement('div');
+            list.className = 'topics-nav-list';
+            group.appendChild(list);
+
+            return { group, list };
+        }
+
+        function buildTopicPanel(topicName, content) {
+            if (isPasswordsContent(content)) {
+                return buildPasswordTopic(topicName, content);
+            }
+
+            const topicDiv = document.createElement('div');
+            topicDiv.className = 'topic';
+            topicDiv.dataset.topicName = topicName;
+            topicDiv.dataset.totalCount = content.length;
+
+            const cards = content.map(message => createMessageCard(message, topicName));
+            const { messagesDiv } = createMessagesContainer(cards);
+            const topicHeader = createTopicPanelHeader(topicName, content.length);
+
+            topicDiv.appendChild(topicHeader);
+            topicDiv.appendChild(messagesDiv);
+            return topicDiv;
+        }
+
         function buildTopics() {
             if (topicsBuilt) return;
 
             const panelFragment = document.createDocumentFragment();
             const navFragment = document.createDocumentFragment();
             let firstTopicName = null;
+            const assignedTopics = new Set();
 
-            for (const [topicName, content] of Object.entries(scriptData)) {
-                if (!Array.isArray(content) && !isPasswordsContent(content)) continue;
+            topicCategories.forEach(category => {
+                const { group, list } = createTopicNavGroup(category);
+                let groupHasTopics = false;
 
-                if (!firstTopicName) firstTopicName = topicName;
+                category.topics.forEach(topicName => {
+                    const content = scriptData[topicName];
+                    if (!content || (!Array.isArray(content) && !isPasswordsContent(content))) return;
 
-                if (isPasswordsContent(content)) {
-                    const topicDiv = buildPasswordTopic(topicName, content);
+                    assignedTopics.add(topicName);
+                    groupHasTopics = true;
+                    if (!firstTopicName) firstTopicName = topicName;
+
+                    const topicDiv = buildTopicPanel(topicName, content);
                     panelFragment.appendChild(topicDiv);
-                    navFragment.appendChild(
-                        createTopicNavItem(topicName, Number(topicDiv.dataset.totalCount) || 0)
-                    );
-                    continue;
+                    list.appendChild(createTopicNavItem(topicName));
+                });
+
+                if (groupHasTopics) {
+                    navFragment.appendChild(group);
                 }
+            });
 
-                const topicDiv = document.createElement('div');
-                topicDiv.className = 'topic';
-                topicDiv.dataset.topicName = topicName;
-                topicDiv.dataset.totalCount = content.length;
+            const uncategorized = Object.keys(scriptData).filter(name => !assignedTopics.has(name));
+            if (uncategorized.length > 0) {
+                const { group, list } = createTopicNavGroup({
+                    id: 'outros',
+                    label: 'Outros',
+                    icon: 'fa-folder',
+                });
 
-                const cards = content.map(message => createMessageCard(message, topicName));
-                const { messagesDiv } = createMessagesContainer(cards);
-                const topicHeader = createTopicPanelHeader(topicName, content.length);
+                uncategorized.forEach(topicName => {
+                    const content = scriptData[topicName];
+                    if (!Array.isArray(content) && !isPasswordsContent(content)) return;
+                    if (!firstTopicName) firstTopicName = topicName;
 
-                topicDiv.appendChild(topicHeader);
-                topicDiv.appendChild(messagesDiv);
-                panelFragment.appendChild(topicDiv);
-                navFragment.appendChild(createTopicNavItem(topicName, content.length));
+                    const topicDiv = buildTopicPanel(topicName, content);
+                    panelFragment.appendChild(topicDiv);
+                    list.appendChild(createTopicNavItem(topicName));
+                });
+
+                navFragment.appendChild(group);
             }
 
             topicsNav.appendChild(navFragment);
@@ -461,12 +536,21 @@ document.addEventListener('DOMContentLoaded', () => {
             topicsNav.addEventListener('click', handleTopicsNavClick);
             topicsBuilt = true;
 
+            const firstGroup = topicsNav.querySelector('.topics-nav-group');
+            if (firstGroup) toggleNavGroup(firstGroup, { forceOpen: true, accordion: false });
+
             if (firstTopicName) {
                 selectTopic(firstTopicName);
             }
         }
 
         function handleTopicsNavClick(event) {
+            const categoryToggle = event.target.closest('.topics-nav-category-toggle');
+            if (categoryToggle) {
+                toggleNavGroup(categoryToggle.closest('.topics-nav-group'));
+                return;
+            }
+
             const navItem = event.target.closest('.topics-nav-item');
             if (!navItem || navItem.classList.contains('is-filtered-out')) return;
             selectTopic(navItem.dataset.topicName);
@@ -516,7 +600,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             topicsContainer.querySelectorAll('.topic').forEach(topic => {
                 const topicName = (topic.dataset.topicName || '').toLowerCase();
-                const topicMatches = !normalizedTerm || topicName.includes(normalizedTerm);
+                const categoryName = topicCategoryMap.get(topic.dataset.topicName) || '';
+                const topicMatches = !normalizedTerm ||
+                    topicName.includes(normalizedTerm) ||
+                    categoryName.includes(normalizedTerm);
                 const totalCount = Number(topic.dataset.totalCount) || 0;
 
                 topic.querySelectorAll('.message-item[data-search]').forEach(item => {
@@ -555,9 +642,16 @@ document.addEventListener('DOMContentLoaded', () => {
             topicsNav.querySelectorAll('.topics-nav-item').forEach(navItem => {
                 const counts = topicCounts.get(navItem.dataset.topicName);
                 if (!counts) return;
-
                 navItem.classList.toggle('is-filtered-out', normalizedTerm && !counts.topicVisible);
-                updateNavBadge(navItem, normalizedTerm ? counts.visibleCount : counts.totalCount);
+            });
+
+            topicsNav.querySelectorAll('.topics-nav-group').forEach(group => {
+                const visibleItems = group.querySelectorAll('.topics-nav-item:not(.is-filtered-out)');
+                const hasVisible = visibleItems.length > 0;
+                group.classList.toggle('is-filtered-out', normalizedTerm && !hasVisible);
+                if (normalizedTerm && hasVisible) {
+                    toggleNavGroup(group, { forceOpen: true, accordion: false });
+                }
             });
 
             if (normalizedTerm && totalTopics > 0) {
