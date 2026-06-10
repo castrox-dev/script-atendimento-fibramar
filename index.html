@@ -14,7 +14,14 @@
     <title>Script de Atendimento - Fibramar Internet</title>
 </head>
 <body>
-    <div class="notification" id="notification">✓ Mensagem copiada!</div>
+    <div class="notification" id="notification" role="status" aria-live="polite" aria-atomic="true" hidden>
+        <span class="notification-icon" aria-hidden="true"></span>
+        <div class="notification-body">
+            <span class="notification-message" id="notificationMessage">Mensagem copiada!</span>
+            <span class="notification-subtext" id="notificationSubtext" hidden></span>
+        </div>
+        <span class="notification-progress" id="notificationProgress"></span>
+    </div>
 
     <div class="app">
         <aside class="topics-sidebar" aria-label="Menu de tópicos">

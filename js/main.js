@@ -55,6 +55,67 @@ document.addEventListener('DOMContentLoaded', () => {
         let topicsBuilt = false;
         let supportBoxesPopulated = false;
         let selectedTopicName = null;
+        let notificationTimer = null;
+
+        const TOAST_ICONS = {
+            success: '<i class="fas fa-check"></i>',
+            error: '<i class="fas fa-circle-exclamation"></i>',
+            warning: '<i class="fas fa-triangle-exclamation"></i>',
+            info: '<i class="fas fa-circle-info"></i>',
+        };
+
+        function showToast({ type = 'success', message, subtext = '', duration = 2500 } = {}) {
+            const notification = document.getElementById('notification');
+            const messageEl = document.getElementById('notificationMessage');
+            const subtextEl = document.getElementById('notificationSubtext');
+            const iconEl = notification?.querySelector('.notification-icon');
+            const progressEl = document.getElementById('notificationProgress');
+
+            if (!notification || !messageEl || !iconEl) return;
+
+            if (notificationTimer) {
+                clearTimeout(notificationTimer);
+                notificationTimer = null;
+            }
+
+            notification.classList.remove(
+                'show',
+                'notification--success',
+                'notification--error',
+                'notification--warning',
+                'notification--info'
+            );
+            void notification.offsetWidth;
+
+            notification.classList.add(`notification--${type}`);
+            notification.style.setProperty('--notification-duration', `${duration}ms`);
+            iconEl.innerHTML = TOAST_ICONS[type] || TOAST_ICONS.success;
+            messageEl.textContent = message;
+
+            if (subtext) {
+                subtextEl.textContent = subtext;
+                subtextEl.hidden = false;
+            } else {
+                subtextEl.textContent = '';
+                subtextEl.hidden = true;
+            }
+
+            if (progressEl) {
+                progressEl.style.animation = 'none';
+                void progressEl.offsetWidth;
+                progressEl.style.animation = '';
+            }
+
+            notification.hidden = false;
+            requestAnimationFrame(() => notification.classList.add('show'));
+
+            notificationTimer = setTimeout(() => {
+                notification.classList.remove('show');
+                notificationTimer = setTimeout(() => {
+                    notification.hidden = true;
+                }, 350);
+            }, duration);
+        }
 
         function registerMessage(message) {
             const id = messageIdCounter++;
@@ -256,18 +317,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function copyPassword(text, triggerBtn = null) {
             navigator.clipboard.writeText(text).then(() => {
-                const notification = document.getElementById('notification');
-                const originalText = notification.textContent;
-                notification.textContent = '✓ Senha copiada!';
-                notification.classList.add('show');
+                showToast({ type: 'success', message: 'Senha copiada!' });
                 if (triggerBtn) {
                     triggerBtn.classList.add('copied');
                     setTimeout(() => triggerBtn.classList.remove('copied'), 1600);
                 }
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                    notification.textContent = originalText;
-                }, 2000);
             });
         }
 
@@ -574,22 +628,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 attendantNameInput.style.borderColor = '#ef4444';
                 attendantNameInput.style.boxShadow = '0 0 0 4px rgba(239, 68, 68, 0.1)';
                 attendantNameInput.focus();
-                
-                // Mostrar notificação de erro
-                const notification = document.getElementById('notification');
-                notification.textContent = '⚠️ Digite seu nome antes de copiar!';
-                notification.style.background = '#ef4444';
-                notification.classList.add('show');
-                
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                    // Resetar estilos após um tempo
-                    setTimeout(() => {
-                        notification.textContent = '✓ Mensagem copiada!';
-                        notification.style.background = '';
-                    }, 300);
-                }, 2000);
-                
+
+                showToast({
+                    type: 'error',
+                    message: 'Nome do atendente obrigatório',
+                    subtext: 'Preencha seu nome no menu lateral para copiar mensagens.',
+                    duration: 3500,
+                });
+
                 return;
             }
 
@@ -620,17 +666,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }).catch(err => {
                 console.error('Erro ao copiar:', err);
+                showToast({
+                    type: 'error',
+                    message: 'Não foi possível copiar',
+                    subtext: 'Verifique as permissões do navegador.',
+                });
             });
         }
 
-        // Mostrar notificação
         function showNotification() {
-            const notification = document.getElementById('notification');
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 2000);
+            showToast({
+                type: 'success',
+                message: 'Mensagem copiada!',
+                subtext: 'Cole no chat do cliente com Ctrl+V.',
+            });
         }
 
         // Sistema de rastreamento de uso com data
@@ -713,32 +762,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (btnOltUnamar) {
                 btnOltUnamar.addEventListener('click', () => {
-                    // Abrir o link em nova guia
                     window.open('https://186.26.81.5:4443/action/login.html', '_blank');
-                    
-                    // Mostrar notificação com as credenciais
-                    const notification = document.getElementById('notification');
-                    const originalText = notification.innerHTML;
-                    const originalBg = notification.style.background;
-                    
-                    notification.innerHTML = '🌐 OLT UNAMAR<br>User: admin | Pass: Xpon@Olt9417#';
-                    notification.style.background = 'var(--accent)';
-                    notification.style.height = 'auto';
-                    notification.style.padding = '15px 25px';
-                    notification.classList.add('show');
-                    
-                    // Copiar a senha automaticamente para o clipboard
                     navigator.clipboard.writeText('Xpon@Olt9417#');
-                    
-                    setTimeout(() => {
-                        notification.classList.remove('show');
-                        setTimeout(() => {
-                            notification.innerHTML = originalText;
-                            notification.style.background = originalBg;
-                            notification.style.height = '';
-                            notification.style.padding = '';
-                        }, 300);
-                    }, 6000);
+                    showToast({
+                        type: 'info',
+                        message: 'OLT UNAMAR aberta',
+                        subtext: 'User: admin | Senha copiada: Xpon@Olt9417#',
+                        duration: 5500,
+                    });
                 });
             }
         }
@@ -758,14 +789,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function copySupportId(id) {
             navigator.clipboard.writeText(id).then(() => {
-                const notification = document.getElementById('notification');
-                const originalText = notification.textContent;
-                notification.textContent = `✓ ID ${id} copiado!`;
-                notification.classList.add('show');
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                    notification.textContent = originalText;
-                }, 2000);
+                showToast({
+                    type: 'success',
+                    message: `ID ${id} copiado!`,
+                });
             });
         }
 
