@@ -6,7 +6,7 @@ import { supportData } from './data/support.js';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Script carregado em:', new Date().toLocaleString());
 
-    const currentVersion = '2.3.3';
+    const currentVersion = '2.5.1';
     const storedVersion = localStorage.getItem('scriptVersion');
 
     if (storedVersion !== currentVersion) {
@@ -29,8 +29,33 @@ document.addEventListener('DOMContentLoaded', () => {
         const savedTheme = localStorage.getItem('theme') || 'light';
         if (savedTheme === 'dark') {
             body.classList.add('dark-mode');
-            themeIcon.textContent = '☀️';
-            themeText.textContent = 'Light';
+            if (themeIcon) themeIcon.textContent = '☀️';
+            if (themeText) themeText.textContent = 'Light';
+        }
+
+        const welcomePanel = document.getElementById('welcomePanel');
+        const topicsMain = document.querySelector('.topics-main');
+
+        function isWelcomeVisible() {
+            return Boolean(welcomePanel && !welcomePanel.hidden);
+        }
+
+        function dismissWelcome({ focusAttendant = true } = {}) {
+            if (!welcomePanel || welcomePanel.hidden) return;
+
+            welcomePanel.hidden = true;
+            topicsMain?.classList.remove('is-welcome');
+            if (selectedTopicName) {
+                renderActiveTopicPanel(selectedTopicName);
+                expandCategoryForTopic(selectedTopicName);
+            }
+            handleSearch(document.getElementById('searchInput')?.value || '');
+            if (focusAttendant) document.getElementById('attendantName')?.focus();
+        }
+
+        function initWelcomePanel() {
+            if (!welcomePanel) return;
+            topicsMain?.classList.add('is-welcome');
         }
 
         // Alternar tema
@@ -321,15 +346,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 topic.classList.toggle('is-selected', isActive);
                 topic.hidden = !isActive;
             });
+            topicsMain?.classList.toggle('is-welcome', isWelcomeVisible());
         }
 
-        function selectTopic(topicName) {
+        function selectTopic(topicName, { expandCategory = null } = {}) {
             if (!topicName) return;
 
+            const shouldExpand = expandCategory ?? !isWelcomeVisible();
             selectedTopicName = topicName;
             renderActiveTopicPanel(topicName);
 
-            const topicsMain = document.querySelector('.topics-main');
             if (topicsMain) {
                 topicsMain.scrollTop = 0;
             }
@@ -338,13 +364,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const isActive = navItem.dataset.topicName === topicName;
                 navItem.classList.toggle('is-active', isActive);
                 if (isActive) {
-                    expandCategoryForTopic(topicName);
+                    if (shouldExpand) expandCategoryForTopic(topicName);
                     navItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
                 }
             });
 
             if (topicsPlaceholder) {
-                topicsPlaceholder.hidden = true;
+                topicsPlaceholder.hidden = Boolean(selectedTopicName) || isWelcomeVisible();
             }
         }
 
@@ -586,7 +612,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const panelFragment = document.createDocumentFragment();
             const navFragment = document.createDocumentFragment();
-            let firstTopicName = null;
             const assignedTopics = new Set();
 
             topicCategories.forEach(category => {
@@ -599,7 +624,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     assignedTopics.add(topicName);
                     groupHasTopics = true;
-                    if (!firstTopicName) firstTopicName = topicName;
 
                     const topicDiv = buildTopicPanel(topicName, content);
                     panelFragment.appendChild(topicDiv);
@@ -625,7 +649,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 uncategorized.forEach(topicName => {
                     const content = getTopicContent(topicName);
                     if (!Array.isArray(content) && !isPasswordsContent(content) && !isIxcReferenceContent(content)) return;
-                    if (!firstTopicName) firstTopicName = topicName;
 
                     const topicDiv = buildTopicPanel(topicName, content);
                     panelFragment.appendChild(topicDiv);
@@ -645,13 +668,6 @@ document.addEventListener('DOMContentLoaded', () => {
             topicsContainer.addEventListener('click', handleTopicsClick);
             topicsNav.addEventListener('click', handleTopicsNavClick);
             topicsBuilt = true;
-
-            const firstGroup = topicsNav.querySelector('.topics-nav-group');
-            if (firstGroup) toggleNavGroup(firstGroup, { forceOpen: true, accordion: false });
-
-            if (firstTopicName) {
-                selectTopic(firstTopicName);
-            }
         }
 
         function handleTopicsNavClick(event) {
@@ -663,6 +679,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const navItem = event.target.closest('.topics-nav-item');
             if (!navItem || navItem.classList.contains('is-filtered-out')) return;
+            if (isWelcomeVisible()) dismissWelcome({ focusAttendant: false });
             selectTopic(navItem.dataset.topicName);
         }
 
@@ -1115,7 +1132,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const hasResults = totalTopics > 0;
             emptyState.hidden = hasResults || !normalizedTerm;
             if (topicsPlaceholder) {
-                topicsPlaceholder.hidden = Boolean(normalizedTerm) || hasResults || Boolean(selectedTopicName);
+                topicsPlaceholder.hidden = Boolean(normalizedTerm) || Boolean(selectedTopicName) || isWelcomeVisible();
             }
 
             if (normalizedTerm) {
@@ -1244,6 +1261,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateNameStatus();
         updateDateTime();
         setInterval(updateDateTime, 30000);
+        initWelcomePanel();
         buildTopics();
         handleSearch();
         initSidebarResizer();
