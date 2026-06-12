@@ -5,7 +5,7 @@ import { supportData } from './data/support.js';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Script carregado em:', new Date().toLocaleString());
 
-    const currentVersion = '2.0.0';
+    const currentVersion = '2.1.1';
     const storedVersion = localStorage.getItem('scriptVersion');
 
     if (storedVersion !== currentVersion) {
@@ -289,14 +289,19 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleNavGroup(navItem.closest('.topics-nav-group'), { forceOpen: true });
         }
 
+        function renderActiveTopicPanel(topicName) {
+            topicsContainer.querySelectorAll('.topic').forEach(topic => {
+                const isActive = topic.dataset.topicName === topicName;
+                topic.classList.toggle('is-selected', isActive);
+                topic.hidden = !isActive;
+            });
+        }
+
         function selectTopic(topicName) {
             if (!topicName) return;
 
             selectedTopicName = topicName;
-
-            topicsContainer.querySelectorAll('.topic').forEach(topic => {
-                topic.classList.toggle('is-selected', topic.dataset.topicName === topicName);
-            });
+            renderActiveTopicPanel(topicName);
 
             topicsNav.querySelectorAll('.topics-nav-item').forEach(navItem => {
                 const isActive = navItem.dataset.topicName === topicName;
@@ -532,6 +537,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             topicsNav.appendChild(navFragment);
             topicsContainer.appendChild(panelFragment);
+
+            topicsContainer.querySelectorAll('.topic').forEach(topic => {
+                topic.hidden = true;
+            });
+
             topicsContainer.addEventListener('click', handleTopicsClick);
             topicsNav.addEventListener('click', handleTopicsNavClick);
             topicsBuilt = true;

@@ -41,6 +41,7 @@
         }
 
         .topics-nav,
+        .sidebar-categories,
         .topics-main,
         .topics-sidebar,
         .support-modal-body,
@@ -50,6 +51,7 @@
         }
 
         .topics-nav::-webkit-scrollbar,
+        .sidebar-categories::-webkit-scrollbar,
         .topics-main::-webkit-scrollbar,
         .topics-sidebar::-webkit-scrollbar,
         .support-modal-body::-webkit-scrollbar,
@@ -59,6 +61,7 @@
         }
 
         .topics-nav::-webkit-scrollbar-track,
+        .sidebar-categories::-webkit-scrollbar-track,
         .topics-main::-webkit-scrollbar-track,
         .topics-sidebar::-webkit-scrollbar-track,
         .support-modal-body::-webkit-scrollbar-track,
@@ -67,6 +70,7 @@
         }
 
         .topics-nav::-webkit-scrollbar-thumb,
+        .sidebar-categories::-webkit-scrollbar-thumb,
         .topics-main::-webkit-scrollbar-thumb,
         .topics-sidebar::-webkit-scrollbar-thumb,
         .support-modal-body::-webkit-scrollbar-thumb,
@@ -76,6 +80,7 @@
         }
 
         .topics-nav::-webkit-scrollbar-thumb:hover,
+        .sidebar-categories::-webkit-scrollbar-thumb:hover,
         .topics-main::-webkit-scrollbar-thumb:hover,
         .topics-sidebar::-webkit-scrollbar-thumb:hover,
         .support-modal-body::-webkit-scrollbar-thumb:hover,
@@ -84,6 +89,7 @@
         }
 
         .topics-nav::-webkit-scrollbar-button,
+        .sidebar-categories::-webkit-scrollbar-button,
         .topics-main::-webkit-scrollbar-button,
         .topics-sidebar::-webkit-scrollbar-button,
         .support-modal-body::-webkit-scrollbar-button,
@@ -94,6 +100,7 @@
         }
 
         .topics-nav::-webkit-scrollbar-corner,
+        .sidebar-categories::-webkit-scrollbar-corner,
         .topics-main::-webkit-scrollbar-corner,
         .topics-sidebar::-webkit-scrollbar-corner,
         .support-modal-body::-webkit-scrollbar-corner,
@@ -313,6 +320,7 @@
         }
 
         .name-config--sidebar {
+            flex-shrink: 0;
             display: grid;
             grid-template-columns: auto 1fr auto;
             align-items: center;
@@ -664,6 +672,23 @@
             padding: 10px 16px 8px;
         }
 
+        .sidebar-categories {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        body.dark-mode .sidebar-categories {
+            border-top-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .sidebar-categories .sidebar-head {
+            padding-bottom: 6px;
+        }
+
         .topics-nav-group {
             margin-bottom: 4px;
             border-radius: 12px;
@@ -783,10 +808,13 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-            padding: 10px 12px;
+            padding: 4px 8px 12px 12px;
             flex: 1;
             min-height: 0;
+            overflow-x: hidden;
             overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
         }
 
         .sidebar-footer {
@@ -875,7 +903,20 @@
 
         .topics-panel {
             width: 100%;
-            height: 100%;
+        }
+
+        .topics-panel > .topic {
+            display: none !important;
+        }
+
+        .topics-panel > .topic.is-selected {
+            display: flex !important;
+            flex-direction: column;
+            min-height: min(100%, auto);
+        }
+
+        .topics-panel > .topic.is-selected.is-filtered-out {
+            display: none !important;
         }
 
         .topics-placeholder {
@@ -946,7 +987,6 @@
         }
 
         .topic {
-            display: none;
             margin-bottom: 0;
             border-radius: 0;
             overflow: visible;
@@ -954,13 +994,6 @@
             border: none;
             box-shadow: none;
             transition: var(--transition);
-            min-height: 100%;
-        }
-
-        .topic.is-selected:not(.is-filtered-out) {
-            display: flex;
-            flex-direction: column;
-            min-height: 100%;
         }
 
         body.dark-mode .topic {
@@ -2005,6 +2038,12 @@
             .sidebar-head,
             .sidebar-footer {
                 display: none;
+            }
+
+            .sidebar-categories {
+                flex: 1;
+                min-height: 0;
+                border-top: none;
             }
 
             .topics-nav {
