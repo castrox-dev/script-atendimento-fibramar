@@ -6,7 +6,7 @@ import { supportData } from './data/support.js';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Script carregado em:', new Date().toLocaleString());
 
-    const currentVersion = '2.5.1';
+    const currentVersion = '2.6.1';
     const storedVersion = localStorage.getItem('scriptVersion');
 
     if (storedVersion !== currentVersion) {
@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let supportBoxesPopulated = false;
         let selectedTopicName = null;
         let notificationTimer = null;
+        let closeMobileSidebar = () => {};
 
         const topicCategoryMap = new Map();
         topicCategories.forEach(category => {
@@ -681,6 +682,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!navItem || navItem.classList.contains('is-filtered-out')) return;
             if (isWelcomeVisible()) dismissWelcome({ focusAttendant: false });
             selectTopic(navItem.dataset.topicName);
+            closeMobileSidebar();
         }
 
         function handleTopicsClick(event) {
@@ -1172,6 +1174,59 @@ document.addEventListener('DOMContentLoaded', () => {
             attendantNameInput.value = savedAttendantName;
         }
 
+        function initMobileSidebar() {
+            const sidebar = document.getElementById('topicsSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const toggle = document.getElementById('sidebarToggle');
+            const MOBILE_BP = 768;
+
+            if (!sidebar || !overlay || !toggle) return;
+
+            function isMobile() {
+                return window.innerWidth <= MOBILE_BP;
+            }
+
+            function openSidebar() {
+                if (!isMobile()) return;
+                sidebar.classList.add('is-open');
+                overlay.hidden = false;
+                overlay.classList.add('is-visible');
+                overlay.setAttribute('aria-hidden', 'false');
+                toggle.setAttribute('aria-expanded', 'true');
+                body.classList.add('sidebar-mobile-open');
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('is-open');
+                overlay.classList.remove('is-visible');
+                overlay.hidden = true;
+                overlay.setAttribute('aria-hidden', 'true');
+                toggle.setAttribute('aria-expanded', 'false');
+                body.classList.remove('sidebar-mobile-open');
+            }
+
+            closeMobileSidebar = () => {
+                if (isMobile()) closeSidebar();
+            };
+
+            toggle.addEventListener('click', () => {
+                if (sidebar.classList.contains('is-open')) closeSidebar();
+                else openSidebar();
+            });
+
+            overlay.addEventListener('click', closeSidebar);
+
+            window.addEventListener('resize', () => {
+                if (!isMobile()) closeSidebar();
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && sidebar.classList.contains('is-open')) {
+                    closeSidebar();
+                }
+            });
+        }
+
         function initSidebarResizer() {
             const app = document.querySelector('.app');
             const resizer = document.getElementById('sidebarResizer');
@@ -1264,6 +1319,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initWelcomePanel();
         buildTopics();
         handleSearch();
+        initMobileSidebar();
         initSidebarResizer();
 
         attendantNameInput.addEventListener('input', () => {
