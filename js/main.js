@@ -1,11 +1,12 @@
 import { scriptData } from './data/scripts.js';
 import { topicCategories, readOnlyTopics } from './data/categories.js';
+import { ixcReferenceTopics } from './data/ixc-reference.js';
 import { supportData } from './data/support.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Script carregado em:', new Date().toLocaleString());
 
-    const currentVersion = '2.2.2';
+    const currentVersion = '2.3.3';
     const storedVersion = localStorage.getItem('scriptVersion');
 
     if (storedVersion !== currentVersion) {
@@ -139,6 +140,14 @@ document.addEventListener('DOMContentLoaded', () => {
             };
         }
 
+        function getTopicContent(topicName) {
+            return scriptData[topicName] ?? ixcReferenceTopics[topicName];
+        }
+
+        function isIxcReferenceContent(content) {
+            return content?.type === 'ixc-reference';
+        }
+
         function isPasswordsContent(content) {
             return content?.type === 'passwords' ||
                 (Array.isArray(content) && content.some(item => item && Array.isArray(item.credentials)));
@@ -257,12 +266,17 @@ document.addEventListener('DOMContentLoaded', () => {
             return messageItem;
         }
 
-        function createTopicPanelHeader(topicName, count, readOnly = false) {
+        function createTopicPanelHeader(topicName, count, readOnly = false, countLabel = null) {
             const topicHeader = document.createElement('div');
             topicHeader.className = 'topic-panel-header';
-            const badge = readOnly
-                ? '<span class="topic-badge topic-badge--readonly"><i class="fas fa-eye"></i> Somente consulta</span>'
-                : `<span class="topic-badge">${count} ${count === 1 ? 'script' : 'scripts'}</span>`;
+            let badge;
+            if (readOnly) {
+                badge = '<span class="topic-badge topic-badge--readonly"><i class="fas fa-eye"></i> Somente consulta</span>';
+            } else if (countLabel) {
+                badge = `<span class="topic-badge">${count} ${countLabel}</span>`;
+            } else {
+                badge = `<span class="topic-badge">${count} ${count === 1 ? 'script' : 'scripts'}</span>`;
+            }
             topicHeader.innerHTML = `
                 <h2>${topicName}</h2>
                 ${badge}
@@ -355,7 +369,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function copyPassword(text, triggerBtn = null) {
             navigator.clipboard.writeText(text).then(() => {
-                showToast({ type: 'success', message: 'Senha copiada!' });
+                const isIxcId = triggerBtn?.closest('.topic--ixc-reference');
+                showToast({
+                    type: 'success',
+                    message: isIxcId ? `ID ${text} copiado!` : 'Senha copiada!',
+                });
                 if (triggerBtn) {
                     triggerBtn.classList.add('copied');
                     setTimeout(() => triggerBtn.classList.remove('copied'), 1600);
@@ -381,6 +399,62 @@ document.addEventListener('DOMContentLoaded', () => {
             card.appendChild(label);
             card.appendChild(copyBtn);
             return card;
+        }
+
+        function buildIxcReferenceTopic(topicName, content) {
+            const topicDiv = document.createElement('div');
+            topicDiv.className = 'topic topic--ixc-reference topic--passwords';
+            topicDiv.dataset.topicName = topicName;
+
+            const { messagesDiv, grid } = createMessagesContainer();
+            let copyableCount = 0;
+
+            content.sections.forEach(section => {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'password-group';
+                groupDiv.dataset.search = `${topicName} ${section.title || ''} ${section.text || ''}`.toLowerCase();
+
+                const regionHeader = document.createElement('div');
+                regionHeader.className = 'password-region-header';
+                regionHeader.textContent = section.title;
+                groupDiv.appendChild(regionHeader);
+
+                if (section.description) {
+                    const desc = document.createElement('p');
+                    desc.className = 'ixc-section-desc';
+                    desc.textContent = section.description;
+                    groupDiv.appendChild(desc);
+                }
+
+                if (section.text) {
+                    const textEl = document.createElement('div');
+                    textEl.className = 'ixc-readonly-text';
+                    textEl.textContent = section.text;
+                    groupDiv.appendChild(textEl);
+                }
+
+                if (section.items?.length) {
+                    const cardsContainer = document.createElement('div');
+                    cardsContainer.className = 'password-cards';
+
+                    section.items.forEach(item => {
+                        copyableCount += 1;
+                        groupDiv.dataset.search += ` ${item.label} ${item.copyValue}`.toLowerCase();
+                        cardsContainer.appendChild(createPasswordCredCard(item.label, item.copyValue));
+                    });
+
+                    groupDiv.appendChild(cardsContainer);
+                }
+
+                grid.appendChild(groupDiv);
+            });
+
+            topicDiv.dataset.totalCount = copyableCount;
+            const topicHeader = createTopicPanelHeader(topicName, copyableCount, false, copyableCount === 1 ? 'ID' : 'IDs');
+            topicDiv.appendChild(topicHeader);
+            topicDiv.appendChild(messagesDiv);
+
+            return topicDiv;
         }
 
         function buildPasswordTopic(topicName, content) {
@@ -487,6 +561,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 return buildPasswordTopic(topicName, content);
             }
 
+            if (isIxcReferenceContent(content)) {
+                return buildIxcReferenceTopic(topicName, content);
+            }
+
             const readOnly = isReadOnlyTopic(topicName);
             const topicDiv = document.createElement('div');
             topicDiv.className = 'topic';
@@ -516,8 +594,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 let groupHasTopics = false;
 
                 category.topics.forEach(topicName => {
-                    const content = scriptData[topicName];
-                    if (!content || (!Array.isArray(content) && !isPasswordsContent(content))) return;
+                    const content = getTopicContent(topicName);
+                    if (!content || (!Array.isArray(content) && !isPasswordsContent(content) && !isIxcReferenceContent(content))) return;
 
                     assignedTopics.add(topicName);
                     groupHasTopics = true;
@@ -533,7 +611,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            const uncategorized = Object.keys(scriptData).filter(name => !assignedTopics.has(name));
+            const uncategorized = [
+                ...Object.keys(scriptData),
+                ...Object.keys(ixcReferenceTopics),
+            ].filter((name, index, all) => all.indexOf(name) === index && !assignedTopics.has(name));
             if (uncategorized.length > 0) {
                 const { group, list } = createTopicNavGroup({
                     id: 'outros',
@@ -542,8 +623,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 uncategorized.forEach(topicName => {
-                    const content = scriptData[topicName];
-                    if (!Array.isArray(content) && !isPasswordsContent(content)) return;
+                    const content = getTopicContent(topicName);
+                    if (!Array.isArray(content) && !isPasswordsContent(content) && !isIxcReferenceContent(content)) return;
                     if (!firstTopicName) firstTopicName = topicName;
 
                     const topicDiv = buildTopicPanel(topicName, content);
@@ -939,13 +1020,16 @@ document.addEventListener('DOMContentLoaded', () => {
         function populateSupportBoxes() {
             let walletsHtml = '<div class="support-grid support-grid--wallet">';
             supportData.wallets.forEach(item => {
-                const hasNoDiscount = item.noDiscount && item.noDiscount !== '-';
+                const rows = [
+                    item.withDiscount ? renderWalletRow(item.withDiscount, 'Com desconto') : '',
+                    item.noDiscount ? renderWalletRow(item.noDiscount, 'Sem desconto') : '',
+                ].filter(Boolean).join('');
+
                 walletsHtml += `
                     <div class="support-card support-wallet-card">
                         <div class="support-card-title">${item.city}</div>
-                        <div class="support-card-info">
-                            ${renderWalletRow(item.withDiscount, 'Com desconto')}
-                            ${hasNoDiscount ? renderWalletRow(item.noDiscount, 'Sem desconto') : ''}
+                        <div class="support-card-info support-wallet-card-info">
+                            ${rows}
                         </div>
                     </div>
                 `;
@@ -956,7 +1040,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let dueDatesHtml = '';
 
             dueDatesHtml += '<div class="support-section">';
-            dueDatesHtml += '<div class="support-section-title"><span>📅</span> Sem Proporcional</div>';
+            dueDatesHtml += '<div class="support-section-title"><span>📅</span> Filial 2 e 6</div>';
             dueDatesHtml += '<div class="support-grid support-grid--due">';
             supportData.dueDatesNoProp.forEach(item => {
                 dueDatesHtml += `
@@ -971,7 +1055,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dueDatesHtml += '</div></div>';
 
             dueDatesHtml += '<div class="support-section">';
-            dueDatesHtml += '<div class="support-section-title"><span>🔄</span> Com Proporcional</div>';
+            dueDatesHtml += '<div class="support-section-title"><span>🔄</span> Filial 7, 8 (Muqui), 9 e 11</div>';
             dueDatesHtml += '<div class="support-grid support-grid--due">';
             supportData.dueDatesProp.forEach(item => {
                 dueDatesHtml += `

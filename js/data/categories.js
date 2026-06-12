@@ -42,6 +42,16 @@ export const topicCategories = [
         ],
     },
     {
+        id: 'ixc',
+        label: 'IXC / Sistema',
+        icon: 'fa-server',
+        topics: [
+            '🏢 FILIAIS E SETORES',
+            '📦 PLANOS DE VENDA (IDS)',
+            '📄 CADASTRO NO IXC',
+        ],
+    },
+    {
         id: 'suporte',
         label: 'Suporte',
         icon: 'fa-screwdriver-wrench',

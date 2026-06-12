@@ -1072,9 +1072,69 @@
             color: #64748b;
         }
 
-        body.dark-mode .topic-badge--readonly {
-            background: rgba(148, 163, 184, 0.15);
+        .ixc-section-desc {
+            font-size: 0.82em;
+            color: #64748b;
+            margin: 0 0 10px 2px;
+        }
+
+        body.dark-mode .ixc-section-desc {
             color: #94a3b8;
+        }
+
+        .ixc-readonly-text {
+            font-size: 0.9em;
+            line-height: 1.55;
+            color: #475569;
+            background: rgba(100, 116, 139, 0.08);
+            border-radius: 10px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+        }
+
+        body.dark-mode .ixc-readonly-text {
+            color: #cbd5e1;
+            background: rgba(148, 163, 184, 0.1);
+        }
+
+        .topic--ixc-reference .password-copy-btn {
+            min-width: 88px;
+        }
+
+        .topic--ixc-reference .messages-grid {
+            gap: 28px;
+        }
+
+        .topic--ixc-reference .password-group {
+            margin-bottom: 0;
+            padding-bottom: 28px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .topic--ixc-reference .password-group:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        body.dark-mode .topic--ixc-reference .password-group {
+            border-bottom-color: rgba(255, 255, 255, 0.06);
+        }
+
+        .topic--ixc-reference .password-region-header {
+            margin-bottom: 14px;
+        }
+
+        .topic--ixc-reference .ixc-readonly-text {
+            margin-bottom: 16px;
+        }
+
+        .topic--ixc-reference .ixc-section-desc {
+            margin-bottom: 14px;
+        }
+
+        .topic--ixc-reference .password-cards {
+            gap: 14px;
+            margin-top: 4px;
         }
 
         .message-item--readonly {
@@ -1864,7 +1924,31 @@
         }
 
         .support-grid--wallet {
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .support-wallet-card {
+            min-height: 0;
+        }
+
+        .support-wallet-card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .support-wallet-card .support-card-title {
+            font-size: 0.82em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        body.dark-mode .support-wallet-card .support-card-title {
+            color: #a5b4fc;
         }
 
         .support-wallet-card .support-card-info {
