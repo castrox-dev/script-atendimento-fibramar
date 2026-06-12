@@ -1,11 +1,11 @@
 import { scriptData } from './data/scripts.js';
-import { topicCategories } from './data/categories.js';
+import { topicCategories, readOnlyTopics } from './data/categories.js';
 import { supportData } from './data/support.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Script carregado em:', new Date().toLocaleString());
 
-    const currentVersion = '2.1.1';
+    const currentVersion = '2.2.2';
     const storedVersion = localStorage.getItem('scriptVersion');
 
     if (storedVersion !== currentVersion) {
@@ -213,11 +213,19 @@ document.addEventListener('DOMContentLoaded', () => {
             return copyBtn;
         }
 
-        function createMessageCard(message, topicName) {
+        function isReadOnlyTopic(topicName) {
+            return readOnlyTopics.has(topicName);
+        }
+
+        function createMessageCard(message, topicName, readOnly = false) {
             const messageItem = document.createElement('div');
             messageItem.className = 'message-item';
-            messageItem.setAttribute('role', 'button');
-            messageItem.setAttribute('tabindex', '0');
+            if (readOnly) {
+                messageItem.classList.add('message-item--readonly');
+            } else {
+                messageItem.setAttribute('role', 'button');
+                messageItem.setAttribute('tabindex', '0');
+            }
             messageItem.dataset.msgId = registerMessage(message);
             messageItem.dataset.search = getMessageSearchText(message, topicName);
 
@@ -242,18 +250,22 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             messageItem.appendChild(messageText);
-            messageItem.appendChild(createCopyButton());
+            if (!readOnly) {
+                messageItem.appendChild(createCopyButton());
+            }
 
             return messageItem;
         }
 
-        function createTopicPanelHeader(topicName, count) {
+        function createTopicPanelHeader(topicName, count, readOnly = false) {
             const topicHeader = document.createElement('div');
             topicHeader.className = 'topic-panel-header';
-            const label = count === 1 ? 'script' : 'scripts';
+            const badge = readOnly
+                ? '<span class="topic-badge topic-badge--readonly"><i class="fas fa-eye"></i> Somente consulta</span>'
+                : `<span class="topic-badge">${count} ${count === 1 ? 'script' : 'scripts'}</span>`;
             topicHeader.innerHTML = `
                 <h2>${topicName}</h2>
-                <span class="topic-badge">${count} ${label}</span>
+                ${badge}
             `;
             return topicHeader;
         }
@@ -302,6 +314,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             selectedTopicName = topicName;
             renderActiveTopicPanel(topicName);
+
+            const topicsMain = document.querySelector('.topics-main');
+            if (topicsMain) {
+                topicsMain.scrollTop = 0;
+            }
 
             topicsNav.querySelectorAll('.topics-nav-item').forEach(navItem => {
                 const isActive = navItem.dataset.topicName === topicName;
@@ -470,14 +487,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 return buildPasswordTopic(topicName, content);
             }
 
+            const readOnly = isReadOnlyTopic(topicName);
             const topicDiv = document.createElement('div');
             topicDiv.className = 'topic';
+            if (readOnly) topicDiv.classList.add('topic--readonly');
             topicDiv.dataset.topicName = topicName;
             topicDiv.dataset.totalCount = content.length;
 
-            const cards = content.map(message => createMessageCard(message, topicName));
+            const cards = content.map(message => createMessageCard(message, topicName, readOnly));
             const { messagesDiv } = createMessagesContainer(cards);
-            const topicHeader = createTopicPanelHeader(topicName, content.length);
+            const topicHeader = createTopicPanelHeader(topicName, content.length, readOnly);
 
             topicDiv.appendChild(topicHeader);
             topicDiv.appendChild(messagesDiv);
@@ -596,7 +615,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const card = event.target.closest('.message-item[data-msg-id]');
-            if (card) {
+            if (card && !card.classList.contains('message-item--readonly')) {
                 copyToClipboard(messageStore.get(Number(card.dataset.msgId)));
             }
         }

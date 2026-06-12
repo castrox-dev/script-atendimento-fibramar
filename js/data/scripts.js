@@ -47,30 +47,44 @@ export const scriptData = {
                 "🚀 *Plano 700 Mega*\n\n *700 Mega • R$ 89,99/mês*\n\n- 100% Fibra Óptica\n\n- 🤩 Instalação Grátis\n\n- 😍 Super Wi-Fi incluso\n\n- 🎓 Qualifica App (Aplicativo de cursos e clube de vantagens)\n\n📄 Possui fidelidade de 12 meses\n\n ✨ *Mais velocidade e benefícios para quem quer estudar, trabalhar e aproveitar o máximo da internet.*",
                 "🚀 *Plano 1 GIGA Fibramar*\n\n*1 GIGA • R$ 149,99/mês* (pagando até o vencimento)\n\n*R$ 169,99/mês* (após vencimento)\n\n\n\n- Wi-Fi 6 incluso\n\n- 100% Fibra Óptica\n\n- 🤩 Instalação Grátis\n\n\n\n⚡️* Ideal para gamers, streamers e multitarefas que não podem ficar sem velocidade.*\n\n\n\n🔗 Opcional: Repetidor Mesh por apenas R$ 29,99/mês\n\n\n\n- Possui fidelidade de 12 meses",
             ],
-            "📝 CADASTRO": [
-                { 
-                    title: "🌐 INFORMAÇÕES DE INSTALAÇÃO (R$ 360)", 
-                    content: "🌐 Para que você aproveite ao máximo nosso serviço, a instalação é totalmente gratuita ao optar pela fidelidade de 12 meses. \n\n🛠 Caso prefira contratar sem fidelidade, será aplicada uma taxa de instalação no valor de R$ 360,00. \n\n💳 Para facilitar, esse valor pode ser parcelado no cartão." 
+            "🏔️ MINAS – INSTALAÇÃO GRATUITA": [
+                {
+                    title: "🌐 Informações de instalação",
+                    content: "🌐 Para que você aproveite ao máximo nosso serviço, a instalação é totalmente gratuita ao optar pela fidelidade de 12 meses.\n\n🛠 Caso prefira contratar sem fidelidade, será aplicada uma taxa de instalação no valor de R$ 360,00.\n\n💳 Para facilitar, esse valor pode ser parcelado no cartão."
                 },
-                { 
-                    title: "📝 FICHA DE CADASTRO (VENC. 1 A 18)", 
-                    content: "### Para iniciar o cadastro, envie os dados: \n\nNome completo: \nCPF: \nRG: \nData de nascimento: \nE-mail: \nPlano desejado: \nData de vencimento (1, 3, 6, 7, 9, 13, 18): \nTelefone(s): \nEndereço completo: \nCEP: \nBairro: \nCidade: \nReferência visual (ponto de referência próximo): \nGostaria da fidelidade de 12 meses? \nData e período para a instalação: \nPor onde conheceu a empresa ?" 
+                {
+                    title: "📝 Ficha de cadastro – Filial 2 e 6",
+                    content: "### Para iniciar o cadastro, envie os dados:\n\nNome completo:\nCPF:\nRG:\nData de nascimento:\nE-mail:\nPlano desejado:\nData de vencimento: ([VENCIMENTO_AUTO])\nTelefone(s):\nEndereço completo:\nCEP:\nBairro:\nCidade:\nReferência visual (ponto de referência próximo):\nGostaria da fidelidade de 12 meses?\nData e período para a instalação:\nPor onde conheceu a empresa?"
+                }
+            ],
+            "📍 MARICÁ – INSTALAÇÃO PAGA": [
+                {
+                    title: "🌐 Informações de adesão (R$ 100,00)",
+                    content: "🌐 Para que você aproveite ao máximo nosso serviço, existe uma taxa de adesão de R$ 100,00.\n\n🛠 Esse valor contribui para o suporte técnico essencial, garantindo que a instalação e a configuração da sua internet sejam feitas com todo o cuidado necessário.\n\n💳 *Para facilitar, esse valor pode ser parcelado em até 10x de R$ 10,00, no cartão.*"
                 },
-                { 
-                    title: "📂 SOLICITAÇÃO DE DOCUMENTOS", 
-                    content: "Para finalizar seu cadastro, precisamos que envie os seguintes documentos: \n\n📌 1. Comprovante de residência legível no nome do titular. \n\n📌 2. Foto do documento de identificação (RG ou CNH – frente e verso). \n\n📌 3. Selfie segurando o documento (RG ou CNH), garantindo boa iluminação e que os dados fiquem visíveis." 
+                {
+                    title: "📝 Ficha de cadastro – Maricá",
+                    content: "### Para iniciar o cadastro, envie os dados:\n\nNome completo:\nCPF:\nRG:\nData de nascimento:\nE-mail:\nPlano desejado:\nData de vencimento: ([VENCIMENTO_AUTO])\nTelefone(s):\nEndereço completo:\nCEP:\nBairro:\nCidade:\nReferência visual (ponto de referência próximo):\nGostaria da fidelidade de 12 meses?\nForma de pagamento da instalação:\nData e período para a instalação:\nPor onde conheceu a empresa?"
+                }
+            ],
+            "📝 CADASTRO DEMAIS FILIAIS": [
+                {
+                    title: "🌐 Informações de instalação",
+                    content: "🌐 Para que você aproveite ao máximo nosso serviço, a instalação é totalmente gratuita ao optar pela fidelidade de 12 meses.\n\n🛠 Caso prefira contratar sem fidelidade, será aplicada uma taxa de instalação no valor de R$ 360,00.\n\n💳 Para facilitar, esse valor pode ser parcelado no cartão."
                 },
-                { 
-                    title: "🌐 INF. ADESÃO (R$ 100,00)", 
-                    content: "🌐 Para que você aproveite ao máximo nosso serviço, existe uma taxa de adesão de R$ 100,00. \n\n🛠 Esse valor contribui para o suporte técnico essencial, garantindo que a instalação e a configuração da sua internet sejam feitas com todo o cuidado necessário. \n\n💳 *Para facilitar, esse valor pode ser parcelado em até 10x de R$ 10,00, no cartão.*" 
+                {
+                    title: "📝 Ficha de cadastro",
+                    content: "### Para iniciar o cadastro, envie os dados:\n\nNome completo:\nCPF:\nRG:\nData de nascimento:\nE-mail:\nPlano desejado:\nData de vencimento (1, 3, 6, 7, 9, 13, 18):\nTelefone(s):\nEndereço completo:\nCEP:\nBairro:\nCidade:\nReferência visual (ponto de referência próximo):\nGostaria da fidelidade de 12 meses?\nData e período para a instalação:\nPor onde conheceu a empresa?"
                 },
-                { 
-                    title: "📝 FICHA (ADESÃO R$ 100,00)", 
-                    content: "### Para iniciar o cadastro, envie os dados: \n\nNome completo: \nCPF: \nRG: \nData de nascimento: \nE-mail: \nPlano desejado: \nData de vencimento: ([VENCIMENTO_AUTO]) \nTelefone(s): \nEndereço completo: \nCEP: \nBairro: \nCidade: \nReferência visual (ponto de referência próximo): \nGostaria da fidelidade de 12 meses? \nForma de pagamento da instalação: \nData e período para a instalação: \nPor onde conheceu a empresa ?" 
-                },
-                { 
-                    title: "📄 ACORDO DE CONTRATAÇÃO", 
-                    content: "📄 ACORDO DE CONTRATAÇÃO\n\n✅ Todos os equipamentos ópticos fornecidos são compatíveis com velocidades máximas de até 1 Giga, quando utilizados por meio de cabo de rede.\n\n⚠️ Atenção: os equipamentos da residência do cliente devem ser Gigabit, com portas de rede 10/100/1000, preferencialmente com tecnologia Wi-Fi 6, para melhor desempenho do serviço.\n\n💻📏 A medição de velocidade é realizada exclusivamente via cabo de rede, conectado diretamente do conversor óptico ao notebook ou computador, o qual deve possuir placa de rede compatível com 1 Gbps.\n\n📍📝 O plano contratado possui fidelidade mínima de 12 (doze) meses, válida exclusivamente para o endereço informado no ato da contratação, não sendo a empresa responsável por alterações de endereço.\n\n♾️ O plano é ilimitado, sem franquia de consumo de dados.\n\n🚫📡 É expressamente proibida a comercialização, revenda ou compartilhamento do sinal contratado com terceiros.\n\n🌐 A empresa disponibiliza a todos os clientes o protocolo de internet IPv6. Para o funcionamento adequado do serviço, é necessário que todos os dispositivos utilizados (computadores, roteadores, DVRs, entre outros) sejam compatíveis com IPv6.\n\n🧾📬 A fatura mensal ficará disponível no site 👉 http://fibramarinternet.com.br, via WhatsApp 0800 100 3850, bem como será enviada ao e-mail cadastrado, com antecedência mínima de 5 (cinco) dias do vencimento.\n\n💳⚠️ Em caso de inadimplência, a fatura não paga poderá resultar em negativação automática junto aos órgãos de proteção ao crédito (SPC e/ou SERASA) após 35 (trinta e cinco) dias do vencimento.\n\n🔐 CONTRATO DIGITAL E VALIDAÇÃO DE IDENTIDADE\n\n📲 O contrato é realizado exclusivamente de forma digital.\n\n📸 Para validação e segurança jurídica, o cliente deverá enviar uma selfie (foto do rosto) e um do documento oficial, sendo aceitos RG que tenha o número do CPF ou CNH, de forma que os dados estejam legíveis.\n\n🪪 O documento deverá estar em mãos, visível na imagem, garantindo a correta identificação do titular do contrato.\n\n❌ DA QUEBRA DE CONTRATO\n\n⚖️ Os casos descritos abaixo caracterizam quebra do presente acordo, sendo entendidos como desistência da promoção, implicando na cobrança automática do custo real da instalação, no valor de R$ 30,00 (trinta reais) por cada mês restante até o término do período de fidelidade de 12 (doze) meses, de forma proporcional ao prazo não cumprido.\n\n📑 As condições detalhadas estarão descritas no Termo de Adesão.\n\n🚨 Caracterizam quebra de contrato:\n\n❌ Cancelamento do serviço;\n⛔️ Bloqueio ou suspensão;\n🔽 Alteração ou migração para planos inferiores ao inicialmente contratado;\n🚚📦 Mudança de endereço." 
+                {
+                    title: "📂 Solicitação de documentos",
+                    content: "Para finalizar seu cadastro, precisamos que envie os seguintes documentos:\n\n📌 1. Comprovante de residência legível no nome do titular.\n\n📌 2. Foto do documento de identificação (RG ou CNH – frente e verso).\n\n📌 3. Selfie segurando o documento (RG ou CNH), garantindo boa iluminação e que os dados fiquem visíveis."
+                }
+            ],
+            "📄 ACORDO DE CONTRATAÇÃO": [
+                {
+                    title: "📄 Acordo de contratação",
+                    content: "📄 ACORDO DE CONTRATAÇÃO\n\n✅ Todos os equipamentos ópticos fornecidos são compatíveis com velocidades máximas de até 1 Giga, quando utilizados por meio de cabo de rede.\n\n⚠️ Atenção: os equipamentos da residência do cliente devem ser Gigabit, com portas de rede 10/100/1000, preferencialmente com tecnologia Wi-Fi 6, para melhor desempenho do serviço.\n\n💻📏 A medição de velocidade é realizada exclusivamente via cabo de rede, conectado diretamente do conversor óptico ao notebook ou computador, o qual deve possuir placa de rede compatível com 1 Gbps.\n\n📍📝 O plano contratado possui fidelidade mínima de 12 (doze) meses, válida exclusivamente para o endereço informado no ato da contratação, não sendo a empresa responsável por alterações de endereço.\n\n♾️ O plano é ilimitado, sem franquia de consumo de dados.\n\n🚫📡 É expressamente proibida a comercialização, revenda ou compartilhamento do sinal contratado com terceiros.\n\n🌐 A empresa disponibiliza a todos os clientes o protocolo de internet IPv6. Para o funcionamento adequado do serviço, é necessário que todos os dispositivos utilizados (computadores, roteadores, DVRs, entre outros) sejam compatíveis com IPv6.\n\n🧾📬 A fatura mensal ficará disponível no site 👉 http://fibramarinternet.com.br, via WhatsApp 0800 100 3850, bem como será enviada ao e-mail cadastrado, com antecedência mínima de 5 (cinco) dias do vencimento.\n\n💳⚠️ Em caso de inadimplência, a fatura não paga poderá resultar em negativação automática junto aos órgãos de proteção ao crédito (SPC e/ou SERASA) após 35 (trinta e cinco) dias do vencimento.\n\n🔐 CONTRATO DIGITAL E VALIDAÇÃO DE IDENTIDADE\n\n📲 O contrato é realizado exclusivamente de forma digital.\n\n📸 Para validação e segurança jurídica, o cliente deverá enviar uma selfie (foto do rosto) e um do documento oficial, sendo aceitos RG que tenha o número do CPF ou CNH, de forma que os dados estejam legíveis.\n\n🪪 O documento deverá estar em mãos, visível na imagem, garantindo a correta identificação do titular do contrato.\n\n❌ DA QUEBRA DE CONTRATO\n\n⚖️ Os casos descritos abaixo caracterizam quebra do presente acordo, sendo entendidos como desistência da promoção, implicando na cobrança automática do custo real da instalação, no valor de R$ 30,00 (trinta reais) por cada mês restante até o término do período de fidelidade de 12 (doze) meses, de forma proporcional ao prazo não cumprido.\n\n📑 As condições detalhadas estarão descritas no Termo de Adesão.\n\n🚨 Caracterizam quebra de contrato:\n\n❌ Cancelamento do serviço;\n⛔️ Bloqueio ou suspensão;\n🔽 Alteração ou migração para planos inferiores ao inicialmente contratado;\n🚚📦 Mudança de endereço."
                 }
             ],
             "📋 MENSAGENS PADRÕES": [
@@ -117,9 +131,6 @@ export const scriptData = {
                 { title: "💰 INSTALAÇÃO PAGA", content: "INSTALAÇÃO SERÁ PAGA NO VALOR DE R$\n\nPLANO DE / R$ COM ROTEADOR EM COMODATO\n\nDATA DE VENCIMENTO:\n\nCONSULTORA(O): [NOME_ATENDENTE]\n\nCONTATO FEITO COM A CLIENTE A MESMA AGUARDA INSTALAÇÃO PARA O DIA //\n\nCLIENTE CIENTE QUE PRECISA REALIZAR A ASSINATURA DO CONTRATO NA CENTRAL DO ASSINANTE" },
                 { title: "🏷️ TAG DE ATENDIMENTO", content: "Atendente: [NOME_ATENDENTE] | Data: [DATA] | Hora: [HORA]" }
             ],
-            "📝 TERMO DE RESPONSABILIDADE": [
-                "Para quem usa equipamento próprio:\n\n🔗 https://app.zapsign.com.br/verificar/doc/2794e63d-905c-4cb0-8c5e-7b22226901c3"
-            ],
             "❌ CANCELAMENTO:": [
                 { title: "📋 DADOS PARA CANCELAMENTO", content: "Por favor, envie os dados abaixo:\n\n- Nome completo:\n- CPF:\n- RG:\n Data de Nascimento: \n- Endereço completo:\n- Motivo do cancelamento:\n\nAssim que recebermos as informações, abriremos a solicitação no sistema.\n" },
                 { title: "⏳ PRAZO DE RETIRADA", content: "Dentro de 72 horas úteis, o setor responsável entrará em contato para finalizar o equipamento e caso houver equipamento agendar a retirada dos equipamentos." },
@@ -145,7 +156,8 @@ export const scriptData = {
             "📲 WHATSAPP E LINKS ÚTEIS:": [
                 "WhatsApp Atendimento:\n\n🔗 https://api.whatsapp.com/send/?phone=5508001003850",
                 "Central do Assinante (IXC):\n\n🔗 https://crnetfibramar.com.br/",
-                "LinkTree com acessos e apps:\n\n🔗 https://linktr.ee/fibramarinternet"
+                "LinkTree com acessos e apps:\n\n🔗 https://linktr.ee/fibramarinternet",
+                { title: "📝 Termo de Responsabilidade (equipamento próprio)", content: "🔗 https://app.zapsign.com.br/verificar/doc/2794e63d-905c-4cb0-8c5e-7b22226901c3" }
             ],
             "🔑 SENHAS PADRÕES:": [
                 { title: "ACESSO REMOTO TPLINK -- NUNCA ENVIAR PARA CLIENTE", credentials: [ { "user": "user", "password": "RooT@fibramaR_" } ] },
@@ -183,10 +195,12 @@ export const scriptData = {
             ],
             "⚙️ HABILITANDO ONU": [
                 "HABILITAR > SALVAR > DEPOIS GRAVAR\n\nDESABILITAR > EXCLUIR > DELETAR",
-                "OLT  (MARICÁ)\n\nQUALQUER ONU - 7",
+                {
+                    title: "OLT'S HUAWEI",
+                    content: "MARICÁ\n\nQUALQUER ONU - 7\nONT HUAWEI - PERFIL 55\n\nSÃO PAULO - PERFIL 51"
+                },
                 "OLT (ITAIPUAÇU)\n\nBRIDGE - 62\nROUTER - 53\nBRIDGE PRETA PEQUENA - 74",
-                "OLT  PARA ONU HUAWEI (JACONÉ)\n\nQUALQUER ONU - 7",
-                "OLT (VILA VELHA) (ES)\n\nONUs ZTE - Perfil 85\nONUs outras marcas - 86",
-                "OLT (UNAMAR/ARARUAMA)\n\n ONUs Pista- Perfil 9 \n ONUs Condominio - 81 "
+                "OLT (VILA VELHA) (ES)\n\nONUS ZTE - PERFIL 85\nONUS OUTRAS MARCAS - PERFIL 86",
+                "OLT (UNAMAR/ARARUAMA)\n\nONUS PISTA - PERFIL 9"
             ]
         };

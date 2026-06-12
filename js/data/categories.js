@@ -35,7 +35,10 @@ export const topicCategories = [
         label: 'Cadastro',
         icon: 'fa-user-plus',
         topics: [
-            '📝 CADASTRO',
+            '🏔️ MINAS – INSTALAÇÃO GRATUITA',
+            '📍 MARICÁ – INSTALAÇÃO PAGA',
+            '📝 CADASTRO DEMAIS FILIAIS',
+            '📄 ACORDO DE CONTRATAÇÃO',
         ],
     },
     {
@@ -47,7 +50,6 @@ export const topicCategories = [
             '⚠️ PROBLEMA EXTERNO',
             '🖥️ CONFIGURAÇÃO DO ROTEADOR:',
             '📑 PADRÃO DE ABERTURA DE O.S:',
-            '⚙️ HABILITANDO ONU',
         ],
     },
     {
@@ -56,7 +58,6 @@ export const topicCategories = [
         icon: 'fa-ban',
         topics: [
             '❌ CANCELAMENTO:',
-            '📝 TERMO DE RESPONSABILIDADE',
         ],
     },
     {
@@ -74,6 +75,11 @@ export const topicCategories = [
         icon: 'fa-key',
         topics: [
             '🔑 SENHAS PADRÕES:',
+            '⚙️ HABILITANDO ONU',
         ],
     },
 ];
+
+export const readOnlyTopics = new Set([
+    '⚙️ HABILITANDO ONU',
+]);

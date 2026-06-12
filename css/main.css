@@ -624,6 +624,7 @@
             display: flex;
             flex-direction: column;
             min-height: 0;
+            max-height: 100%;
             height: 100%;
             background: white;
             border-right: 1px solid rgba(0, 0, 0, 0.06);
@@ -673,8 +674,9 @@
         }
 
         .sidebar-categories {
-            flex: 1;
+            flex: 1 1 0;
             min-height: 0;
+            height: 0;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -692,7 +694,6 @@
         .topics-nav-group {
             margin-bottom: 4px;
             border-radius: 12px;
-            overflow: hidden;
         }
 
         .topics-nav-group.is-filtered-out {
@@ -783,6 +784,8 @@
             padding: 8px 10px 8px 12px;
             font-size: 0.8em;
             border-radius: 10px;
+            min-width: 0;
+            max-width: 100%;
         }
 
         body.dark-mode .sidebar-head {
@@ -809,8 +812,9 @@
             flex-direction: column;
             gap: 4px;
             padding: 4px 8px 12px 12px;
-            flex: 1;
+            flex: 1 1 0;
             min-height: 0;
+            height: 0;
             overflow-x: hidden;
             overflow-y: auto;
             overscroll-behavior: contain;
@@ -852,6 +856,8 @@
             display: flex;
             align-items: center;
             width: 100%;
+            max-width: 100%;
+            min-width: 0;
             text-align: left;
             padding: 11px 14px;
             border: none;
@@ -863,6 +869,7 @@
             font-weight: 600;
             color: #475569;
             transition: var(--transition);
+            box-sizing: border-box;
         }
 
         .topics-nav-item:hover {
@@ -873,7 +880,12 @@
         .topics-nav-item.is-active {
             background: rgba(99, 102, 241, 0.14);
             color: var(--primary);
-            box-shadow: inset 3px 0 0 var(--primary);
+            border-left: 3px solid var(--primary);
+            padding-left: 11px;
+        }
+
+        .topics-nav-list .topics-nav-item.is-active {
+            padding-left: 9px;
         }
 
         body.dark-mode .topics-nav-item {
@@ -895,14 +907,20 @@
 
         .topics-main {
             position: relative;
-            flex: 1;
+            flex: 1 1 0;
             min-height: 0;
+            height: 0;
+            overflow-x: hidden;
             overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
             padding: 12px 24px 56px;
         }
 
         .topics-panel {
             width: 100%;
+            min-width: 0;
+            max-width: 100%;
         }
 
         .topics-panel > .topic {
@@ -912,7 +930,10 @@
         .topics-panel > .topic.is-selected {
             display: flex !important;
             flex-direction: column;
-            min-height: min(100%, auto);
+            min-height: auto;
+            height: auto;
+            min-width: 0;
+            max-width: 100%;
         }
 
         .topics-panel > .topic.is-selected.is-filtered-out {
@@ -1001,19 +1022,18 @@
         }
 
         .topic-panel-header {
-            position: sticky;
-            top: 0;
-            z-index: 5;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
             background: var(--bg-light);
             color: #1e293b;
-            padding: 8px 0 14px;
+            padding: 4px 0 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 16px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            flex-shrink: 0;
-            margin-bottom: 4px;
+            margin-bottom: 20px;
         }
 
         body.dark-mode .topic-panel-header {
@@ -1044,10 +1064,39 @@
             color: #a5b4fc;
         }
 
+        .topic-badge--readonly {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(100, 116, 139, 0.12);
+            color: #64748b;
+        }
+
+        body.dark-mode .topic-badge--readonly {
+            background: rgba(148, 163, 184, 0.15);
+            color: #94a3b8;
+        }
+
+        .message-item--readonly {
+            cursor: default;
+        }
+
+        .message-item--readonly:hover {
+            background: white;
+            border-color: rgba(0, 0, 0, 0.06);
+            box-shadow: none;
+        }
+
+        body.dark-mode .message-item--readonly:hover {
+            background: #1e293b;
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
         .messages {
             display: block;
             background: transparent;
-            flex: 1;
+            flex: none;
+            min-height: 0;
         }
 
         body.dark-mode .messages {
@@ -1059,7 +1108,9 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             align-items: start;
-            padding: 0 0 8px;
+            padding: 0;
+            position: relative;
+            z-index: 0;
         }
 
         .topic--passwords .messages-grid {
@@ -1246,7 +1297,10 @@
             display: flex;
             flex-direction: column;
             width: 100%;
+            min-width: 0;
+            max-width: 100%;
             gap: 12px;
+            overflow: hidden;
         }
 
         .message-item:focus-visible {
@@ -1321,11 +1375,17 @@
             white-space: pre-wrap;
             display: flex;
             flex-direction: column;
+            min-width: 0;
+            max-width: 100%;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .message-text-preview,
         .message-text-full {
             white-space: pre-wrap;
+            word-break: break-word;
+            overflow-wrap: anywhere;
         }
 
         .message-text:not(.expanded) .message-text-preview {
@@ -2041,12 +2101,16 @@
             }
 
             .sidebar-categories {
-                flex: 1;
+                flex: 1 1 0;
                 min-height: 0;
+                height: 0;
                 border-top: none;
             }
 
             .topics-nav {
+                flex: 1 1 0;
+                min-height: 0;
+                height: 0;
                 flex-direction: column;
                 overflow-x: hidden;
                 overflow-y: auto;
