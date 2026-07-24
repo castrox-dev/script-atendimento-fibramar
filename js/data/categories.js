@@ -28,6 +28,7 @@ export const topicCategories = [
             '📱 PLANOS DISPONÍVEIS',
             '📱 PLANOS DISPONÍVEIS ( Muqui )',
             '📱 PLANOS DISPONÍVEIS ( Mimoso )',
+            '📱 INTERNET MÓVEL',
         ],
     },
     {

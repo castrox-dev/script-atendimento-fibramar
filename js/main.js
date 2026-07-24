@@ -99,14 +99,31 @@ document.addEventListener('DOMContentLoaded', () => {
             info: '<i class="fas fa-circle-info"></i>',
         };
 
-        const PLAN_OPTIONS = [
-            { velocidade: '240 MEGA', valorPreVenc: 'R$ 59,99', valorPosVenc: 'R$ 79,99' },
-            { velocidade: '400 Mega', valorPreVenc: 'R$ 79,99', valorPosVenc: 'R$ 99,99' },
-            { velocidade: '500 Mega', valorPreVenc: 'R$ 99,99', valorPosVenc: 'R$ 119,99' },
-            { velocidade: '600 Mega', valorPreVenc: 'R$ 119,99', valorPosVenc: 'R$ 139,99' },
-            { velocidade: '700 MEGA', valorPreVenc: 'R$ 99,99', valorPosVenc: 'R$ 119,99' },
-            { velocidade: '1 GIGA', valorPreVenc: 'R$ 149,99', valorPosVenc: 'R$ 169,99' },
-        ];
+        const PLAN_OPTIONS = {
+            'Maricá / Geral': [
+                { velocidade: '240 MEGA', valorPreVenc: 'R$ 59,99', valorPosVenc: 'R$ 79,99' },
+                { velocidade: '400 Mega', valorPreVenc: 'R$ 79,99', valorPosVenc: 'R$ 99,99' },
+                { velocidade: '500 Mega', valorPreVenc: 'R$ 99,99', valorPosVenc: 'R$ 119,99' },
+                { velocidade: '600 Mega', valorPreVenc: 'R$ 119,99', valorPosVenc: 'R$ 139,99' },
+                { velocidade: '700 MEGA (Prime)', valorPreVenc: 'R$ 99,99', valorPosVenc: 'R$ 119,99' },
+                { velocidade: '1 GIGA', valorPreVenc: 'R$ 149,99', valorPosVenc: 'R$ 169,99' },
+            ],
+            'Muqui': [
+                { velocidade: '100 MEGA', valorPreVenc: 'R$ 59,99', valorPosVenc: 'R$ 79,99' },
+                { velocidade: '300 Mega', valorPreVenc: 'R$ 89,99', valorPosVenc: 'R$ 109,99' },
+                { velocidade: '500 Mega', valorPreVenc: 'R$ 99,99', valorPosVenc: 'R$ 119,99' },
+                { velocidade: '1 GIGA', valorPreVenc: 'R$ 149,99', valorPosVenc: 'R$ 169,99' },
+            ],
+            'Mimoso do Sul': [
+                { velocidade: '240 MEGA', valorPreVenc: 'R$ 59,99', valorPosVenc: 'R$ 79,99' },
+                { velocidade: '300 Mega', valorPreVenc: 'R$ 69,99', valorPosVenc: 'R$ 69,99' },
+                { velocidade: '400 Mega', valorPreVenc: 'R$ 79,99', valorPosVenc: 'R$ 99,99' },
+                { velocidade: '500 Mega', valorPreVenc: 'R$ 99,99', valorPosVenc: 'R$ 119,99' },
+                { velocidade: '600 Mega', valorPreVenc: 'R$ 119,99', valorPosVenc: 'R$ 139,99' },
+                { velocidade: '700 Mega', valorPreVenc: 'R$ 89,99', valorPosVenc: 'R$ 89,99' },
+                { velocidade: '1 GIGA', valorPreVenc: 'R$ 149,99', valorPosVenc: 'R$ 169,99' },
+            ],
+        };
 
         function showToast({ type = 'success', message, subtext = '', duration = 2500 } = {}) {
             const notification = document.getElementById('notification');
@@ -262,9 +279,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function createMessageCard(message, topicName, readOnly = false) {
+            const isMsgReadOnly = readOnly || (typeof message === 'object' && message !== null && message.readOnly);
             const messageItem = document.createElement('div');
             messageItem.className = 'message-item';
-            if (readOnly) {
+            if (isMsgReadOnly) {
                 messageItem.classList.add('message-item--readonly');
             } else {
                 messageItem.setAttribute('role', 'button');
@@ -294,7 +312,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             messageItem.appendChild(messageText);
-            if (!readOnly) {
+            if (!isMsgReadOnly) {
                 const isPlanSelector = message && typeof message === 'object' && message.type === 'plan-selector';
                 if (isPlanSelector) {
                     messageItem.classList.add('message-item--plan-selector');
@@ -1016,6 +1034,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
+            const btnMobileInternet = document.getElementById('btnMobileInternet');
+            if (btnMobileInternet) {
+                btnMobileInternet.addEventListener('click', () => {
+                    if (isWelcomeVisible()) dismissWelcome({ focusAttendant: false });
+                    selectTopic('📱 INTERNET MÓVEL');
+                    closeMobileSidebar();
+                    showToast({
+                        type: 'info',
+                        message: '📱 Internet Móvel',
+                        subtext: 'Planos de internet móvel disponíveis.',
+                        duration: 2000,
+                    });
+                });
+            }
+
             if (btnOltUnamar) {
                 btnOltUnamar.addEventListener('click', () => {
                     window.open('https://186.26.81.5:4443/action/login.html', '_blank');
@@ -1068,19 +1101,38 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!planSelectorBody) return;
             planSelectorBody.innerHTML = '';
 
-            PLAN_OPTIONS.forEach(plan => {
-                const card = document.createElement('div');
-                card.className = 'plan-option-card';
-                card.dataset.planVelocidade = plan.velocidade;
-                card.dataset.planPreVenc = plan.valorPreVenc;
-                card.dataset.planPosVenc = plan.valorPosVenc;
-                card.innerHTML = `
-                    <div class="plan-option-name">${plan.velocidade}</div>
-                    <div class="plan-option-price"><strong>${plan.valorPreVenc}/mês</strong> até o vencimento</div>
-                    <div class="plan-option-price"><span class="pos-venc">${plan.valorPosVenc}/mês</span> após vencimento</div>
-                `;
-                card.addEventListener('click', () => handlePlanSelection(plan));
-                planSelectorBody.appendChild(card);
+            Object.keys(PLAN_OPTIONS).forEach((city) => {
+                const section = document.createElement('div');
+                section.className = 'plan-city-section';
+
+                const header = document.createElement('div');
+                header.className = 'plan-city-header';
+                header.textContent = city;
+                section.appendChild(header);
+
+                const grid = document.createElement('div');
+                grid.className = 'plan-city-grid';
+
+                PLAN_OPTIONS[city].forEach(plan => {
+                    const card = document.createElement('div');
+                    card.className = 'plan-option-card';
+                    card.dataset.planVelocidade = plan.velocidade;
+                    card.dataset.planPreVenc = plan.valorPreVenc;
+                    card.dataset.planPosVenc = plan.valorPosVenc;
+
+                    const showPosVenc = plan.valorPosVenc !== plan.valorPreVenc;
+
+                    card.innerHTML = `
+                        <div class="plan-option-name">${plan.velocidade}</div>
+                        <div class="plan-option-price"><strong>${plan.valorPreVenc}/mês</strong> até o vencimento</div>
+                        ${showPosVenc ? `<div class="plan-option-price"><span class="pos-venc">${plan.valorPosVenc}/mês</span> após vencimento</div>` : ''}
+                    `;
+                    card.addEventListener('click', () => handlePlanSelection(plan));
+                    grid.appendChild(card);
+                });
+
+                section.appendChild(grid);
+                planSelectorBody.appendChild(section);
             });
         }
 

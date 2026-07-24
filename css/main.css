@@ -2728,10 +2728,42 @@
         .plan-selector-body {
             padding: 20px 28px 28px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .plan-city-section {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .plan-city-header {
+            font-size: 0.78em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--primary);
+            padding: 8px 14px;
+            background: rgba(9, 100, 189, 0.08);
+            border-radius: 10px;
+            border-left: 4px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        body.dark-mode .plan-city-header {
+            color: var(--primary-light);
+            background: rgba(61, 143, 212, 0.12);
+        }
+
+        .plan-city-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 12px;
-            flex: 1;
+            gap: 10px;
         }
 
         .plan-option-card {
@@ -2847,8 +2879,12 @@
             }
 
             .plan-selector-body {
+                padding: 14px;
+                gap: 14px;
+            }
+
+            .plan-city-grid {
                 grid-template-columns: 1fr;
-                padding: 16px;
             }
 
             .plan-selector-header {
