@@ -2630,3 +2630,232 @@
             -webkit-text-fill-color: transparent;
             font-style: normal;
         }
+
+        /* --- Plan Selector Modal --- */
+        .plan-selector-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(1, 4, 9, 0.75);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .plan-selector-overlay.is-visible {
+            display: flex;
+        }
+
+        .plan-selector-modal {
+            background: var(--bg-light);
+            width: 95%;
+            max-width: 780px;
+            max-height: 85vh;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 25px 60px -16px rgba(1, 4, 9, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            animation: modalSlideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        body.dark-mode .plan-selector-modal {
+            background: var(--cx-dark-surface);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        @keyframes modalSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .plan-selector-header {
+            position: relative;
+            padding: 24px 28px 16px;
+            background: var(--primary-gradient);
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .plan-selector-header h2 {
+            font-size: 1.3em;
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plan-selector-header p {
+            font-size: 0.82em;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 6px 0 0;
+        }
+
+        .plan-selector-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            font-size: 1.3em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .plan-selector-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .plan-selector-body {
+            padding: 20px 28px 28px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            flex: 1;
+        }
+
+        .plan-option-card {
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-default);
+            border-radius: var(--radius-sm);
+            padding: 18px 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+        }
+
+        body.dark-mode .plan-option-card {
+            background: var(--bg-elevated);
+            border-color: var(--cx-border-dark);
+        }
+
+        .plan-option-card:hover {
+            border-color: var(--primary);
+            background: rgba(9, 100, 189, 0.04);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px -8px rgba(9, 100, 189, 0.2);
+        }
+
+        body.dark-mode .plan-option-card:hover {
+            background: rgba(61, 143, 212, 0.06);
+        }
+
+        .plan-option-card:active {
+            transform: scale(0.97);
+        }
+
+        .plan-option-name {
+            font-size: 1.05em;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        body.dark-mode .plan-option-name {
+            color: var(--primary-light);
+        }
+
+        .plan-option-price {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        body.dark-mode .plan-option-price {
+            color: var(--text-primary);
+        }
+
+        .plan-option-price strong {
+            color: var(--success);
+        }
+
+        .plan-option-price .pos-venc {
+            color: var(--warning);
+        }
+
+        /* Message card for plan selector */
+        .message-item--plan-selector {
+            border-color: var(--primary) !important;
+            background: rgba(9, 100, 189, 0.04) !important;
+        }
+
+        body.dark-mode .message-item--plan-selector {
+            border-color: var(--primary-light) !important;
+            background: rgba(61, 143, 212, 0.06) !important;
+        }
+
+        .message-item--plan-selector .message-title::before {
+            background: var(--success);
+        }
+
+        .plan-select-btn {
+            align-self: flex-end;
+            margin-top: auto;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px;
+            background: var(--primary-gradient);
+            color: white;
+            font-size: 0.78em;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(9, 100, 189, 0.2);
+        }
+
+        .plan-select-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(9, 100, 189, 0.3);
+        }
+
+        .plan-select-btn:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .plan-selector-modal {
+                max-width: 100%;
+                max-height: 90vh;
+                border-radius: var(--radius-md);
+                margin: 10px;
+            }
+
+            .plan-selector-body {
+                grid-template-columns: 1fr;
+                padding: 16px;
+            }
+
+            .plan-selector-header {
+                padding: 18px 20px 14px;
+            }
+
+            .plan-selector-header h2 {
+                font-size: 1.1em;
+            }
+        }

@@ -55,6 +55,10 @@ export const scriptData = {
                 {
                     title: "📝 Ficha de cadastro – Filial 2 e 6",
                     content: "### Para iniciar o cadastro, envie os dados:\n\nNome completo:\nCPF:\nRG:\nData de nascimento:\nE-mail:\nPlano desejado:\nData de vencimento: ([VENCIMENTO_AUTO])\nTelefone(s):\nEndereço completo:\nCEP:\nBairro:\nCidade:\nReferência visual (ponto de referência próximo):\nGostaria da fidelidade de 12 meses?\nData e período para a instalação:\nPor onde conheceu a empresa?"
+                },
+                {
+                    title: "📂 Solicitação de documentos",
+                    content: "Para finalizar seu cadastro, precisamos que envie os seguintes documentos:\n\n📌 1. Foto do documento de identificação (RG ou CNH – frente e verso).\n\n📌 2. Selfie segurando o documento (RG ou CNH), garantindo boa iluminação e que os dados fiquem visíveis."
                 }
             ],
             "📍 MARICÁ – INSTALAÇÃO PAGA": [
@@ -65,6 +69,10 @@ export const scriptData = {
                 {
                     title: "📝 Ficha de cadastro – Maricá",
                     content: "### Para iniciar o cadastro, envie os dados:\n\nNome completo:\nCPF:\nRG:\nData de nascimento:\nE-mail:\nPlano desejado:\nData de vencimento: ([VENCIMENTO_AUTO])\nTelefone(s):\nEndereço completo:\nCEP:\nBairro:\nCidade:\nReferência visual (ponto de referência próximo):\nGostaria da fidelidade de 12 meses?\nForma de pagamento da instalação:\nData e período para a instalação:\nPor onde conheceu a empresa?"
+                },
+                {
+                    title: "📂 Solicitação de documentos",
+                    content: "Para finalizar seu cadastro, precisamos que envie os seguintes documentos:\n\n📌 1. Foto do documento de identificação (RG ou CNH – frente e verso).\n\n📌 2. Selfie segurando o documento (RG ou CNH), garantindo boa iluminação e que os dados fiquem visíveis."
                 }
             ],
             "📝 CADASTRO DEMAIS FILIAIS": [
@@ -85,6 +93,11 @@ export const scriptData = {
                 {
                     title: "📄 Acordo de contratação",
                     content: "📄 ACORDO DE CONTRATAÇÃO\n\n✅ Todos os equipamentos ópticos fornecidos são compatíveis com velocidades máximas de até 1 Giga, quando utilizados por meio de cabo de rede.\n\n⚠️ Atenção: os equipamentos da residência do cliente devem ser Gigabit, com portas de rede 10/100/1000, preferencialmente com tecnologia Wi-Fi 6, para melhor desempenho do serviço.\n\n💻📏 A medição de velocidade é realizada exclusivamente via cabo de rede, conectado diretamente do conversor óptico ao notebook ou computador, o qual deve possuir placa de rede compatível com 1 Gbps.\n\n📍📝 O plano contratado possui fidelidade mínima de 12 (doze) meses, válida exclusivamente para o endereço informado no ato da contratação, não sendo a empresa responsável por alterações de endereço.\n\n♾️ O plano é ilimitado, sem franquia de consumo de dados.\n\n🚫📡 É expressamente proibida a comercialização, revenda ou compartilhamento do sinal contratado com terceiros.\n\n🌐 A empresa disponibiliza a todos os clientes o protocolo de internet IPv6. Para o funcionamento adequado do serviço, é necessário que todos os dispositivos utilizados (computadores, roteadores, DVRs, entre outros) sejam compatíveis com IPv6.\n\n🧾📬 A fatura mensal ficará disponível no site 👉 http://fibramarinternet.com.br, via WhatsApp 0800 100 3850, bem como será enviada ao e-mail cadastrado, com antecedência mínima de 5 (cinco) dias do vencimento.\n\n💳⚠️ Em caso de inadimplência, a fatura não paga poderá resultar em negativação automática junto aos órgãos de proteção ao crédito (SPC e/ou SERASA) após 35 (trinta e cinco) dias do vencimento.\n\n🔐 CONTRATO DIGITAL E VALIDAÇÃO DE IDENTIDADE\n\n📲 O contrato é realizado exclusivamente de forma digital.\n\n📸 Para validação e segurança jurídica, o cliente deverá enviar uma selfie (foto do rosto) e um do documento oficial, sendo aceitos RG que tenha o número do CPF ou CNH, de forma que os dados estejam legíveis.\n\n🪪 O documento deverá estar em mãos, visível na imagem, garantindo a correta identificação do titular do contrato.\n\n❌ DA QUEBRA DE CONTRATO\n\n⚖️ Os casos descritos abaixo caracterizam quebra do presente acordo, sendo entendidos como desistência da promoção, implicando na cobrança automática do custo real da instalação, no valor de R$ 30,00 (trinta reais) por cada mês restante até o término do período de fidelidade de 12 (doze) meses, de forma proporcional ao prazo não cumprido.\n\n📑 As condições detalhadas estarão descritas no Termo de Adesão.\n\n🚨 Caracterizam quebra de contrato:\n\n❌ Cancelamento do serviço;\n⛔️ Bloqueio ou suspensão;\n🔽 Alteração ou migração para planos inferiores ao inicialmente contratado;\n🚚📦 Mudança de endereço."
+                },
+                {
+                    title: "📝 CONFIRMAÇÃO DE CONTRATAÇÃO",
+                    content: "Confirmo que sou o titular da contratação e que todos os dados, documentos, fotos e informações fornecidos são verdadeiros, assumindo responsabilidade civil e criminal por sua autenticidade. Estou de acordo com a contratação do plano [VELOCIDADE], no valor de [VALOR], e com a permanência contratual de 12 meses.\n\nAo responder \"ACEITO\", confirmo minha concordância integral com estas condições.",
+                    type: "plan-selector"
                 }
             ],
             "📋 MENSAGENS PADRÕES": [

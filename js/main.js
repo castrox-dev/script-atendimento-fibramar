@@ -99,6 +99,15 @@ document.addEventListener('DOMContentLoaded', () => {
             info: '<i class="fas fa-circle-info"></i>',
         };
 
+        const PLAN_OPTIONS = [
+            { velocidade: '240 MEGA', valorPreVenc: 'R$ 59,99', valorPosVenc: 'R$ 79,99' },
+            { velocidade: '400 Mega', valorPreVenc: 'R$ 79,99', valorPosVenc: 'R$ 99,99' },
+            { velocidade: '500 Mega', valorPreVenc: 'R$ 99,99', valorPosVenc: 'R$ 119,99' },
+            { velocidade: '600 Mega', valorPreVenc: 'R$ 119,99', valorPosVenc: 'R$ 139,99' },
+            { velocidade: '700 MEGA', valorPreVenc: 'R$ 99,99', valorPosVenc: 'R$ 119,99' },
+            { velocidade: '1 GIGA', valorPreVenc: 'R$ 149,99', valorPosVenc: 'R$ 169,99' },
+        ];
+
         function showToast({ type = 'success', message, subtext = '', duration = 2500 } = {}) {
             const notification = document.getElementById('notification');
             const messageEl = document.getElementById('notificationMessage');
@@ -286,7 +295,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             messageItem.appendChild(messageText);
             if (!readOnly) {
-                messageItem.appendChild(createCopyButton());
+                const isPlanSelector = message && typeof message === 'object' && message.type === 'plan-selector';
+                if (isPlanSelector) {
+                    messageItem.classList.add('message-item--plan-selector');
+                    messageItem.dataset.planSelector = 'true';
+                    const planBtn = document.createElement('button');
+                    planBtn.type = 'button';
+                    planBtn.className = 'plan-select-btn';
+                    planBtn.innerHTML = '<i class="fas fa-tag"></i> Selecionar Plano';
+                    messageItem.appendChild(planBtn);
+                } else {
+                    messageItem.appendChild(createCopyButton());
+                }
             }
 
             return messageItem;
@@ -699,6 +719,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const planSelectorBtn = event.target.closest('.plan-select-btn');
+            if (planSelectorBtn) {
+                event.stopPropagation();
+                const card = planSelectorBtn.closest('[data-plan-selector]');
+                if (card) openPlanSelector(Number(card.dataset.msgId));
+                return;
+            }
+
             const copyBtn = event.target.closest('.message-copy-btn');
             if (copyBtn) {
                 event.stopPropagation();
@@ -716,7 +744,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const card = event.target.closest('.message-item[data-msg-id]');
             if (card && !card.classList.contains('message-item--readonly')) {
-                copyToClipboard(messageStore.get(Number(card.dataset.msgId)));
+                const isPlanSelector = card.hasAttribute('data-plan-selector');
+                if (isPlanSelector) {
+                    openPlanSelector(Number(card.dataset.msgId));
+                } else {
+                    copyToClipboard(messageStore.get(Number(card.dataset.msgId)));
+                }
             }
         }
 
@@ -1007,6 +1040,118 @@ document.addEventListener('DOMContentLoaded', () => {
         supportBoxes.addEventListener('click', (e) => {
             if (e.target === supportBoxes) {
                 supportBoxes.classList.remove('show');
+            }
+        });
+
+        // --- Plan Selector Modal ---
+        const planSelectorOverlay = document.getElementById('planSelectorOverlay');
+        const planSelectorBody = document.getElementById('planSelectorBody');
+        const closePlanSelectorBtn = document.getElementById('closePlanSelector');
+        let pendingPlanMsgId = null;
+
+        function openPlanSelector(msgId) {
+            pendingPlanMsgId = msgId;
+            renderPlanOptions();
+            planSelectorOverlay.hidden = false;
+            planSelectorOverlay.classList.add('is-visible');
+            planSelectorOverlay.setAttribute('aria-hidden', 'false');
+        }
+
+        function closePlanSelector() {
+            planSelectorOverlay.classList.remove('is-visible');
+            planSelectorOverlay.hidden = true;
+            planSelectorOverlay.setAttribute('aria-hidden', 'true');
+            pendingPlanMsgId = null;
+        }
+
+        function renderPlanOptions() {
+            if (!planSelectorBody) return;
+            planSelectorBody.innerHTML = '';
+
+            PLAN_OPTIONS.forEach(plan => {
+                const card = document.createElement('div');
+                card.className = 'plan-option-card';
+                card.dataset.planVelocidade = plan.velocidade;
+                card.dataset.planPreVenc = plan.valorPreVenc;
+                card.dataset.planPosVenc = plan.valorPosVenc;
+                card.innerHTML = `
+                    <div class="plan-option-name">${plan.velocidade}</div>
+                    <div class="plan-option-price"><strong>${plan.valorPreVenc}/mês</strong> até o vencimento</div>
+                    <div class="plan-option-price"><span class="pos-venc">${plan.valorPosVenc}/mês</span> após vencimento</div>
+                `;
+                card.addEventListener('click', () => handlePlanSelection(plan));
+                planSelectorBody.appendChild(card);
+            });
+        }
+
+        function handlePlanSelection(plan) {
+            if (pendingPlanMsgId === null) return;
+
+            const attendantNameInput = document.getElementById('attendantName');
+            const attendantName = attendantNameInput.value.trim();
+
+            if (!attendantName) {
+                attendantNameInput.style.borderColor = '#ef4444';
+                attendantNameInput.style.boxShadow = '0 0 0 4px rgba(239, 68, 68, 0.1)';
+                attendantNameInput.focus();
+                closePlanSelector();
+                showToast({
+                    type: 'error',
+                    message: 'Nome do atendente obrigatório',
+                    subtext: 'Preencha seu nome no menu lateral para copiar mensagens.',
+                    duration: 3500,
+                });
+                return;
+            }
+
+            attendantNameInput.style.borderColor = '';
+            attendantNameInput.style.boxShadow = '';
+
+            const message = messageStore.get(pendingPlanMsgId);
+            if (!message || typeof message !== 'object') return;
+
+            const template = message.content || '';
+            const valorCompleto = `${plan.valorPreVenc}/mês (pagando até o vencimento) / ${plan.valorPosVenc}/mês (após vencimento)`;
+
+            let text = template
+                .replace(/\[VELOCIDADE\]/g, plan.velocidade)
+                .replace(/\[VALOR\]/g, valorCompleto);
+
+            text = replaceVariables(text);
+
+            trackMessageUsage(message);
+
+            navigator.clipboard.writeText(text).then(() => {
+                closePlanSelector();
+                showToast({
+                    type: 'success',
+                    message: `Mensagem copiada! Plano ${plan.velocidade}`,
+                    subtext: 'Cole no chat do cliente com Ctrl+V.',
+                    duration: 3000,
+                });
+            }).catch(err => {
+                console.error('Erro ao copiar:', err);
+                showToast({
+                    type: 'error',
+                    message: 'Não foi possível copiar',
+                    subtext: 'Verifique as permissões do navegador.',
+                });
+            });
+        }
+
+        if (closePlanSelectorBtn) {
+            closePlanSelectorBtn.addEventListener('click', closePlanSelector);
+        }
+
+        if (planSelectorOverlay) {
+            planSelectorOverlay.addEventListener('click', (e) => {
+                if (e.target === planSelectorOverlay) closePlanSelector();
+            });
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && planSelectorOverlay && !planSelectorOverlay.hidden) {
+                closePlanSelector();
             }
         });
 
