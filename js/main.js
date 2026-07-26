@@ -1358,9 +1358,70 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // --- Modo busca: grid única com todas as mensagens misturadas ---
+        function enterSearchMode() {
+            let flatGrid = document.getElementById('searchFlatGrid');
+            if (flatGrid) flatGrid.innerHTML = '';
+            if (!flatGrid) {
+                flatGrid = document.createElement('div');
+                flatGrid.id = 'searchFlatGrid';
+                flatGrid.className = 'messages-grid search-flat-grid';
+                topicsContainer.appendChild(flatGrid);
+            }
+
+            topicsContainer.querySelectorAll('.topic:not(.is-filtered-out)').forEach(topic => {
+                const topicName = topic.dataset.topicName || '';
+
+                // Move mensagens comuns
+                topic.querySelectorAll('.message-item:not(.is-filtered-out)').forEach(item => {
+                    if (item.closest('#searchFlatGrid')) return;
+                    item.dataset.originalTopic = topicName;
+                    const label = document.createElement('div');
+                    label.className = 'message-topic-label';
+                    label.textContent = topicName;
+                    item.prepend(label);
+                    flatGrid.appendChild(item);
+                });
+
+                // Move grupos de senha (password / IXC)
+                topic.querySelectorAll('.password-group:not(.is-filtered-out):not(.password-group--region)').forEach(group => {
+                    if (group.closest('#searchFlatGrid')) return;
+                    group.dataset.originalTopic = topicName;
+                    const label = document.createElement('div');
+                    label.className = 'message-topic-label';
+                    label.textContent = topicName;
+                    group.prepend(label);
+                    flatGrid.appendChild(group);
+                });
+            });
+        }
+
+        function exitSearchMode() {
+            const flatGrid = document.getElementById('searchFlatGrid');
+            if (!flatGrid) return;
+
+            // Restaura cada item pro tópico original
+            flatGrid.querySelectorAll('.message-item, .password-group').forEach(item => {
+                const topicName = item.dataset.originalTopic || '';
+                delete item.dataset.originalTopic;
+                item.querySelector('.message-topic-label')?.remove();
+
+                const topic = topicsContainer.querySelector(`.topic[data-topic-name="${CSS.escape(topicName)}"]`);
+                if (topic) {
+                    const grid = topic.querySelector('.messages-grid');
+                    if (grid) grid.appendChild(item);
+                }
+            });
+
+            flatGrid.remove();
+        }
+
         function handleSearch(term = '') {
             const normalizedTerm = term.trim();
             clearSearch.hidden = !normalizedTerm;
+
+            // Sempre restaura itens pros tópicos originais ANTES de filtrar
+            exitSearchMode();
 
             // Se pesquisou, sai da tela de boas-vindas
             if (normalizedTerm && isWelcomeVisible()) {
@@ -1368,10 +1429,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 topicsMain?.classList.remove('is-welcome');
             }
 
-            // Ativa/desativa modo busca global (mostra todos os tópicos com resultado)
+            // Ativa/desativa modo busca global
             topicsContainer.classList.toggle('search-active', Boolean(normalizedTerm));
 
             const { totalMessages, totalTopics } = filterTopics(normalizedTerm);
+
+            // Se pesquisou, reúne tudo numa grid única
+            if (normalizedTerm) {
+                enterSearchMode();
+            }
 
             const hasResults = totalTopics > 0;
             emptyState.hidden = hasResults || !normalizedTerm;

@@ -1107,38 +1107,45 @@
             display: none !important;
         }
 
-        /* Headers super discretos durante a busca */
-        .search-active .topic-panel-header {
+        /* Grid única para resultados da busca */
+        .search-flat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            align-items: start;
             padding: 0;
-            margin-bottom: 6px;
-            border-bottom: none;
-            gap: 6px;
-            background: transparent !important;
+            width: 100%;
         }
 
-        .search-active .topic-panel-header h2 {
-            font-size: 0.65em;
+        /* Tag do tópico em cima de cada card */
+        .message-topic-label {
+            font-size: 0.6em;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--text-secondary);
             opacity: 0.45;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid rgba(142, 149, 160, 0.1);
+            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .search-active .topic-badge {
-            display: none;
+        /* Esconde headers originais durante a busca */
+        .search-active .topic-panel-header {
+            display: none !important;
         }
 
-        /* Separador bem fininho entre tópicos */
         .search-active .topic {
-            padding-top: 6px;
-            margin-top: 4px;
-            border-top: 1px solid rgba(142, 149, 160, 0.15);
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
         }
 
-        .search-active .topic:first-child {
-            border-top: none;
-            padding-top: 0;
-            margin-top: 0;
+        .search-active .messages {
+            display: none;
         }
 
         .topics-placeholder {
