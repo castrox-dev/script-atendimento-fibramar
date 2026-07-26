@@ -1322,6 +1322,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 : '<i class="fas fa-circle-exclamation"></i>';
         }
 
+        // --- Highlight de busca ---
+        function highlightText(text, term) {
+            if (!term || !text) return text;
+            const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedTerm})`, 'gi');
+            return text.replace(regex, '<mark class="search-highlight">$1</mark>');
+        }
+
+        function clearSearchHighlights() {
+            document.querySelectorAll('[data-original]').forEach(el => {
+                el.textContent = el.dataset.original;
+                el.removeAttribute('data-original');
+            });
+        }
+
+        function applySearchHighlights(term) {
+            clearSearchHighlights();
+            if (!term) return;
+
+            const visibleTexts = topicsContainer.querySelectorAll(
+                '.message-text, .message-text-preview, .message-text-full, ' +
+                '.message-title, .password-cred-label, ' +
+                '.password-copy-value, .ixc-readonly-text, .ixc-section-desc, ' +
+                '.password-region-header, .password-device-title'
+            );
+
+            visibleTexts.forEach(el => {
+                if (el.closest('.is-filtered-out')) return;
+
+                // Pula .message-text que tem estrutura truncada (filhos com spans de texto)
+                if (el.classList.contains('message-text') &&
+                    el.querySelector('.message-text-preview, .message-text-full')) return;
+
+                // Pula elementos interativos (botões, etc)
+                if (el.closest('.message-copy-btn, .password-copy-btn, .plan-select-btn, .message-toggle')) return;
+
+                const text = el.textContent;
+                if (!text || !text.trim()) return;
+
+                el.dataset.original = text;
+                el.innerHTML = highlightText(text, term);
+            });
+        }
+
         function handleSearch(term = '') {
             const normalizedTerm = term.trim();
             clearSearch.hidden = !normalizedTerm;
@@ -1342,6 +1386,8 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 searchResults.hidden = true;
             }
+
+            applySearchHighlights(normalizedTerm);
         }
 
         const debouncedSearch = debounce(handleSearch, 120);

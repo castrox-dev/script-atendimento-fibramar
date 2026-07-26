@@ -752,6 +752,19 @@
             margin-top: 14px;
         }
 
+        .search-highlight {
+            background: #fef08a;
+            color: #1a1a2e;
+            border-radius: 3px;
+            padding: 0 2px;
+            font-weight: 600;
+        }
+
+        body.dark-mode .search-highlight {
+            background: rgba(255, 193, 7, 0.35);
+            color: #fef08a;
+        }
+
         .search-results {
             font-size: 0.82em;
             font-weight: 600;
