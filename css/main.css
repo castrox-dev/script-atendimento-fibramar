@@ -1098,6 +1098,15 @@
             display: none !important;
         }
 
+        /* Modo busca global: mostra todos os tópicos com resultado */
+        .topics-panel.search-active > .topic:not(.is-filtered-out) {
+            display: flex !important;
+        }
+
+        .topics-panel.search-active > .topic.is-filtered-out {
+            display: none !important;
+        }
+
         .topics-placeholder {
             display: flex;
             flex-direction: column;

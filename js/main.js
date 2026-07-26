@@ -834,16 +834,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            if (normalizedTerm && totalTopics > 0) {
-                const selectedTopic = Array.from(topicsContainer.querySelectorAll('.topic'))
-                    .find(topic => topic.dataset.topicName === selectedTopicName);
-                const selectedStillVisible = selectedTopic && !selectedTopic.classList.contains('is-filtered-out');
-
-                if (!selectedStillVisible) {
-                    const firstVisible = topicsContainer.querySelector('.topic:not(.is-filtered-out)');
-                    if (firstVisible) selectTopic(firstVisible.dataset.topicName);
-                }
-            } else if (!normalizedTerm && selectedTopicName) {
+            // Durante a busca, mostra todos os tópicos com resultado (não seleciona um só)
+            if (!normalizedTerm && selectedTopicName) {
                 selectTopic(selectedTopicName);
             }
 
@@ -1370,11 +1362,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const normalizedTerm = term.trim();
             clearSearch.hidden = !normalizedTerm;
 
-            // Se pesquisou, sai da tela de boas-vindas e mostra os resultados direto
+            // Se pesquisou, sai da tela de boas-vindas
             if (normalizedTerm && isWelcomeVisible()) {
                 welcomePanel.hidden = true;
                 topicsMain?.classList.remove('is-welcome');
             }
+
+            // Ativa/desativa modo busca global (mostra todos os tópicos com resultado)
+            topicsContainer.classList.toggle('search-active', Boolean(normalizedTerm));
 
             const { totalMessages, totalTopics } = filterTopics(normalizedTerm);
 
