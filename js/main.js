@@ -1370,6 +1370,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const normalizedTerm = term.trim();
             clearSearch.hidden = !normalizedTerm;
 
+            // Se pesquisou, sai da tela de boas-vindas e mostra os resultados direto
+            if (normalizedTerm && isWelcomeVisible()) {
+                welcomePanel.hidden = true;
+                topicsMain?.classList.remove('is-welcome');
+            }
+
             const { totalMessages, totalTopics } = filterTopics(normalizedTerm);
 
             const hasResults = totalTopics > 0;
