@@ -10,9 +10,11 @@ export const responsaveisData = [
     { regiao: 'Santos Dumont', financeiro: 'Darlyn', supervisor: 'Jeferson / Wendel' },
     { regiao: 'Juiz de Fora', financeiro: 'Darlyn', supervisor: 'Jeferson / Wendel' },
     { regiao: 'São Paulo', financeiro: 'Aline / Maria Clara', supervisor: 'LC / Fernando' },
-    { regiao: 'CENTRO', financeiro: 'Maricá', supervisor: 'WELLINGTON' },
-    { regiao: 'SÃO JOSÉ', financeiro: 'Maricá', supervisor: 'LUIZ PAULO' },
-    { regiao: 'CORDEIRINHO', financeiro: 'DARLYN', supervisor: 'LUIZ PAULO' },
-    { regiao: 'ITAIPUAÇU', financeiro: 'DARLYN', supervisor: 'SIDNEI' },
-    { regiao: 'VALE DA FIGUEIRA', financeiro: 'DARLYN', supervisor: 'CLEITON / SIDNEI / LEONARDO' },
+    // Maricá: financeiro unificado na cidade; cada técnico é supervisor da sua área
+    { regiao: 'Maricá', financeiro: 'Darlyn', supervisor: '' },
+    { regiao: 'CENTRO', financeiro: '', supervisor: 'WELLINGTON' },
+    { regiao: 'SÃO JOSÉ', financeiro: '', supervisor: 'LUIZ PAULO' },
+    { regiao: 'CORDEIRINHO', financeiro: '', supervisor: 'SIDNEI / LEONARDO' },
+    { regiao: 'ITAIPUAÇU', financeiro: '', supervisor: 'SIDNEI' },
+    { regiao: 'VALE DA FIGUEIRA', financeiro: '', supervisor: 'CLEITON' },
 ];
