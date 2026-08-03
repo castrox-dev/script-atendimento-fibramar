@@ -2,11 +2,12 @@ import { scriptData } from './data/scripts.js';
 import { topicCategories, readOnlyTopics } from './data/categories.js';
 import { ixcReferenceTopics } from './data/ixc-reference.js';
 import { supportData } from './data/support.js';
+import { responsaveisData } from './data/responsaveis.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Script carregado em:', new Date().toLocaleString());
 
-    const currentVersion = '2.6.1';
+    const currentVersion = '2.8.0';
     const storedVersion = localStorage.getItem('scriptVersion');
 
     if (storedVersion !== currentVersion) {
@@ -1001,11 +1002,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (type === 'wallets') {
                 boxWallets.style.display = 'flex';
                 boxDueDates.style.display = 'none';
-                document.querySelector('.support-modal-header h2').innerHTML = '<span>💳</span> Carteiras de Cobrança';
+                supportBoxes.querySelector('.support-modal-header h2').innerHTML = '<span>💳</span> Carteiras de Cobrança';
             } else if (type === 'dueDates') {
                 boxWallets.style.display = 'none';
                 boxDueDates.style.display = 'flex';
-                document.querySelector('.support-modal-header h2').innerHTML = '<span>📅</span> Vencimentos';
+                supportBoxes.querySelector('.support-modal-header h2').innerHTML = '<span>📅</span> Vencimentos';
             }
         }
 
@@ -1194,10 +1195,89 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && planSelectorOverlay && !planSelectorOverlay.hidden) {
+            if (e.key !== 'Escape') return;
+            if (planSelectorOverlay && !planSelectorOverlay.hidden) {
                 closePlanSelector();
             }
+            if (responsaveisOverlay && responsaveisOverlay.classList.contains('show')) {
+                closeResponsaveis();
+            }
         });
+
+        // --- Modal de Responsáveis (agrupado por responsável, estilo do modal de apoio) ---
+        const responsaveisOverlay = document.getElementById('responsaveisOverlay');
+        const contentResponsaveisFinanceiro = document.getElementById('contentResponsaveisFinanceiro');
+        const contentResponsaveisSupervisor = document.getElementById('contentResponsaveisSupervisor');
+        const btnResponsaveis = document.getElementById('btnResponsaveis');
+        const closeResponsaveisBtn = document.getElementById('closeResponsaveis');
+        let responsaveisRendered = false;
+
+        function buildResponsaveisGroups() {
+            const groups = { financeiro: new Map(), supervisor: new Map() };
+
+            responsaveisData.forEach(row => {
+                const addToGroup = (map, pessoa, regiao) => {
+                    if (!pessoa) return;
+                    if (!map.has(pessoa)) map.set(pessoa, []);
+                    map.get(pessoa).push(regiao);
+                };
+
+                addToGroup(groups.financeiro, row.financeiro, row.regiao);
+                addToGroup(groups.supervisor, row.supervisor, row.regiao);
+            });
+
+            return groups;
+        }
+
+        function renderResponsaveisCards(groups, container) {
+            if (!container) return;
+
+            container.innerHTML = Array.from(groups.entries()).map(([pessoa, regioes]) => `
+                <div class="support-card support-card--responsaveis">
+                    <div class="support-card-title">
+                        <i class="fas fa-user"></i> ${pessoa}
+                    </div>
+                    <div class="responsaveis-chips">
+                        ${regioes.map(regiao => `<span class="responsaveis-chip">${regiao}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderResponsaveisModal() {
+            if (responsaveisRendered) return;
+            responsaveisRendered = true;
+
+            const groups = buildResponsaveisGroups();
+            renderResponsaveisCards(groups.financeiro, contentResponsaveisFinanceiro);
+            renderResponsaveisCards(groups.supervisor, contentResponsaveisSupervisor);
+        }
+
+        function openResponsaveis() {
+            renderResponsaveisModal();
+            responsaveisOverlay.classList.add('show');
+            responsaveisOverlay.setAttribute('aria-hidden', 'false');
+        }
+
+        function closeResponsaveis() {
+            if (!responsaveisOverlay || !responsaveisOverlay.classList.contains('show')) return;
+            responsaveisOverlay.classList.remove('show');
+            responsaveisOverlay.setAttribute('aria-hidden', 'true');
+        }
+
+        if (btnResponsaveis) {
+            btnResponsaveis.addEventListener('click', openResponsaveis);
+        }
+
+        if (closeResponsaveisBtn) {
+            closeResponsaveisBtn.addEventListener('click', closeResponsaveis);
+        }
+
+        if (responsaveisOverlay) {
+            responsaveisOverlay.addEventListener('click', (e) => {
+                if (e.target === responsaveisOverlay) closeResponsaveis();
+            });
+        }
 
         function copySupportId(id) {
             navigator.clipboard.writeText(id).then(() => {

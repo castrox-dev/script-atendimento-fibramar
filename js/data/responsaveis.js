@@ -1,0 +1,18 @@
+export const responsaveisData = [
+    { regiao: 'Unamar', financeiro: 'Nina', supervisor: 'Lucas Bomfim' },
+    { regiao: 'Araruama', financeiro: 'Nina', supervisor: 'Diego' },
+    { regiao: 'Saquerema', financeiro: 'Eduarda / Thaissa / Maria Luiza', supervisor: 'Maicon' },
+    { regiao: 'Jaconé', financeiro: 'Eduarda / Thaissa / Maria Luiza', supervisor: 'Maicon' },
+    { regiao: 'Vila Velha', financeiro: 'Samira', supervisor: 'Leandro' },
+    { regiao: 'Piuma', financeiro: 'Samira', supervisor: 'Rabel' },
+    { regiao: 'Muqui', financeiro: 'Samira', supervisor: 'Rabel' },
+    { regiao: 'Mimoso', financeiro: 'Samira', supervisor: 'Leonardo / Uilas' },
+    { regiao: 'Santos Dumont', financeiro: 'Darlyn', supervisor: 'Jeferson / Wendel' },
+    { regiao: 'Juiz de Fora', financeiro: 'Darlyn', supervisor: 'Jeferson / Wendel' },
+    { regiao: 'São Paulo', financeiro: 'Aline / Maria Clara', supervisor: 'LC / Fernando' },
+    { regiao: 'CENTRO', financeiro: 'Maricá', supervisor: 'WELLINGTON' },
+    { regiao: 'SÃO JOSÉ', financeiro: 'Maricá', supervisor: 'LUIZ PAULO' },
+    { regiao: 'CORDEIRINHO', financeiro: 'DARLYN', supervisor: 'LUIZ PAULO' },
+    { regiao: 'ITAIPUAÇU', financeiro: 'DARLYN', supervisor: 'SIDNEI' },
+    { regiao: 'VALE DA FIGUEIRA', financeiro: 'DARLYN', supervisor: 'CLEITON / SIDNEI / LEONARDO' },
+];

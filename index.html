@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="css/main.css?v=2.6.1">
+    <link rel="stylesheet" href="css/main.css?v=2.8.0">
     <title>Script de Atendimento - Fibramar Internet</title>
 </head>
 <body>
@@ -79,6 +79,10 @@
                             <i class="fas fa-server"></i>
                             <span>IXC SOFT</span>
                         </a>
+                        <button type="button" class="header-link-btn header-link-btn--action" id="btnResponsaveis" title="Ver responsáveis por região">
+                            <i class="fas fa-users"></i>
+                            <span>Responsáveis</span>
+                        </button>
                         <a href="https://fibramar.chat.falevox.com.br/atendente/" target="_blank" rel="noopener noreferrer" class="header-link-btn" title="Abrir OPA SUITE">
                             <i class="fas fa-headset"></i>
                             <span>OPA SUITE</span>
@@ -168,6 +172,29 @@
         </div>
     </div>
 
+    <div class="support-boxes-container" id="responsaveisOverlay" aria-hidden="true">
+        <div class="support-modal-wrapper">
+            <div class="support-modal-header">
+                <h2><i class="fas fa-users"></i> Responsáveis</h2>
+                <button type="button" class="close-support-modal" id="closeResponsaveis" aria-label="Fechar">&times;</button>
+            </div>
+            <div class="support-modal-body">
+                <div class="support-box">
+                    <div class="support-box-header">
+                        <div class="support-box-title"><i class="fas fa-hand-holding-dollar"></i> Financeiro</div>
+                    </div>
+                    <div class="support-box-content" id="contentResponsaveisFinanceiro"></div>
+                </div>
+                <div class="support-box">
+                    <div class="support-box-header">
+                        <div class="support-box-title"><i class="fas fa-toolbox"></i> Supervisor Técnico</div>
+                    </div>
+                    <div class="support-box-content" id="contentResponsaveisSupervisor"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="plan-selector-overlay" id="planSelectorOverlay" hidden aria-hidden="true">
         <div class="plan-selector-modal" role="dialog" aria-label="Selecionar plano">
             <div class="plan-selector-header">
@@ -179,6 +206,6 @@
         </div>
     </div>
 
-    <script type="module" src="js/main.js?v=2.6.1"></script>
+    <script type="module" src="js/main.js?v=2.8.0"></script>
 </body>
 </html>
