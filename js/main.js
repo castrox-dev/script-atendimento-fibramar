@@ -7,7 +7,7 @@ import { responsaveisData } from './data/responsaveis.js';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Script carregado em:', new Date().toLocaleString());
 
-    const currentVersion = '2.8.0';
+    const currentVersion = '2.9.0';
     const storedVersion = localStorage.getItem('scriptVersion');
 
     if (storedVersion !== currentVersion) {
@@ -1218,8 +1218,13 @@ document.addEventListener('DOMContentLoaded', () => {
             responsaveisData.forEach(row => {
                 const addToGroup = (map, pessoa, regiao) => {
                     if (!pessoa) return;
-                    if (!map.has(pessoa)) map.set(pessoa, []);
-                    map.get(pessoa).push(regiao);
+                    // Normaliza a chave por nome (ignora maiúsculas) para juntar
+                    // o mesmo responsável escrito diferente (ex.: Darlyn/DARLYN)
+                    const key = pessoa.toLowerCase();
+                    if (!map.has(key)) map.set(key, { nome: pessoa, regioes: [] });
+                    if (!map.get(key).regioes.includes(regiao)) {
+                        map.get(key).regioes.push(regiao);
+                    }
                 };
 
                 addToGroup(groups.financeiro, row.financeiro, row.regiao);
@@ -1232,13 +1237,13 @@ document.addEventListener('DOMContentLoaded', () => {
         function renderResponsaveisCards(groups, container) {
             if (!container) return;
 
-            container.innerHTML = Array.from(groups.entries()).map(([pessoa, regioes]) => `
+            container.innerHTML = Array.from(groups.values()).map(group => `
                 <div class="support-card support-card--responsaveis">
                     <div class="support-card-title">
-                        <i class="fas fa-user"></i> ${pessoa}
+                        <i class="fas fa-user"></i> ${group.nome}
                     </div>
                     <div class="responsaveis-chips">
-                        ${regioes.map(regiao => `<span class="responsaveis-chip">${regiao}</span>`).join('')}
+                        ${group.regioes.map(regiao => `<span class="responsaveis-chip">${regiao}</span>`).join('')}
                     </div>
                 </div>
             `).join('');
