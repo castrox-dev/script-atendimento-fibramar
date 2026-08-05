@@ -1443,10 +1443,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // --- Modo busca: grid única com todas as mensagens misturadas ---
+        // --- Modo busca: lista única agrupada por tópico com cabeçalhos de seção ---
         function enterSearchMode() {
             let flatGrid = document.getElementById('searchFlatGrid');
-            if (flatGrid) flatGrid.innerHTML = '';
             if (!flatGrid) {
                 flatGrid = document.createElement('div');
                 flatGrid.id = 'searchFlatGrid';
@@ -1454,47 +1453,74 @@ document.addEventListener('DOMContentLoaded', () => {
                 topicsContainer.appendChild(flatGrid);
             }
 
+            const fragment = document.createDocumentFragment();
+
             topicsContainer.querySelectorAll('.topic:not(.is-filtered-out)').forEach(topic => {
                 const topicName = topic.dataset.topicName || '';
+                const grid = topic.querySelector('.messages-grid');
+                if (!grid) return;
 
-                // Move mensagens comuns
-                topic.querySelectorAll('.message-item:not(.is-filtered-out)').forEach(item => {
-                    if (item.closest('#searchFlatGrid')) return;
+                const itemsToMove = [
+                    ...topic.querySelectorAll('.message-item:not(.is-filtered-out)'),
+                    ...topic.querySelectorAll('.password-group:not(.is-filtered-out):not(.password-group--region)'),
+                ];
+
+                if (itemsToMove.length === 0) return;
+
+                // Cabeçalho de seção com o nome do tópico e a quantidade de resultados
+                const sectionHeader = document.createElement('div');
+                sectionHeader.className = 'search-section-header';
+
+                const sectionTitle = document.createElement('span');
+                sectionTitle.className = 'search-section-title';
+                sectionTitle.textContent = topicName;
+
+                const sectionCount = document.createElement('span');
+                sectionCount.className = 'search-section-count';
+                sectionCount.textContent = itemsToMove.length;
+
+                sectionHeader.appendChild(sectionTitle);
+                sectionHeader.appendChild(sectionCount);
+                fragment.appendChild(sectionHeader);
+
+                // Move as mensagens, guardando a posição original para restaurar depois
+                itemsToMove.forEach(item => {
                     item.dataset.originalTopic = topicName;
-                    const label = document.createElement('div');
-                    label.className = 'message-topic-label';
-                    label.textContent = topicName;
-                    item.prepend(label);
-                    flatGrid.appendChild(item);
-                });
-
-                // Move grupos de senha (password / IXC)
-                topic.querySelectorAll('.password-group:not(.is-filtered-out):not(.password-group--region)').forEach(group => {
-                    if (group.closest('#searchFlatGrid')) return;
-                    group.dataset.originalTopic = topicName;
-                    const label = document.createElement('div');
-                    label.className = 'message-topic-label';
-                    label.textContent = topicName;
-                    group.prepend(label);
-                    flatGrid.appendChild(group);
+                    item.dataset.originalIndex = String(Array.prototype.indexOf.call(grid.children, item));
+                    fragment.appendChild(item);
                 });
             });
+
+            flatGrid.appendChild(fragment);
         }
 
         function exitSearchMode() {
             const flatGrid = document.getElementById('searchFlatGrid');
             if (!flatGrid) return;
 
-            // Restaura cada item pro tópico original
+            // Agrupa os itens por tópico para restaurar cada um na posição original
+            const itemsByTopic = new Map();
             flatGrid.querySelectorAll('.message-item, .password-group').forEach(item => {
                 const topicName = item.dataset.originalTopic || '';
+                const originalIndex = Number(item.dataset.originalIndex || 0);
                 delete item.dataset.originalTopic;
-                item.querySelector('.message-topic-label')?.remove();
+                delete item.dataset.originalIndex;
 
+                if (!itemsByTopic.has(topicName)) itemsByTopic.set(topicName, []);
+                itemsByTopic.get(topicName).push({ item, originalIndex });
+            });
+
+            itemsByTopic.forEach((entries, topicName) => {
                 const topic = topicsContainer.querySelector(`.topic[data-topic-name="${CSS.escape(topicName)}"]`);
-                if (topic) {
-                    const grid = topic.querySelector('.messages-grid');
-                    if (grid) grid.appendChild(item);
+                if (!topic) return;
+                const grid = topic.querySelector('.messages-grid');
+                if (!grid) return;
+
+                // Restaura na ordem inversa da remoção: cada item volta para a
+                // posição exata em que estava quando foi movido, reconstruindo a ordem
+                for (let i = entries.length - 1; i >= 0; i--) {
+                    const { item, originalIndex } = entries[i];
+                    grid.insertBefore(item, grid.children[originalIndex] || null);
                 }
             });
 

@@ -1113,12 +1113,8 @@
             display: none !important;
         }
 
-        /* Modo busca global: mostra todos os tópicos com resultado */
-        .topics-panel.search-active > .topic:not(.is-filtered-out) {
-            display: flex !important;
-        }
-
-        .topics-panel.search-active > .topic.is-filtered-out {
+        /* Modo busca global: esconde os tópicos e mostra a lista única agrupada */
+        .topics-panel.search-active > .topic {
             display: none !important;
         }
 
@@ -1132,35 +1128,39 @@
             width: 100%;
         }
 
-        /* Tag do tópico em cima de cada card */
-        .message-topic-label {
-            font-size: 0.6em;
-            font-weight: 600;
+        /* Cabeçalho de seção (tópico) dentro da lista de resultados */
+        .search-section-header {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 14px;
+            padding: 0 2px 6px;
+            border-bottom: 1px solid var(--border-default);
+        }
+
+        .search-section-header:first-child {
+            margin-top: 0;
+        }
+
+        .search-section-title {
+            font-size: 0.78em;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.5px;
+            color: var(--primary);
+            min-width: 0;
+        }
+
+        .search-section-count {
+            flex-shrink: 0;
+            font-size: 0.7em;
+            font-weight: 700;
             color: var(--text-secondary);
-            opacity: 0.45;
-            margin-bottom: 8px;
-            padding-bottom: 4px;
-            border-bottom: 1px solid rgba(142, 149, 160, 0.1);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Esconde headers originais durante a busca */
-        .search-active .topic-panel-header {
-            display: none !important;
-        }
-
-        .search-active .topic {
-            border: none !important;
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-
-        .search-active .messages {
-            display: none;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-default);
+            border-radius: 999px;
+            padding: 1px 9px;
         }
 
         .topics-placeholder {

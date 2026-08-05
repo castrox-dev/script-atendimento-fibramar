@@ -217,6 +217,10 @@ export const scriptData = {
                 },
                 "OLT (ITAIPUAÇU)\n\nBRIDGE - 62\nROUTER - 53\nBRIDGE PRETA PEQUENA - 74",
                 "OLT (VILA VELHA) (ES)\n\nONUS ZTE - PERFIL 85\nONUS OUTRAS MARCAS - PERFIL 86",
-                "OLT (UNAMAR/ARARUAMA)\n\nONUS PISTA - PERFIL 9"
+                "OLT (UNAMAR/ARARUAMA)\n\nONUS PISTA - PERFIL 9",
+                {
+                    title: "OLT'S SÃO PAULO",
+                    content: "ID 8 - OLT ZATT 1 - FIBRACOM\nID 94 - OLT ZATT 1 - FIBRACOM\nID 11 - OLT ZATT 1, ZATT 2\nID 90 - OLT ZATT 1, ZATT 2\nID 12 - OLT ZATT 1, ZATT 2, DOMITILA, CASA VERDE - ZTE/NOKIA/HUAWEI\nID 93 - OLT ZATT 1, ZATT 2, DOMITILA, CASA VERDE - ZTE/NOKIA/HUAWEI\nID 13 - OLT ZATT 2, DOMITILA, CASA VERDE - FIBRACOM\nID 95 - OLT ZATT 2, DOMITILA, CASA VERDE - FIBRACOM\nID 96 - TPLINK ZATT 1\nID 99 - TPLINK ZATT 2"
+                }
             ]
         };
