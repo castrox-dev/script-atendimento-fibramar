@@ -7,7 +7,7 @@ import { responsaveisData } from './data/responsaveis.js';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Script carregado em:', new Date().toLocaleString());
 
-    const currentVersion = '2.9.0';
+    const currentVersion = '2.9.1';
     const storedVersion = localStorage.getItem('scriptVersion');
 
     if (storedVersion !== currentVersion) {
