@@ -65,8 +65,8 @@ export const scriptData = {
             ],
             "📍 MARICÁ – INSTALAÇÃO PAGA": [
                 {
-                    title: "🌐 Informações de adesão (R$ 100,00)",
-                    content: "🌐 Para que você aproveite ao máximo nosso serviço, existe uma taxa de adesão de R$ 100,00.\n\n🛠 Esse valor contribui para o suporte técnico essencial, garantindo que a instalação e a configuração da sua internet sejam feitas com todo o cuidado necessário.\n\n💳 *Para facilitar, esse valor pode ser parcelado em até 10x de R$ 10,00, no cartão.*"
+                    title: "🌐 Informações de adesão Com fidelidade (R$ 100,00) Sem fidelidade (R$ 460,00)",
+                    content: "🌐 Para que você aproveite ao máximo nosso serviço, existe uma taxa de adesão de R$ 100,00.\n\n🛠 Esse valor contribui para o suporte técnico essencial, garantindo que a instalação e a configuração da sua internet sejam feitas com todo o cuidado necessário.\n\n🛠 Caso prefira contratar sem fidelidade, será aplicada uma taxa de instalação no valor de R$ 460,00.\n\n💳 Para facilitar, esse valor pode ser parcelado no cartão."
                 },
                 {
                     title: "📝 Ficha de cadastro – Maricá",
