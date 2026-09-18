@@ -1,6 +1,6 @@
 export const responsaveisData = [
-    { regiao: 'Unamar', financeiro: 'Nina', supervisor: 'Lucas Bomfim' },
-    { regiao: 'Araruama', financeiro: 'Nina', supervisor: 'Diego' },
+    { regiao: 'Unamar', financeiro: 'Eduarda Goes', supervisor: 'Lucas Bomfim' },
+    { regiao: 'Araruama', financeiro: 'Eduarda Goes', supervisor: 'Diego' },
     { regiao: 'Saquerema', financeiro: 'Eduarda / Thaissa / Maria Luiza', supervisor: 'Maicon' },
     { regiao: 'Jaconé', financeiro: 'Eduarda / Thaissa / Maria Luiza', supervisor: 'Maicon' },
     { regiao: 'Vila Velha', financeiro: 'Samira', supervisor: 'Leandro' },
